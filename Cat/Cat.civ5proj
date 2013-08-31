@@ -940,7 +940,7 @@
     </Content>
     <Content Include="Tools\InGame.lua">
       <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
+      <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="Tools\Core\ModTools.lua">
       <SubType>Lua</SubType>

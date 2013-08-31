@@ -90,10 +90,10 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 	local footerStrength		= ""
 	local footerMoves			= ""
 	local footerEnd				= ""
+	--[=[
 	for row in GameInfo.Unit_FreePromotions{UnitType = unitInfo.Type} do
 		local promoInfo = GameInfo.UnitPromotions[row.PromotionType]
 		if promoInfo.Class ~= "PROMOTION_CLASS_ATTRIBUTE_NEGATIVE" then
-			--[[
 			local promoText, section = GetPromotionTip(promoInfo.ID, unit)
 			
 			footerRangedStrength	= footerRangedStrength	.. section[TipSection.PROMO_RANGE]
@@ -110,7 +110,6 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 			footerEnd				= footerEnd				.. section[TipSection.PROMO_WAR]
 			footerEnd				= footerEnd				.. section[TipSection.PROMO_NEGATIVE]
 			footerEnd				= footerEnd				.. section[TipSection.PROMO_OTHER]
-			--]]
 			
 			--[[
 			if string.find(promoText, "^.ICON_RANGE_STRENGTH") then
@@ -128,6 +127,7 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 			--]]
 		end
 	end
+	--]=]
 	
 	-- Range
 	local iRange = unitInfo.Range

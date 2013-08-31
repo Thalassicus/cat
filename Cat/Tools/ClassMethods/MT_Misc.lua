@@ -12,21 +12,13 @@ log:SetLevel("INFO")
 --
 
 ----------------------------------------------------------------
---[[
+function Game.AlertIfActive(alertText, player)
+	if player and player ~= Players[Game.GetActivePlayer()] then
+		return
+	end
+	Events.GameplayAlertMessage(alertText)
+end
 
-VFS lua files set their GameInfo table before the program reads database tables used on the "modding game setup" screen.
-We must therefore hardcode these data values in a Lua table.
-
---]]
-function Game.GetWorldInfo()
-	return GameInfoCep.Worlds[Map.GetWorldSize()]
-end
-function Game.GetSpeedInfo()
-	return GameInfoCep.GameSpeeds[Game.GetGameSpeedType()]
-end
-function Game.GetHandicapInfo()
-	return GameInfoCep.HandicapInfos[Game.GetAverageHumanHandicap()]
-end
 
 
 ----------------------------------------------------------------
