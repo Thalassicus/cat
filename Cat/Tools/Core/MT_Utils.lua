@@ -375,7 +375,7 @@ function Game.GetWeightedTable(list, size)
 			totalWeight = totalWeight + 1
 		end
 		if totalWeight == 0 then
-			log:Debug("Game.GetWeightedTable: empty list")
+			log:Warn("Game.GetWeightedTable: empty list")
 			--print(debug.traceback())
 			return -1
 		end

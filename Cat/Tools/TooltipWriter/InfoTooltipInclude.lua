@@ -90,10 +90,10 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 	local footerStrength		= ""
 	local footerMoves			= ""
 	local footerEnd				= ""
+	--[=[
 	for row in GameInfo.Unit_FreePromotions{UnitType = unitInfo.Type} do
 		local promoInfo = GameInfo.UnitPromotions[row.PromotionType]
 		if promoInfo.Class ~= "PROMOTION_CLASS_ATTRIBUTE_NEGATIVE" then
-			--[[
 			local promoText, section = GetPromotionTip(promoInfo.ID, unit)
 			
 			footerRangedStrength	= footerRangedStrength	.. section[TipSection.PROMO_RANGE]
@@ -110,7 +110,6 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 			footerEnd				= footerEnd				.. section[TipSection.PROMO_WAR]
 			footerEnd				= footerEnd				.. section[TipSection.PROMO_NEGATIVE]
 			footerEnd				= footerEnd				.. section[TipSection.PROMO_OTHER]
-			--]]
 			
 			--[[
 			if string.find(promoText, "^.ICON_RANGE_STRENGTH") then
@@ -128,6 +127,7 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 			--]]
 		end
 	end
+	--]=]
 	
 	-- Range
 	local iRange = unitInfo.Range
@@ -570,7 +570,7 @@ end
 
 -- PROJECT
 function GetHelpTextForProject(iProjectID, showRequirementsInfo)
-	local pProjectInfo = GameInfo.Projects[iProjectID]
+	local objectInfo = GameInfo.Projects[iProjectID]
 	
 	local activePlayer = Players[Game.GetActivePlayer()]
 	local activeTeam = Teams[Game.GetActiveTeam()]
@@ -578,7 +578,14 @@ function GetHelpTextForProject(iProjectID, showRequirementsInfo)
 	local textFoot = ""
 	
 	-- Name
-	textFoot = textFoot .. Locale.ToUpper(Locale.ConvertTextKey( pProjectInfo.Description ))
+	textFoot = textFoot .. Locale.ToUpper(Locale.ConvertTextKey( objectInfo.Description ))
+
+	if Cep.SHOW_GOOD_FOR_BUILDINGS == 1 then
+		local textFlavors = Game.GetFlavors("Project_Flavors", "ProjectType", objectInfo.Type)
+		if textFlavors ~= "" then
+			textFoot = textFoot .. textFlavors .. "[NEWLINE]"
+		end
+	end
 	
 	-- Cost
 	local iCost = activePlayer:GetProjectProductionNeeded(iProjectID)
@@ -586,7 +593,7 @@ function GetHelpTextForProject(iProjectID, showRequirementsInfo)
 	textFoot = textFoot .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_COST", iCost)
 	
 	-- Pre-written Help text
-	local textHeader = Locale.ConvertTextKey( pProjectInfo.Help )
+	local textHeader = Locale.ConvertTextKey( objectInfo.Help )
 	if (textHeader ~= nil and textHeader ~= "") then
 		-- Separator
 		textFoot = textFoot .. "[NEWLINE]----------------[NEWLINE]"
@@ -595,8 +602,8 @@ function GetHelpTextForProject(iProjectID, showRequirementsInfo)
 	
 	-- Requirements?
 	if (showRequirementsInfo) then
-		if (pProjectInfo.Requirements) then
-			textFoot = textFoot .. Locale.ConvertTextKey( pProjectInfo.Requirements )
+		if (objectInfo.Requirements) then
+			textFoot = textFoot .. Locale.ConvertTextKey( objectInfo.Requirements )
 		end
 	end
 	

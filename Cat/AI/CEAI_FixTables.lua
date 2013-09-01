@@ -15,6 +15,16 @@ GameInfoCep.Worlds			= {}
 GameInfoCep.GameSpeeds		= {}
 GameInfoCep.HandicapInfos	= {}
 
+function Game.GetWorldInfo()
+	return GameInfoCep.Worlds[Map.GetWorldSize()]
+end
+function Game.GetSpeedInfo()
+	return GameInfoCep.GameSpeeds[Game.GetGameSpeedType()]
+end
+function Game.GetHandicapInfo()
+	return GameInfoCep.HandicapInfos[Game.GetAverageHumanHandicap()]
+end
+
 -- This MT_FixTables.lua data automatically created by:
 -- GameSpeeds tab of CEP_LeadersAI.xls
 

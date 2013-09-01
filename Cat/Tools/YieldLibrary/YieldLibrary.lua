@@ -729,12 +729,11 @@ function City_GetBaseYieldFromAIBonus(city, yieldID)
 	if capital ~= city or player:IsHuman() then
 		return 0
 	end
-	local handicap = Game.GetAverageHumanHandicap()
 	local yield = 0
 	if cityOwner:IsMilitaristicLeader() then
-		yield = GameInfo.HandicapInfos[handicap].AICapitalYieldMilitaristic
+		yield = Game.GetHandicapInfo().AICapitalYieldMilitaristic
 	else
-		yield = GameInfo.HandicapInfos[handicap].AICapitalYieldPeaceful
+		yield = Game.GetHandicapInfo().AICapitalYieldPeaceful
 	end
 	capital:SetNumRealBuilding(GameInfo.Buildings.BUILDING_AI_PRODUCTION.ID, yield)
 	yield = yield + GameInfo.Yields.YIELD_GOLD.MinPlayer
@@ -1013,7 +1012,7 @@ function GetMaxUnitSupply(player, doUpdate)
 			MapModData.Cep_UnitSupplyMax[playerID] = MapModData.Cep_UnitSupplyMax[playerID] + Cep.SUPPLY_PER_CITY + Cep.SUPPLY_PER_POP * city:GetPopulation()
 		end
 		if not player:IsHuman() then
-			local handicapMod = 1 + GameInfo.HandicapInfos[activePlayer:GetHandicapType()].AIUnitSupplyPercent / 100
+			local handicapMod = 1 + Game.GetHandicapInfo(activePlayer).AIUnitSupplyPercent / 100
 			MapModData.Cep_UnitSupplyMax[playerID] = handicapMod * MapModData.Cep_UnitSupplyMax[playerID]
 		end
 		MapModData.Cep_UnitSupplyMax[playerID] = Game.Round(MapModData.Cep_UnitSupplyMax[playerID])
@@ -1344,7 +1343,7 @@ function City_GetYieldRate(city, yieldID, itemTable, itemID, queueNum)
 			end
 		end
 		if not player:IsHuman() then
-			local handicapInfo = GameInfo.HandicapInfos[activePlayer:GetHandicapType()]
+			local handicapInfo = Game.GetHandicapInfo(activePlayer)
 			local handicapBonus = 1 + 0.01 * handicapInfo.AIProductionPercentPerEra * activePlayer:GetCurrentEra()
 			--log:Warn("%-15s %3s", city:GetName(), Game.Round(handicapBonus * 100))
 			yield = yield * handicapBonus
@@ -1825,7 +1824,7 @@ function PlayerClass.GetYieldRate(player, yieldID, skipGlobalMods)
 			yield = yield + City_GetYieldRate(city, YieldTypes.YIELD_FAITH)
 		end
 	elseif yieldID == YieldTypes.YIELD_HAPPINESS_NATIONAL then
-		yield = yield + GameInfo.HandicapInfos[player:GetHandicapType()].HappinessDefault
+		yield = yield + Game.GetHandicapInfo(player).HappinessDefault
 		for city in player:Cities() do
 			yield = yield + City_GetYieldRate(city, YieldTypes.YIELD_HAPPINESS_CITY)
 			yield = yield + City_GetYieldRate(city, YieldTypes.YIELD_HAPPINESS_NATIONAL)
@@ -2196,12 +2195,11 @@ function City_UpdateModdedYields(city, player)
 		and not player:IsHuman()
 		--and not player:IsMinorCiv()
 		) then
-		local handicap = Game.GetAverageHumanHandicap()
 		local yield = 0
 		if player:IsMilitaristicLeader() then
-			yield = GameInfo.HandicapInfos[handicap].AICapitalYieldMilitaristic
+			yield = Game.GetHandicapInfo().AICapitalYieldMilitaristic
 		else
-			yield = GameInfo.HandicapInfos[handicap].AICapitalYieldPeaceful
+			yield = Game.GetHandicapInfo().AICapitalYieldPeaceful
 		end
 		if yield ~= 0 then
 			if GameInfo.Leaders[player:GetLeaderType()].AIBonus then

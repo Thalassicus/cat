@@ -2,8 +2,8 @@
 <GameData>
 	<!-- 
 	
-	GEAI_WorkerBuilds.xml automatically created by:
-	Build_Priorities tab of CivVModding.xls spreadsheet (in mod folder).
+	CEAI_WorkerBuilds.xml automatically created by:
+	Build_Priorities tab of CEP_LeadersAI.xls spreadsheet (in mod folder).
 	
 	-->
 
@@ -537,6 +537,23 @@
 		<Row>
 			<BuildType>BUILD_HOLY_SITE</BuildType>
 			<FlavorType>FLAVOR_RELIGION</FlavorType>
+			<Flavor>32</Flavor>
+		</Row>
+
+		<Delete BuildType="BUILD_ARCHAEOLOGY_DIG" />
+		<Row>
+			<BuildType>BUILD_ARCHAEOLOGY_DIG</BuildType>
+			<FlavorType>FLAVOR_CULTURE</FlavorType>
+			<Flavor>16</Flavor>
+		</Row>
+		<Row>
+			<BuildType>BUILD_ARCHAEOLOGY_DIG</BuildType>
+			<FlavorType>FLAVOR_TOURISM</FlavorType>
+			<Flavor>16</Flavor>
+		</Row>
+		<Row>
+			<BuildType>BUILD_ARCHAEOLOGY_DIG</BuildType>
+			<FlavorType>FLAVOR_ARCHAEOLOGY</FlavorType>
 			<Flavor>32</Flavor>
 		</Row>
 

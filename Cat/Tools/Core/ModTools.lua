@@ -45,7 +45,7 @@ log:SetLevel("WARN")
 
 
 MapModData.Cep_EverAtWarWithHuman = {}
-startClockTime = os.clock()
+--startClockTime = os.clock()
 if UI:IsLoadedGame() then
 	for playerID, player in pairs(Players) do
 		MapModData.Cep_EverAtWarWithHuman[playerID] = LoadValue("MapModData.Cep_EverAtWarWithHuman[%s]", playerID)

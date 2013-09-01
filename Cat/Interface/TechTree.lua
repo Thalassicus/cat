@@ -57,6 +57,7 @@ local pinkColor = {x = 2, y = 0, z = 2, w = 1};
 
 local blockSpacingX = 270 + 96;
 local blockSizeX = 270;
+local blockPreviousX = 270 + 96 * 2;
 local blockSpacingY = 68;
 local extraYOffset = 32;
 
@@ -575,9 +576,14 @@ Events.SerialEventGameMessagePopup.Add( OnDisplay );
 function RefreshDisplay()
 
 	--print("REFRESHING TECH DISPLAY");
+	local earliestTechColumn = 999
 	for tech in GameInfo.Technologies() do
 		RefreshDisplayOfSpecificTech( tech );
+		if tech.GridX < earliestTechColumn and not Game.GetActiveHuman():HasTech(tech.ID) then
+			earliestTechColumn = tech.GridX
+		end
 	end
+	local scrollX = earliestTechColumn * blockSpacingX - blockPreviousX
 	
 	-- update the era panels
 	local highestEra = 0;

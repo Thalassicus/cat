@@ -4,6 +4,7 @@
 --------------------------------------------------------------
 
 include("MT_Events.lua")
+include("YieldLibrary.lua")
 --include("CustomNotification.lua")
 
 local log = Events.LuaLogger:New()
@@ -296,7 +297,7 @@ function BuildingCreated(player, city, buildingID)
 
 	local borderExpand = buildingInfo.InstantBorderRadius
 	if borderExpand ~= 0 then
-		for _, adjPlot in pairs(Plot_GetPlotsInCircle(plot, 1, borderExpand)) do
+		for adjPlot in Plot_GetPlotsInCircle(plot, 1, borderExpand) do
 			if adjPlot:GetOwner() == -1 then
 				adjPlot:SetOwner(playerID, city:GetID())
 			end
@@ -306,7 +307,7 @@ function BuildingCreated(player, city, buildingID)
 	local borderExpandAll = buildingInfo.GlobalInstantBorderRadius
 	if borderExpandAll ~= 0 then
 		for targetCity in player:Cities() do
-			for _, adjPlot in pairs(Plot_GetPlotsInCircle(targetCity:Plot(), 1, borderExpandAll)) do
+			for adjPlot in Plot_GetPlotsInCircle(targetCity:Plot(), 1, borderExpandAll) do
 				if adjPlot:GetOwner() == -1 then
 					adjPlot:SetOwner(playerID, targetCity:GetID())
 				end
@@ -564,7 +565,7 @@ function NewCity(hexPos, playerID, cityID, cultureType, eraType, continent, popu
 			for testCity in player:Cities() do
 				if testCity:IsHasBuilding(buildingInfo.ID) then
 					--log:Debug("Detected: %s %s", testCity:GetName(), buildingInfo.Type)
-					for _, adjPlot in pairs(Plot_GetPlotsInCircle(plot, 1, borderExpandAll)) do
+					for adjPlot in Plot_GetPlotsInCircle(plot, 1, borderExpandAll) do
 						if adjPlot:GetOwner() == -1 then
 							adjPlot:SetOwner(playerID, city:GetID())
 						end

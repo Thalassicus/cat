@@ -823,9 +823,9 @@ local defaultCursor = GameInfoTypes[GameInfo.InterfaceModes[InterfaceModeTypes.I
 ----------------------------------------------------------------        
 ----------------------------------------------------------------        
 function OnInterfaceModeChanged( oldInterfaceMode, newInterfaceMode)
-	print("OnInterfaceModeChanged");
-	print("oldInterfaceMode: " .. oldInterfaceMode);
-	print("newInterfaceMode: " .. newInterfaceMode);
+	--print("OnInterfaceModeChanged");
+	--print("oldInterfaceMode: " .. oldInterfaceMode);
+	--print("newInterfaceMode: " .. newInterfaceMode);
 	if (oldInterfaceMode ~= newInterfaceMode) then
 		-- do any cleanup of the old mode
 		local oldInterfaceModeHandler = OldInterfaceModeChangeHandler[oldInterfaceMode];
