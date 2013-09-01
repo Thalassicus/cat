@@ -754,7 +754,7 @@
     </Content>
     <Content Include="InterferesWithBuild\InGame.lua">
       <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
+      <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="Text\en_US\Flavors.sql">
       <SubType>Lua</SubType>
