@@ -188,4 +188,4 @@ UPDATE Technologies SET AudioIntroHeader = "" WHERE EXISTS
 UPDATE Technologies SET AudioIntro = "" WHERE EXISTS 
 (SELECT Value FROM Cep WHERE Type='PLAY_SPEECH_TECHS' AND Value=0);
 
-UPDATE LoadedFile SET Value=1 WHERE Type='Cep_Options.sql';
+UPDATE LoadedFile SET Value=1 WHERE Type='Cat_Options.sql';
