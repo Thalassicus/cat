@@ -844,7 +844,7 @@ function AIEarlyBonuses(player)
 		isCoastal	= (Plot_GetAreaWeights(startPlot, 1, 8).SEA >= 0.5)
 	end
 	
-	log:Info("AIEarlyBonuses %s", player:GetName())
+	log:Debug("AIEarlyBonuses %s", player:GetName())
 	
 	if player:IsMinorCiv() then
 		if handicapInfo.Type == "HANDICAP_CHIEFTAIN" then
@@ -1154,7 +1154,7 @@ function DeclareWarNearestCitystate(player)
 	end
 	log:Info("%s declared permanent war on %s", player:GetName(), closestMinor:GetName())
 
-	for _, adjPlot in pairs(Plot_GetPlotsInCircle(closestMinor:GetCapitalCity():Plot(), 0, 3)) do
+	for adjPlot in Plot_GetPlotsInCircle(closestMinor:GetCapitalCity():Plot(), 0, 3) do
 		adjPlot:SetRevealed(teamID, true)
 	end
 	if Game.GetAdjustedTurn() <= 20 then

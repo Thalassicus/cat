@@ -17,10 +17,10 @@
 	
 	
     <!--Good For power legend-->
-    <Grid Size="230,200" Anchor="L,T" Offset="64,112" Style="WindowGridBlack">
+    <Grid Size="230,200" Anchor="L,T" Offset="64,112" Style="Grid9BlackTint8">
 		<Stack ID="GoodForStack" Anchor="C,C" Size="128,128" Padding="10" >
 			<Label ID="GoodForTitle" Anchor="C,C" Font="TwCenMT24" String="TXT_KEY_GOOD_FOR_RANKS"/>
-			<Image Texture="bar300x2.dds" Size="230.1" Anchor="C,C" TextureOffset="37.0"/>
+			<Image Texture="bar300x2.dds" Size="225.1" Anchor="C,C" TextureOffset="39.0"/>
 			<Label ID="GoodForRank1" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_1" />
 			<Label ID="GoodForRank2" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_2" />
 			<Label ID="GoodForRank3" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_3" />
@@ -32,7 +32,7 @@
 
 
     <!--The legend-->
-    <Grid Size="230,200" Anchor="L,B" Offset="64,48" Style="WindowGridBlack">
+    <Grid Size="230,200" Anchor="L,B" Offset="64,48" Style="Grid9BlackTint8">
 
       <Stack Anchor="C,C" Offset="0,0"   Size="128,128" StackGrowth="Bottom" Padding="12" >
 

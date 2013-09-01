@@ -570,7 +570,7 @@ end
 
 -- PROJECT
 function GetHelpTextForProject(iProjectID, showRequirementsInfo)
-	local pProjectInfo = GameInfo.Projects[iProjectID]
+	local objectInfo = GameInfo.Projects[iProjectID]
 	
 	local activePlayer = Players[Game.GetActivePlayer()]
 	local activeTeam = Teams[Game.GetActiveTeam()]
@@ -578,7 +578,14 @@ function GetHelpTextForProject(iProjectID, showRequirementsInfo)
 	local textFoot = ""
 	
 	-- Name
-	textFoot = textFoot .. Locale.ToUpper(Locale.ConvertTextKey( pProjectInfo.Description ))
+	textFoot = textFoot .. Locale.ToUpper(Locale.ConvertTextKey( objectInfo.Description ))
+
+	if Cep.SHOW_GOOD_FOR_BUILDINGS == 1 then
+		local textFlavors = Game.GetFlavors("Project_Flavors", "ProjectType", objectInfo.Type)
+		if textFlavors ~= "" then
+			textFoot = textFoot .. textFlavors .. "[NEWLINE]"
+		end
+	end
 	
 	-- Cost
 	local iCost = activePlayer:GetProjectProductionNeeded(iProjectID)
@@ -586,7 +593,7 @@ function GetHelpTextForProject(iProjectID, showRequirementsInfo)
 	textFoot = textFoot .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_COST", iCost)
 	
 	-- Pre-written Help text
-	local textHeader = Locale.ConvertTextKey( pProjectInfo.Help )
+	local textHeader = Locale.ConvertTextKey( objectInfo.Help )
 	if (textHeader ~= nil and textHeader ~= "") then
 		-- Separator
 		textFoot = textFoot .. "[NEWLINE]----------------[NEWLINE]"
@@ -595,8 +602,8 @@ function GetHelpTextForProject(iProjectID, showRequirementsInfo)
 	
 	-- Requirements?
 	if (showRequirementsInfo) then
-		if (pProjectInfo.Requirements) then
-			textFoot = textFoot .. Locale.ConvertTextKey( pProjectInfo.Requirements )
+		if (objectInfo.Requirements) then
+			textFoot = textFoot .. Locale.ConvertTextKey( objectInfo.Requirements )
 		end
 	end
 	

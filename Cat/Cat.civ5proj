@@ -628,6 +628,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="AI\Important" />
+    <Folder Include="Interface\DisablePrints" />
+    <Folder Include="InterferesWithBuild" />
     <Folder Include="_Project" />
     <Folder Include="AI" />
     <Folder Include="Tools" />
@@ -746,7 +748,23 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
+    <Content Include="Interface\DisablePrints\TurnProcessing.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="InterferesWithBuild\InGame.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
     <Content Include="Text\en_US\Flavors.sql">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Text\en_US\Villages.sql">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="Text\en_US\YieldLibrary.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
@@ -935,10 +953,6 @@
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="Tools\Core\MT_Enums.lua">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
-    </Content>
-    <Content Include="Tools\InGame.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
