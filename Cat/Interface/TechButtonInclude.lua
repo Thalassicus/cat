@@ -646,7 +646,12 @@ end
 
 function AdjustArtOnGrantedResourceButton( thisButton, thisResourceInfo, textureSize )
 	if thisButton then
-		thisButton:SetToolTipString( Locale.ConvertTextKey("TXT_KEY_REVEALS_RESOURCE_ON_MAP", thisResourceInfo.Description)); 
+		local helpText = Locale.ConvertTextKey("TXT_KEY_REVEALS_RESOURCE_ON_MAP", thisResourceInfo.Description)
+		if Cep.SHOW_GOOD_FOR_BUILDS == 1 then
+			helpText = helpText .. "[NEWLINE]----------------"
+			helpText = helpText .. Game.GetFlavors("Resource_Flavors", "ResourceType", thisResourceInfo.Type)
+		end
+		thisButton:SetToolTipString(helpText);
 
 		local textureOffset, textureSheet = IconLookup( thisResourceInfo.PortraitIndex, textureSize, thisResourceInfo.IconAtlas );				
 		if textureOffset == nil then
@@ -663,9 +668,9 @@ end
 
 function AdjustArtOnGrantedActionButton( thisButton, thisBuildInfo, textureSize )
 	if thisButton then
-		local helpText = Locale.ConvertTextKey(thisBuildInfo.Description)		
+		local helpText = Locale.ConvertTextKey(thisBuildInfo.Description)
 		if Cep.SHOW_GOOD_FOR_BUILDS == 1 then
-			helpText = helpText .. "[NEWLINE]----------------";
+			helpText = helpText .. "[NEWLINE]----------------"
 			helpText = helpText .. Game.GetFlavors("Build_Flavors", "BuildType", thisBuildInfo.Type)
 		end
 		thisButton:SetToolTipString(helpText);

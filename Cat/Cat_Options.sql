@@ -102,59 +102,6 @@ INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_WONDERS'		, 1);
 INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_TECHS'		, 1);
 
 
-/*
-Higher number if you want more natural wonders, or negative if you want fewer.
-*/
-UPDATE Worlds SET NumNaturalWonders = NumNaturalWonders + 1;
-
-
-/*
-Delay between each line of scrolling text after combat.
-*/
-UPDATE Defines SET Value = 0.6
-WHERE Name = 'POST_COMBAT_TEXT_DELAY';
-
-
-/*
-Unit Movement Animation Duration
-The animation time required for a unit to visually move between tiles.
-The default Cep values are 50% of vanilla (half duration = twice as fast).
-*/
-UPDATE MovementRates SET
-TotalTime			= 0.5 * TotalTime,
-EaseIn				= 0.5 * EaseIn,
-EaseOut				= 0.5 * EaseOut,
-IndividualOffset	= 0.5 * IndividualOffset,
-RowOffset			= 0.5 * RowOffset;
-
-
-/*
-Aircraft Move Speed
-The speed of aircraft movement.
-The default Cep values are 400% of vanilla (four times as fast).
-*/
-
-UPDATE ArtDefine_UnitMemberCombats
-SET MoveRate = 4 * MoveRate;
-
-UPDATE ArtDefine_UnitMemberCombats
-SET TurnRateMin = 4 * TurnRateMin
-WHERE MoveRate > 0;
-
-UPDATE ArtDefine_UnitMemberCombats
-SET TurnRateMax = 4 * TurnRateMax
-WHERE MoveRate > 0;
-
-
-/*
-Debug Mode
-1 = display lua logger messages below the "warning" level
-0 = only display warning, error, and fatal messages
-*/
-INSERT INTO Defines (Name, Value)
-VALUES ('CEP_DEBUG_MODE', 1);
-
-
 
 
 
@@ -172,20 +119,5 @@ VALUES ('CEP_DEBUG_MODE', 1);
 
 --
 -- Do not change items below
-
-UPDATE Defines SET Value=1 WHERE Name='QUEST_DISABLED_INVEST' AND EXISTS 
-(SELECT Value FROM Cep WHERE Type='DISABLE_GOLD_GIFTS' AND Value=1);
-
-UPDATE Civilizations SET DawnOfManAudio = "" WHERE EXISTS 
-(SELECT Value FROM Cep WHERE Type='PLAY_SPEECH_START' AND Value=0);
-
-UPDATE Buildings SET WonderSplashAudio = "" WHERE EXISTS 
-(SELECT Value FROM Cep WHERE Type='PLAY_SPEECH_WONDERS' AND Value=0);
-
-UPDATE Technologies SET AudioIntroHeader = "" WHERE EXISTS 
-(SELECT Value FROM Cep WHERE Type='PLAY_SPEECH_TECHS' AND Value=0);
-
-UPDATE Technologies SET AudioIntro = "" WHERE EXISTS 
-(SELECT Value FROM Cep WHERE Type='PLAY_SPEECH_TECHS' AND Value=0);
 
 UPDATE LoadedFile SET Value=1 WHERE Type='Cep_Options.sql';

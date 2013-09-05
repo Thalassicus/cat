@@ -4,10 +4,10 @@
 --------------------------------------------------------------
 
 include("MT_Events.lua")
-include("FLuaVector");
+include("FLuaVector")
 
-local log = Events.LuaLogger:New();
-log:SetLevel("INFO");
+local log = Events.LuaLogger:New()
+log:SetLevel("INFO")
 
 if not Cep then
 	print("Cep table does not exist!")

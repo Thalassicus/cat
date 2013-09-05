@@ -113,27 +113,37 @@
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>AI/Important/CEAI_Start.sql</FileName>
+        <FileName>AI/Flavors/CEAI_Start.sql</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>AI/Important/CEAI_Flavor_Units.sql</FileName>
+        <FileName>AI/Flavors/CEAI_Units.sql</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>AI/Important/CEAI_Flavor_Buildings.sql</FileName>
+        <FileName>AI/Flavors/CEAI_Buildings.sql</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>AI/Important/CEAI_Flavor_Builds.sql</FileName>
+        <FileName>AI/Flavors/CEAI_Resources.sql</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
-        <FileName>AI/Important/CEAI_Flavor_Techs.sql</FileName>
+        <FileName>AI/Flavors/CEAI_WorkerBuilds.sql</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>AI/Flavors/CEAI_WorkerBuilds.xml</FileName>
+      </Action>
+      <Action>
+        <Set>OnModActivated</Set>
+        <Type>UpdateDatabase</Type>
+        <FileName>AI/Flavors/CEAI_Techs.sql</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
@@ -204,11 +214,6 @@
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
         <FileName>AI/CEP_AI_Cities.xml</FileName>
-      </Action>
-      <Action>
-        <Set>OnModActivated</Set>
-        <Type>UpdateDatabase</Type>
-        <FileName>AI/CEAI_WorkerBuilds.xml</FileName>
       </Action>
       <Action>
         <Set>OnModActivated</Set>
@@ -627,7 +632,7 @@
     <PackageMod>false</PackageMod>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="AI\Important" />
+    <Folder Include="AI\Flavors" />
     <Folder Include="Interface\DisablePrints" />
     <Folder Include="InterferesWithBuild" />
     <Folder Include="_Project" />
@@ -664,23 +669,31 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
-    <Content Include="AI\Important\CEAI_Flavor_Buildings.sql">
+    <Content Include="AI\Flavors\CEAI_Buildings.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="AI\Important\CEAI_Flavor_Builds.sql">
+    <Content Include="AI\Flavors\CEAI_WorkerBuilds.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="AI\Important\CEAI_Flavor_Units.sql">
+    <Content Include="AI\Flavors\CEAI_Units.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="AI\Important\CEAI_Flavor_Techs.sql">
+    <Content Include="AI\Flavors\CEAI_Techs.sql">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="AI\Important\CEAI_Start.sql">
+    <Content Include="AI\Flavors\CEAI_Start.sql">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="AI\Flavors\CEAI_Resources.sql">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>False</ImportIntoVFS>
+    </Content>
+    <Content Include="AI\Flavors\CEAI_WorkerBuilds.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
@@ -708,10 +721,6 @@
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
-    <Content Include="AI\CEAI_WorkerBuilds.xml">
-      <SubType>Lua</SubType>
-      <ImportIntoVFS>False</ImportIntoVFS>
-    </Content>
     <Content Include="Interface\CityView.lua">
       <SubType>Lua</SubType>
       <ImportIntoVFS>False</ImportIntoVFS>
@@ -721,6 +730,14 @@
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
     <Content Include="Interface\CityView_small.xml">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Interface\CivilopediaScreen.lua">
+      <SubType>Lua</SubType>
+      <ImportIntoVFS>True</ImportIntoVFS>
+    </Content>
+    <Content Include="Interface\CivilopediaScreen.xml">
       <SubType>Lua</SubType>
       <ImportIntoVFS>True</ImportIntoVFS>
     </Content>
@@ -754,7 +771,7 @@
     </Content>
     <Content Include="InterferesWithBuild\InGame.lua">
       <SubType>Lua</SubType>
-      <ImportIntoVFS>True</ImportIntoVFS>
+      <ImportIntoVFS>False</ImportIntoVFS>
     </Content>
     <Content Include="Text\en_US\Flavors.sql">
       <SubType>Lua</SubType>

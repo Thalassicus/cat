@@ -15,24 +15,30 @@
     <!--Stack of Era boxes-->
     <Stack Anchor="L,C" StackGrowth="Right" Padding="0" ID="EraStack" />
 	
-	
     <!--Good For power legend-->
-    <Grid Size="230,200" Anchor="L,T" Offset="64,112" Style="Grid9BlackTint8">
-		<Stack ID="GoodForStack" Anchor="C,C" Size="128,128" Padding="10" >
-			<Label ID="GoodForTitle" Anchor="C,C" Font="TwCenMT24" String="TXT_KEY_GOOD_FOR_RANKS"/>
-			<Image Texture="bar300x2.dds" Size="225.1" Anchor="C,C" TextureOffset="39.0"/>
-			<Label ID="GoodForRank1" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_1" />
-			<Label ID="GoodForRank2" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_2" />
-			<Label ID="GoodForRank3" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_3" />
-			<Label ID="GoodForRank4" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_4" />
-			<Label ID="GoodForRank5" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_5" />
-			<Label ID="GoodForRank6" Anchor="C,C" Font="TwCenMT18" String="TXT_KEY_GOOD_FOR_RANK_6" />
+    <Box Anchor="L,T" Offset="65,126" Size="230,200" Color="0,0,0,0" >
+		<Stack Anchor="C,C" Size="120,200" StackGrowth="Bottom" Padding="10" >
+			<Label Anchor="C,T" Font="TwCenMT24" String="TXT_KEY_GOOD_FOR_RANKS"/>
+			<!--<Image Anchor="C,T" Size="100.1" Texture="bar300x2.dds" TextureOffset="100.0"/>-->
+			<Grid Anchor="C,T" Size="120,170" Style="GridBlack8">
+				<Stack Anchor="C,C" Size="105,150" >
+					<Box Anchor="C,T" Size="100,24" Color="183.068.068.200" >
+						<Label Anchor="C,C" Font="TwCenMT20" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_MAP_OPTION_HIGH"/>
+					</Box>
+					<Box Anchor="C,T" Size="100,24" Color="139.071.173.200" />
+					<Box Anchor="C,T" Size="100,24" Color="076.131.191.200" />
+					<Box Anchor="C,T" Size="100,24" Color="120.179.054.200" />
+					<Box Anchor="C,T" Size="100,24" Color="221.221.191.200" />
+					<Box Anchor="C,T" Size="100,24" Color="076.076.076.200" >
+						<Label Anchor="C,C" Font="TwCenMT20" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" String="TXT_KEY_MAP_OPTION_LOW"/>
+					</Box>
+				</Stack>
+			</Grid>
 		</Stack>
-    </Grid>
+	</Box>
 
-
-    <!--The legend-->
-    <Grid Size="230,200" Anchor="L,B" Offset="64,48" Style="Grid9BlackTint8">
+	  <!--The legend-->
+    <Grid Size="230,200" Anchor="L,B" Offset="64,48" Style="GridBlack8">
 
       <Stack Anchor="C,C" Offset="0,0"   Size="128,128" StackGrowth="Bottom" Padding="12" >
 

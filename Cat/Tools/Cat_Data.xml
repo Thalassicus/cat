@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GameData>
 	<Defines>
-		<Row Name="LOADED_CIVUP">
-			<Value>1</Value>
-		</Row>
 		<Update>
 			<Where Name="FRIENDSHIP_THRESHOLD_MAX" />
 			<Set Value="200" />

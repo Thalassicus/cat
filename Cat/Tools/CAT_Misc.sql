@@ -4,7 +4,7 @@
 -- Units
 --
 
-UPDATE Units SET Help = "-" WHERE Type IN (
+UPDATE Units SET Help = NULL WHERE Type IN (
 	'UNIT_SETTLER'				,
 	'UNIT_SPEARMAN'				,
 	'UNIT_HORSEMAN'				,
@@ -41,8 +41,8 @@ UPDATE Units SET Help = "-" WHERE Type IN (
 	'UNIT_NUCLEAR_MISSILE'		
 );
 
-UPDATE Units SET Help = "-" WHERE Type IN (
-	'UNIT_BIREME'			,
+UPDATE Units SET Help = NULL WHERE Type IN (
+	'UNIT_BIREME'				,
 	'UNIT_GALLEASS'				,
 	'UNIT_PRIVATEER'			,
 	'UNIT_IRONCLAD'				,

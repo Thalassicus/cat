@@ -169,12 +169,12 @@ end
 -- Game.GetFlavors(itemTable, itemColumn, itemType, minVal, skipHeader)
 --
 local flavorColors = {
-	[128] = "[COLOR_PLAYER_ORANGE_TEXT]",
-	[64] = "[COLOR:255:60:255:255]",
-	[32] = "[COLOR_RESEARCH_STORED]",
+	[128] = "[COLOR:255:136:125:255]",
+	[64]  = "[COLOR:209:125:255:255]",
+	[32]  = "[COLOR:168:211:255:255]",
 	[16]  = "[COLOR_PLAYER_LIGHT_GREEN]",
-	[8]  = "",
-	[4]  = "[COLOR_GREY]"
+	[8]   = "",
+	[4]   = "[COLOR_GREY]"
 }
 function Game.GetFlavorColor(flavor)
 	return flavorColors[Game.Constrain(4, Game.RoundToPowerOf2(flavor), 128)] or "[COLOR_WHITE]"
