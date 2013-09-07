@@ -7,6 +7,22 @@ include("MT_LuaLogger.lua")
 local log = Events.LuaLogger:New()
 log:SetLevel("INFO")
 
+
+--
+-- Locale
+--
+-- Ideally replace vanilla functions, but Locale table is sadly read-only
+
+LocaleMod = {}
+
+function LocaleMod.ConvertTextKey(...)
+	local arg = {...}
+	if not arg[1] or arg[1] == "" then
+		return ""
+	end
+	return Locale.ConvertTextKey(unpack(arg))
+end
+
 --
 -- Game
 --

@@ -2,14 +2,6 @@
 <GameData>
 	<PostDefines>
 		<Update>
-			<Where Name="STANDARD_HANDICAP" />
-			<Set Key="HANDICAP_AI_DEFAULT" />
-		</Update>
-		<Update>
-			<Where Name="STANDARD_HANDICAP_QUICK" />
-			<Set Key="HANDICAP_AI_DEFAULT" />
-		</Update>
-		<Update>
 			<Where Name="AI_HANDICAP" />
 			<Set Key="HANDICAP_AI_DEFAULT" />
 		</Update>
@@ -58,10 +50,6 @@
 	</Worlds>
 	<HandicapInfo_AIFreeTechs>
 		<Delete />
-		<!--
-		<Delete TechType="TECH_ANIMAL_HUSBANDRY" />
-		<Delete TechType="TECH_THE_WHEEL" />
-		-->
 	</HandicapInfo_AIFreeTechs>
 
 
@@ -93,7 +81,7 @@
 			AIUnitUpgradePercent           = "50"
 			AIUnitSupplyPercent            = "0"
 
-			AIBarbarianBonus               = "100"
+			AIBarbarianBonus               = "50"
 			AIFreeXPPercent                = "0"
 			AIFreeXP                       = "0"
 			AIFreeXPPerEra                 = "0"
@@ -173,7 +161,7 @@
 			AIUnitUpgradePercent           = "50"
 			AIUnitSupplyPercent            = "0"
     
-			AIBarbarianBonus               = "100"
+			AIBarbarianBonus               = "50"
 			AIFreeXPPercent                = "0"
 			AIFreeXP                       = "0"
 			AIFreeXPPerEra                 = "0"
@@ -253,7 +241,7 @@
 			AIUnitUpgradePercent           = "100"
 			AIUnitSupplyPercent            = "0"
     
-			AIBarbarianBonus               = "100"
+			AIBarbarianBonus               = "50"
 			AIFreeXPPercent                = "0"
 			AIFreeXP                       = "15"
 			AIFreeXPPerEra                 = "4"
@@ -333,7 +321,7 @@
 			AIUnitUpgradePercent           = "60"
 			AIUnitSupplyPercent            = "5"
 			AIFreePromotion                = "PROMOTION_HANDICAP"
-			AIBarbarianBonus               = "100"
+			AIBarbarianBonus               = "50"
 			AIFreeXPPercent                = "0"
 			AIFreeXP                       = "30"
 			AIFreeXPPerEra                 = "8"
@@ -413,7 +401,7 @@
 			AIUnitUpgradePercent           = "50"
 			AIUnitSupplyPercent            = "10"
 			AIFreePromotion                = "PROMOTION_HANDICAP"
-			AIBarbarianBonus               = "100"
+			AIBarbarianBonus               = "50"
 			AIFreeXPPercent                = "0"
 			AIFreeXP                       = "35"
 			AIFreeXPPerEra                 = "12"
@@ -493,7 +481,7 @@
 			AIUnitUpgradePercent           = "50"
 			AIUnitSupplyPercent            = "15"
 			AIFreePromotion                = "PROMOTION_HANDICAP"
-			AIBarbarianBonus               = "100"
+			AIBarbarianBonus               = "50"
 			AIFreeXPPercent                = "25"
 			AIFreeXP                       = "40"
 			AIFreeXPPerEra                 = "16"
@@ -573,7 +561,7 @@
 			AIUnitUpgradePercent           = "50"
 			AIUnitSupplyPercent            = "20"
 			AIFreePromotion                = "PROMOTION_HANDICAP"
-			AIBarbarianBonus               = "100"
+			AIBarbarianBonus               = "50"
 			AIFreeXPPercent                = "50"
 			AIFreeXP                       = "50"
 			AIFreeXPPerEra                 = "20"
@@ -631,7 +619,6 @@
 />
 		</Update>
 
-
 		<Update>
 			<Where Type="HANDICAP_DEITY" />
 			<Set Description               = "TXT_KEY_HANDICAP_DEITY"
@@ -654,7 +641,7 @@
 			AIUnitUpgradePercent           = "25"
 			AIUnitSupplyPercent            = "25"
 			AIFreePromotion                = "PROMOTION_HANDICAP"
-			AIBarbarianBonus               = "100"
+			AIBarbarianBonus               = "50"
 			AIFreeXPPercent                = "100"
 			AIFreeXP                       = "60"
 			AIFreeXPPerEra                 = "30"
@@ -708,6 +695,86 @@
 			NoTechTradeModifier            = "10"
 			TechTradeKnownModifier         = "0"
 			PortraitIndex                  = "7"
+			IconAtlas                      = "DIFFICULTY_ATLAS"
+/>
+		</Update>
+
+		<Update>
+			<Where Type="HANDICAP_AI_DEFAULT" />
+			<Set Description               = "TXT_KEY_HANDICAP_AI_DEFAULT"
+			Help                           = "TXT_KEY_HANDICAP_AI_DEFAULT_HELP"
+			HappinessDefault               = "4"
+			NumCitiesUnhappinessMod        = "90"
+			PopulationUnhappinessMod       = "90"
+			AIGrowthPercent                = "100"
+			AIResearchPercent              = "0"
+			AIResearchPercentPerEra        = "0"
+			AITrainPercent                 = "100"
+			AIConstructPercent             = "100"
+			AIWorldConstructPercent        = "75"
+			AICreatePercent                = "100"
+			AIProductionPercentPerEra      = "0"
+			AIWorldTrainPercent            = "100"
+			AIWorldCreatePercent           = "100"
+			AIBuildingCostPercent          = "100"
+			AIUnitCostPercent              = "100"
+			AIUnitUpgradePercent           = "50"
+			AIUnitSupplyPercent            = "0"
+			AIFreePromotion                = "PROMOTION_HANDICAP"
+			AIBarbarianBonus               = "50"
+			AIFreeXPPercent                = "0"
+			AIFreeXP                       = "0"
+			AIFreeXPPerEra                 = "0"
+    
+			AIWorkRateModifier             = "0"
+    
+    
+			AIStartingDefenseUnits         = "0"
+			AIStartingWorkerUnits          = "0"
+			AIStartingExploreUnits         = "0"
+			AIStartingUnitMultiplier       = "0"
+			AIGold                         = "0"
+    
+			AICapitalYieldPeaceful         = "0"
+			AICapitalYieldMilitaristic     = "0"
+    
+			AttitudeChange                 = "1"
+			AIDeclareWarProb               = "100"
+			AIUnhappinessPercent           = "100"
+			AIInflationPercent             = "100"
+			AIPerEraModifier               = "-6"
+			AIAdvancedStartPercent         = "200"
+			RouteCostPercent               = "100"
+			UnitCostPercent                = "100"
+			BuildingCostPercent            = "100"
+			ResearchPercent                = "75"
+			PolicyPercent                  = "100"
+			ImprovementCostPercent         = "50"
+			StartingDefenseUnits           = "0"
+			StartingWorkerUnits            = "0"
+			StartingExploreUnits           = "0"
+			BarbCampGold                   = "50"
+			BarbSpawnMod                   = "0"
+			BarbarianBonus                 = "15"
+			EarliestBarbarianReleaseTurn   = "20"
+			BarbarianLandTargetRange       = "10"
+			BarbarianSeaTargetRange        = "22"
+			StartingLocPercent             = "50"
+			AdvancedStartPointsMod         = "130"
+			ExtraHappinessPerLuxury        = "0"
+			GoldFreeUnits                  = "0"
+			ProductionFreeUnits            = "7"
+			ProductionFreeUnitsPerCity     = "3"
+			StartingPolicyPoints           = "0"
+			ProductionFreeUnitsPopulationPercent     = "50"
+			CityProductionNumOptionsConsidered       = "4"
+			TechNumOptionsConsidered       = "4"
+			PolicyNumOptionsConsidered     = "4"
+			InflationPercent               = "100"
+			FreeCulturePerTurn             = "0"
+			NoTechTradeModifier            = "90"
+			TechTradeKnownModifier         = "-50"
+			PortraitIndex                  = "8"
 			IconAtlas                      = "DIFFICULTY_ATLAS"
 />
 		</Update>

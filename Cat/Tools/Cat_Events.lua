@@ -149,12 +149,12 @@ LuaEvents.ActivePlayerTurnStart_Player.Add(GiveCSNewYields)
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------
 
+--[[
 function UpdatePuppetOccupyStatus(city, player, isForced)
 	if not player then 
 		player = Players[city:GetOwner()]
 	end
 	
-	--[[
 	if isForced then
 		log:Info("UpdatePuppetOccupyStatus %15s's %15s isForced=%s", player:GetName(), city:GetName(), isForced)
 	end
@@ -199,15 +199,15 @@ function UpdatePuppetOccupyStatus(city, player, isForced)
 	elseif city:IsHasBuilding(happinessModID) then
 		city:SetNumRealBuilding(happinessModID, 0)
 	end
-	--]]
 
 end
 
 LuaEvents.ActivePlayerTurnStart_City.Add( UpdatePuppetOccupyStatus )
 LuaEvents.CityOccupied.Add( UpdatePuppetOccupyStatus )
 LuaEvents.CityPuppeted.Add( UpdatePuppetOccupyStatus )
+--]]
 
-
+--[[
 function FixGameCoreCaptureBug(hexPos, lostPlayerID, cityID, wonPlayerID)
 	print("FixGameCoreCaptureBug")
 	-- workaround for game core bug 
@@ -226,16 +226,19 @@ function FixGameCoreCaptureBug(hexPos, lostPlayerID, cityID, wonPlayerID)
 	end	
 end
 Events.SerialEventCityCaptured.Add(FixGameCoreCaptureBug)
+--]]
 
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------
 
+--[[
 function DestroyCourthouseInCapturedCity(city, player, isForced)
 	City_SetNumBuildingClass(city, "BUILDINGCLASS_COURTHOUSE", 0)
 end
 
 LuaEvents.CityOccupied.Add( DestroyCourthouseInCapturedCity )
 LuaEvents.CityPuppeted.Add( DestroyCourthouseInCapturedCity )
+--]]
 
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------

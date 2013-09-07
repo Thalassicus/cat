@@ -1,4 +1,4 @@
--- This Civup_TooltipPriorities.sql data from:
+-- This Cep_TooltipPriorities.sql data from:
 -- TooltipPriorities tab of CEP_OtherData.xls spreadsheet (in mod folder).
 
 /* Defines */

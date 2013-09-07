@@ -24,9 +24,22 @@ Game.Stats.Buildings	= Game.Stats.Buildings or {}
 
 
 -- UNIT
-function GetHelpTextForUnit(unitID, showRequirementsInfo)
-	-- Required parameters: unitID
-	-- Optional parameters: showRequirementsInfo
+
+-- Deprecated vanilla function
+function GetHelpTextForUnit(unitIDA, showRequirementsInfo)
+	return GetUnitTip{unitID=unitIDA, hideCosts=(not showRequirementsInfo)}
+end
+
+local holidayFun = {
+	["01/01"] = "TXT_KEY_HOLIDAY_NEW_YEAR"		,
+	["04/01"] = "TXT_KEY_HOLIDAY_APRIL_FOOLS"	,
+	["07/02"] = "TXT_KEY_HOLIDAY_UFO"			,
+	["10/31"] = "TXT_KEY_HOLIDAY_HALLOWEEN"		
+}
+
+function GetUnitTip(args)
+	-- Required arguments: unitID
+	-- Optional arguments: showRequirementsInfo
 	
 	if Game == nil then
 		print("GetBuildingTip: Game is nil")
@@ -45,6 +58,12 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 		
 		return ""
 	end
+	
+	local unitID		= args.unitID
+	local showName		= not args.hideName
+	local showGood		= not args.hideGoodFor
+	local showAbil		= not args.hideAbilities
+	local showCost		= not args.hideCosts
 	
 	local unitInfo = GameInfo.Units[unitID]
 	local unitClassInfo = GameInfo.UnitClasses[unitInfo.Class]
@@ -56,25 +75,36 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 	local statTextKey = ""
 	
 	-- Name
-	local textName = Locale.ConvertTextKey(unitInfo.Description)
-	if os.date and (os.date("%d/%m") == "01/04") then
-		textName = string.format("%s %s", Locale.ConvertTextKey("TXT_KEY_APRIL_FOOLS"), textName)
-	end
-	textBody = textBody .. Locale.ToUpper(textName)
+	if showName then
+		local textName = Locale.ConvertTextKey(unitInfo.Description)
+		
+		local holidayName = holidayFun[os.date("%m/%d")]
+		if holidayName then
+			textName = string.format("%s %s", Locale.ConvertTextKey(holidayName), textName)
+		end
+		
+		textBody = textBody .. Locale.ToUpper(textName)
 	
-	-- Pre-written Help text
-	if unitInfo.Help then
-		local textHeader = Locale.ConvertTextKey( unitInfo.Help )
-		if textHeader and textHeader ~= "" then
-			textBody = textBody .. "[NEWLINE]----------------"
-			textBody = textBody .. "[NEWLINE]" .. textHeader
-		end	
+		-- Pre-written Help text
+		if unitInfo.Help then
+			local textHeader = Locale.ConvertTextKey( unitInfo.Help )
+			if textHeader and textHeader ~= "" then
+				textBody = textBody .. "[NEWLINE]----------------"
+				textBody = textBody .. "[NEWLINE]" .. textHeader
+			end	
+		end
+		textBody = textBody .. "[NEWLINE]----------------"	
 	end
 	
 	-- Value
-	textBody = textBody .. "[NEWLINE]----------------"		
-	if Cep.SHOW_GOOD_FOR_UNITS == 1 then
-		textBody = textBody .. Game.GetFlavors("Unit_Flavors", "UnitType", unitInfo.Type)
+	local showOnlyGood = (showGood and not showName and not showAbil and not showCost)
+	if Cep.SHOW_GOOD_FOR_UNITS == 1 and showGood then
+		local textGoodFor = Game.GetFlavors("Unit_Flavors", "UnitType", unitInfo.Type, 1, showOnlyGood)
+		if showOnlyGood then
+			textBody = string.gsub(textGoodFor, "^%[NEWLINE%]", "")
+			return textBody
+		end	
+		textBody = textBody .. textGoodFor
 	end
 	
 	
@@ -82,208 +112,218 @@ function GetHelpTextForUnit(unitID, showRequirementsInfo)
 	-- Abilities
 	--
 	
-	textBody = string.format("%s[NEWLINE][NEWLINE]%s", textBody, Locale.ConvertTextKey("TXT_KEY_TOOLTIP_ABILITIES"))
-	
-	-- Promotions
-	local header				= ""
-	local footerRangedStrength	= ""
-	local footerStrength		= ""
-	local footerMoves			= ""
-	local footerEnd				= ""
-	--[=[
-	for row in GameInfo.Unit_FreePromotions{UnitType = unitInfo.Type} do
-		local promoInfo = GameInfo.UnitPromotions[row.PromotionType]
-		if promoInfo.Class ~= "PROMOTION_CLASS_ATTRIBUTE_NEGATIVE" then
-			local promoText, section = GetPromotionTip(promoInfo.ID, unit)
-			
-			footerRangedStrength	= footerRangedStrength	.. section[TipSection.PROMO_RANGE]
-			footerRangedStrength	= footerRangedStrength	.. section[TipSection.PROMO_RANGED_STRENGTH]
-			footerStrength			= footerStrength		.. section[TipSection.PROMO_STRENGTH]
-			footerStrength			= footerStrength		.. section[TipSection.PROMO_AIR]
-			footerMoves				= footerMoves			.. section[TipSection.PROMO_MOVES]
-			footerMoves				= footerMoves			.. section[TipSection.PROMO_HEAL]
-			footerEnd				= footerEnd				.. section[TipSection.PROMO_SIGHT]
-			footerEnd				= footerEnd				.. section[TipSection.PROMO_NAVAL]
-			footerEnd				= footerEnd				.. section[TipSection.PROMO_GOLD]
-			footerEnd				= footerEnd				.. section[TipSection.PROMO_GREAT_GENERAL]
-			footerEnd				= footerEnd				.. section[TipSection.PROMO_RES_URANIUM]
-			footerEnd				= footerEnd				.. section[TipSection.PROMO_WAR]
-			footerEnd				= footerEnd				.. section[TipSection.PROMO_NEGATIVE]
-			footerEnd				= footerEnd				.. section[TipSection.PROMO_OTHER]
-			
-			--[[
-			if string.find(promoText, "^.ICON_RANGE_STRENGTH") then
-				footerRangedStrength = footerRangedStrength .. "[NEWLINE]" .. promoText
-			elseif string.find(promoText, ".ICON_STRENGTH.([^%%]*%% vs)") then
-				footerStrength = footerStrength .. "[NEWLINE]" .. promoText
-				footerRangedStrength = footerRangedStrength .. "[NEWLINE]" .. string.gsub(promoText, ".ICON_STRENGTH.([^%%]*%% vs)", function(x) return "[ICON_RANGE_STRENGTH]"..x end)
-			elseif string.find(promoText, "^.ICON_STRENGTH") then
-				footerStrength = footerStrength .. "[NEWLINE]" .. promoText
-			elseif string.find(promoText, "^.ICON_MOVES") then
-				footerMoves = footerMoves .. "[NEWLINE]" .. promoText
-			else
-				footerEnd = footerEnd .. "[NEWLINE]" .. promoText
-			end
-			--]]
+	if showAbil then
+		if showName then
+			textBody = string.format("%s[NEWLINE][NEWLINE]%s", textBody, Locale.ConvertTextKey("TXT_KEY_TOOLTIP_ABILITIES"))
 		end
-	end
-	--]=]
-	
-	-- Range
-	local iRange = unitInfo.Range
-	if (iRange ~= 0) then
+		
+		-- Promotions
+		local header				= ""
+		local footerRangedStrength	= ""
+		local footerStrength		= ""
+		local footerMoves			= ""
+		local footerEnd				= ""
+		--[=[
+		for row in GameInfo.Unit_FreePromotions{UnitType = unitInfo.Type} do
+			local promoInfo = GameInfo.UnitPromotions[row.PromotionType]
+			if promoInfo.Class ~= "PROMOTION_CLASS_ATTRIBUTE_NEGATIVE" then
+				local promoText, section = GetPromotionTip(promoInfo.ID, unit)
+				
+				footerRangedStrength	= footerRangedStrength	.. section[TipSection.PROMO_RANGE]
+				footerRangedStrength	= footerRangedStrength	.. section[TipSection.PROMO_RANGED_STRENGTH]
+				footerStrength			= footerStrength		.. section[TipSection.PROMO_STRENGTH]
+				footerStrength			= footerStrength		.. section[TipSection.PROMO_AIR]
+				footerMoves				= footerMoves			.. section[TipSection.PROMO_MOVES]
+				footerMoves				= footerMoves			.. section[TipSection.PROMO_HEAL]
+				footerEnd				= footerEnd				.. section[TipSection.PROMO_SIGHT]
+				footerEnd				= footerEnd				.. section[TipSection.PROMO_NAVAL]
+				footerEnd				= footerEnd				.. section[TipSection.PROMO_GOLD]
+				footerEnd				= footerEnd				.. section[TipSection.PROMO_GREAT_GENERAL]
+				footerEnd				= footerEnd				.. section[TipSection.PROMO_RES_URANIUM]
+				footerEnd				= footerEnd				.. section[TipSection.PROMO_WAR]
+				footerEnd				= footerEnd				.. section[TipSection.PROMO_NEGATIVE]
+				footerEnd				= footerEnd				.. section[TipSection.PROMO_OTHER]
+				
+				--[[
+				if string.find(promoText, "^.ICON_RANGE_STRENGTH") then
+					footerRangedStrength = footerRangedStrength .. "[NEWLINE]" .. promoText
+				elseif string.find(promoText, ".ICON_STRENGTH.([^%%]*%% vs)") then
+					footerStrength = footerStrength .. "[NEWLINE]" .. promoText
+					footerRangedStrength = footerRangedStrength .. "[NEWLINE]" .. string.gsub(promoText, ".ICON_STRENGTH.([^%%]*%% vs)", function(x) return "[ICON_RANGE_STRENGTH]"..x end)
+				elseif string.find(promoText, "^.ICON_STRENGTH") then
+					footerStrength = footerStrength .. "[NEWLINE]" .. promoText
+				elseif string.find(promoText, "^.ICON_MOVES") then
+					footerMoves = footerMoves .. "[NEWLINE]" .. promoText
+				else
+					footerEnd = footerEnd .. "[NEWLINE]" .. promoText
+				end
+				--]]
+			end
+		end
+		--]=]
+		
+		-- Range
+		local iRange = unitInfo.Range
+		if (iRange ~= 0) then
+			textBody = textBody .. "[NEWLINE]"
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_RANGE", iRange)
+		end
+		
+		-- Ranged Strength
+		local iRangedStrength = unitInfo.RangedCombat
+		if (iRangedStrength ~= 0) then
+			textBody = textBody .. "[NEWLINE]"
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_RANGED_STRENGTH", iRangedStrength) .. footerRangedStrength
+		end
+		
+		-- Strength
+		local iStrength = unitInfo.Combat
+		if (iStrength ~= 0) then
+			textBody = textBody .. "[NEWLINE]"
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_STRENGTH", iStrength) .. footerStrength
+		end
+		
+		-- Moves
 		textBody = textBody .. "[NEWLINE]"
-		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_RANGE", iRange)
-	end
-	
-	-- Ranged Strength
-	local iRangedStrength = unitInfo.RangedCombat
-	if (iRangedStrength ~= 0) then
-		textBody = textBody .. "[NEWLINE]"
-		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_RANGED_STRENGTH", iRangedStrength) .. footerRangedStrength
-	end
-	
-	-- Strength
-	local iStrength = unitInfo.Combat
-	if (iStrength ~= 0) then
-		textBody = textBody .. "[NEWLINE]"
-		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_STRENGTH", iStrength) .. footerStrength
-	end
-	
-	-- Moves
-	textBody = textBody .. "[NEWLINE]"
-	textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_MOVEMENT", unitInfo.Moves)
-	textBody = textBody .. footerMoves	
-	textBody = textBody .. footerEnd
-	
-	-- Special Abilities
-	if unitInfo.WorkRate ~= 0 then
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_WORK_RATE", unitInfo.WorkRate)		
-	end
-	if unitInfo.Found then
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_FOUND")		
-	end
-	if unitInfo.Food then
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_FOOD")		
-	end
-	if unitInfo.SpecialCargo then
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_CARGO", "TXT_KEY_" .. unitInfo.SpecialCargo)
-	end
-	if unitInfo.Suicide then
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_SUICIDE")		
-	end
-	if unitInfo.NukeDamageLevel >= 1 then
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_NUKE_RADIUS", unitInfo.NukeDamageLevel)		
-	end
-	
-	-- Replaces
-	local defaultObjectType = unitClassInfo.DefaultUnit
-	if unitInfo.Type ~= defaultObjectType then
-		textBody = textBody .. "[NEWLINE]"
-		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_REPLACES", GameInfo.Units[defaultObjectType].Description)
+		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_MOVEMENT", unitInfo.Moves)
+		textBody = textBody .. footerMoves	
+		textBody = textBody .. footerEnd
+		
+		-- Special Abilities
+		if unitInfo.WorkRate ~= 0 then
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_WORK_RATE", unitInfo.WorkRate)		
+		end
+		if unitInfo.Found then
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_FOUND")		
+		end
+		if unitInfo.Food then
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_FOOD")		
+		end
+		if unitInfo.SpecialCargo then
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_CARGO", "TXT_KEY_" .. unitInfo.SpecialCargo)
+		end
+		if unitInfo.Suicide then
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_SUICIDE")		
+		end
+		if unitInfo.NukeDamageLevel >= 1 then
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_NUKE_RADIUS", unitInfo.NukeDamageLevel)		
+		end
+		
+		-- Replaces
+		local defaultObjectType = unitClassInfo.DefaultUnit
+		if unitInfo.Type ~= defaultObjectType then
+			textBody = textBody .. "[NEWLINE]"
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_REPLACES", GameInfo.Units[defaultObjectType].Description)
+		end
 	end
 	
 	
 	--
 	-- Requirements
 	--
-	
-	textBody = string.format("%s[NEWLINE][NEWLINE]%s", textBody, Locale.ConvertTextKey("TXT_KEY_TOOLTIP_REQUIREMENTS"))
-	
-	-- Cost
-	local cost = activePlayer:GetUnitProductionNeeded(unitID)
-	if unitID == GameInfo.Units.UNIT_SETTLER.ID then
-		cost = Game.Round(cost * Cep.UNIT_SETTLER_BASE_COST / 105, -1)
-	end
-	textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_COST", cost)
-	
-	-- Purchase Cost Multiplier
-	local costMultiplier = nil
-	if unitInfo.HurryCostModifier ~= -1 then
-		costMultiplier = math.pow(cost * GameDefines.GOLD_PURCHASE_GOLD_PER_PRODUCTION, GameDefines.HURRY_GOLD_PRODUCTION_EXPONENT)
-		costMultiplier = costMultiplier * (100 + unitInfo.HurryCostModifier)
-		costMultiplier = Game.Round(Game.RoundDown(costMultiplier) / cost, -1)
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_HURRY_COST_MODIFIER", costMultiplier, costMultiplier)
-	end
-	
-	-- add help text for how much a new city would cost when looking at a settler
-	if (activePlayer.CalcNextCityMaintenance ~= nil) and (unitInfo.Type == "UNIT_SETTLER") and (Unit_GetMaintenance(unitInfo.ID) > 0) then
-		textBody = textBody .. "[NEWLINE][NEWLINE]"..Locale.ConvertTextKey("TXT_KEY_NEXT_CITY_SETTLER_MAINTENANCE_TEXT",activePlayer:CalcNextCityMaintenance() or 0)
-	end
-	
-	if Unit_GetMaintenance(unitID) > 0 then
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_MAINTENANCE", Unit_GetMaintenance(unitInfo.ID))
-	end
-	
-	-- Requirements
-	if (showRequirementsInfo) then
-		if (unitInfo.Requirements) then
-			textBody = textBody .. Locale.ConvertTextKey( unitInfo.Requirements )
+	if showCost then
+		if showAbil then
+			textBody = textBody .. "[NEWLINE][NEWLINE]"	
 		end
-	end
-	
-	if unitInfo.ProjectPrereq then
-		local projectName = GameInfo.Projects[unitInfo.ProjectPrereq].Description
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_REQUIRES_BUILDING", projectName)		
-	end
-	
-	-- Tech prerequisites
-	statTextKey = "TXT_KEY_BUILDING_EFFECT_REQUIRES_BUILDING"
-	for pEntry in GameInfo.Unit_TechTypes{UnitType = unitInfo.Type} do
-		local entryValue = Locale.ConvertTextKey(GameInfo.Technologies[pEntry.TechType].Description)
-		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey(statTextKey, entryValue)
-	end
-	
-	-- Obsolescence
-	local pObsolete = unitInfo.ObsoleteTech
-	if pObsolete ~= nil and pObsolete ~= "" then
-		pObsolete = Locale.ConvertTextKey(GameInfo.Technologies[pObsolete].Description)
-		textBody = textBody .. "[NEWLINE]"
-		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_OBSOLETE_TECH", pObsolete)
-	end
-	
-	-- Limit
-	local unitLimit = unitClassInfo.MaxPlayerInstances
-	if unitLimit ~= -1 then
-		textBody = textBody .. "[NEWLINE]"
-		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_NATIONAL_LIMIT", "", "", unitLimit)
-	end
-	unitLimit = unitClassInfo.MaxTeamInstances
-	if unitLimit ~= -1 then
-		textBody = textBody .. "[NEWLINE]"
-		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_TEAM_LIMIT", "", "", unitLimit)
-	end
-	unitLimit = unitClassInfo.MaxGlobalInstances
-	if unitLimit ~= -1 then
-		textBody = textBody .. "[NEWLINE]"
-		textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_WORLD_LIMIT", "", "", unitLimit)
-	end
-	
-	-- Resource Requirements
-	local iNumResourcesNeededSoFar = 0
-	local iNumResourceNeeded
-	local iResourceID
-	for pResource in GameInfo.Resources() do
-		iResourceID = pResource.ID
-		iNumResourceNeeded = Game.GetNumResourceRequiredForUnit(unitID, iResourceID)
-		if (iNumResourceNeeded > 0) then
-			-- First resource required
-			if (iNumResourcesNeededSoFar == 0) then
-				textBody = textBody .. "[NEWLINE]"
-				textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_RESOURCES_REQUIRED")
-				textBody = textBody .. " " .. iNumResourceNeeded .. " " .. pResource.IconString .. " " .. Locale.ConvertTextKey(pResource.Description)
-			else
-				textBody = textBody .. ", " .. iNumResourceNeeded .. " " .. pResource.IconString .. " " .. Locale.ConvertTextKey(pResource.Description)
+		if showName then
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_TOOLTIP_REQUIREMENTS")
+		end
+		
+		-- Cost
+		local cost = activePlayer:GetUnitProductionNeeded(unitID)
+		if unitID == GameInfo.Units.UNIT_SETTLER.ID then
+			cost = Game.Round(cost * Cep.UNIT_SETTLER_BASE_COST / 105, -1)
+		end
+		textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_COST", cost)
+		
+		-- Purchase Cost Multiplier
+		local costMultiplier = nil
+		if unitInfo.HurryCostModifier ~= -1 then
+			costMultiplier = math.pow(cost * GameDefines.GOLD_PURCHASE_GOLD_PER_PRODUCTION, GameDefines.HURRY_GOLD_PRODUCTION_EXPONENT)
+			costMultiplier = costMultiplier * (100 + unitInfo.HurryCostModifier)
+			costMultiplier = Game.Round(Game.RoundDown(costMultiplier) / cost, -1)
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_HURRY_COST_MODIFIER", costMultiplier, costMultiplier)
+		end
+		
+		-- add help text for how much a new city would cost when looking at a settler
+		if (activePlayer.CalcNextCityMaintenance ~= nil) and (unitInfo.Type == "UNIT_SETTLER") and (Unit_GetMaintenance(unitInfo.ID) > 0) then
+			textBody = textBody .. "[NEWLINE][NEWLINE]"..Locale.ConvertTextKey("TXT_KEY_NEXT_CITY_SETTLER_MAINTENANCE_TEXT",activePlayer:CalcNextCityMaintenance() or 0)
+		end
+		
+		if Unit_GetMaintenance(unitID) > 0 then
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_MAINTENANCE", Unit_GetMaintenance(unitInfo.ID))
+		end
+		
+		-- Requirements
+		if (showRequirementsInfo) then
+			if (unitInfo.Requirements) then
+				textBody = textBody .. Locale.ConvertTextKey( unitInfo.Requirements )
 			end
-			
-			-- JON: Not using this for now, the formatting is better when everything is on the same line
-			--iNumResourcesNeededSoFar = iNumResourcesNeededSoFar + 1
 		end
- 	end
+		
+		if unitInfo.ProjectPrereq then
+			local projectName = GameInfo.Projects[unitInfo.ProjectPrereq].Description
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_REQUIRES_BUILDING", projectName)		
+		end
+		
+		-- Tech prerequisites
+		statTextKey = "TXT_KEY_BUILDING_EFFECT_REQUIRES_BUILDING"
+		for pEntry in GameInfo.Unit_TechTypes{UnitType = unitInfo.Type} do
+			local entryValue = Locale.ConvertTextKey(GameInfo.Technologies[pEntry.TechType].Description)
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey(statTextKey, entryValue)
+		end
+		
+		-- Obsolescence
+		local pObsolete = unitInfo.ObsoleteTech
+		if pObsolete ~= nil and pObsolete ~= "" then
+			pObsolete = Locale.ConvertTextKey(GameInfo.Technologies[pObsolete].Description)
+			textBody = textBody .. "[NEWLINE]"
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_OBSOLETE_TECH", pObsolete)
+		end
+		
+		-- Limit
+		local unitLimit = unitClassInfo.MaxPlayerInstances
+		if unitLimit ~= -1 then
+			textBody = textBody .. "[NEWLINE]"
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_NATIONAL_LIMIT", "", "", unitLimit)
+		end
+		unitLimit = unitClassInfo.MaxTeamInstances
+		if unitLimit ~= -1 then
+			textBody = textBody .. "[NEWLINE]"
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_TEAM_LIMIT", "", "", unitLimit)
+		end
+		unitLimit = unitClassInfo.MaxGlobalInstances
+		if unitLimit ~= -1 then
+			textBody = textBody .. "[NEWLINE]"
+			textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_BUILDING_EFFECT_WORLD_LIMIT", "", "", unitLimit)
+		end
+		
+		-- Resource Requirements
+		local iNumResourcesNeededSoFar = 0
+		local iNumResourceNeeded
+		local iResourceID
+		for pResource in GameInfo.Resources() do
+			iResourceID = pResource.ID
+			iNumResourceNeeded = Game.GetNumResourceRequiredForUnit(unitID, iResourceID)
+			if (iNumResourceNeeded > 0) then
+				-- First resource required
+				if (iNumResourcesNeededSoFar == 0) then
+					textBody = textBody .. "[NEWLINE]"
+					textBody = textBody .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_RESOURCES_REQUIRED")
+					textBody = textBody .. " " .. iNumResourceNeeded .. " " .. pResource.IconString .. " " .. Locale.ConvertTextKey(pResource.Description)
+				else
+					textBody = textBody .. ", " .. iNumResourceNeeded .. " " .. pResource.IconString .. " " .. Locale.ConvertTextKey(pResource.Description)
+				end
+				
+				-- JON: Not using this for now, the formatting is better when everything is on the same line
+				--iNumResourcesNeededSoFar = iNumResourcesNeededSoFar + 1
+			end
+		end
+	end
 	
+	textBody = Game.RemoveExtraNewlines(textBody)
 	return textBody	
 end
-
 
 -- BUILDING
 
@@ -292,9 +332,9 @@ function GetHelpTextForBuilding(iBuildingID, bExcludeName, bExcludeHeader, bNoMa
 	return GetBuildingTip{buildingID=iBuildingID, hideName=(bExcludeName or bExcludeHeader), hideCosts=bExcludeHeader, buildingCity=pCity}
 end
 
-function GetBuildingTip(param)
-	-- Required parameters: buildingID
-	-- Optional parameters: buildingCity, hideName, hideGoodFor, hideAbilities, hideCosts, hideFoot
+function GetBuildingTip(args)
+	-- Required arguments: buildingID
+	-- Optional arguments: buildingCity, hideName, hideGoodFor, hideAbilities, hideCosts, hideFoot
 	
 	if Game == nil then
 		print("GetBuildingTip: Game is nil")
@@ -313,21 +353,21 @@ function GetBuildingTip(param)
 		
 		return ""
 	end
-	if not param.buildingID	or not GameInfo.Buildings[param.buildingID] then
-		log:Fatal("GetHelpTextForBuilding: buildingID = %s", param.buildingID)
+	if not args.buildingID	or not GameInfo.Buildings[args.buildingID] then
+		log:Fatal("GetHelpTextForBuilding: buildingID = %s", args.buildingID)
 	end
 	
-	local buildingID	= param.buildingID	
+	local buildingID	= args.buildingID	
 	local objectInfo	= GameInfo.Buildings[buildingID]
 	local textList		= {}
 	local textBody		= ""
 	local textFoot		= ""
-	local city			= param.buildingCity
-	local showName		= not param.hideName
-	local showGood		= not param.hideGoodFor
-	local showAbil		= not param.hideAbilities
-	local showCost		= not param.hideCosts
-	local showFoot		= not param.hideCosts
+	local city			= args.buildingCity
+	local showName		= not args.hideName
+	local showGood		= not args.hideGoodFor
+	local showAbil		= not args.hideAbilities
+	local showCost		= not args.hideCosts
+	local showFoot		= not args.hideCosts
 	local showSection	= {	
 		[0] = showName,
 		[1] = showAbil,
@@ -338,7 +378,7 @@ function GetBuildingTip(param)
 	}
 	
 	if Cep.SHOW_GOOD_FOR_BUILDINGS == 1 and showGood and not showName and not showAbil and not showCost then
-		return string.gsub(Game.GetFlavors("Building_Flavors", "BuildingType", objectInfo.Type, 1, true), "^%[NEWLINE%]", "")
+		return Game.RemoveExtraNewlines(Game.GetFlavors("Building_Flavors", "BuildingType", objectInfo.Type, 1, true))
 	end
 
 	if Game.Stats.Buildings[buildingID] == nil then
@@ -422,9 +462,7 @@ function GetBuildingTip(param)
 		end
 	end
 	
-	textBody = string.gsub(textBody, "^%[NEWLINE%]", "")
-	textFoot = string.gsub(textFoot, "^%[NEWLINE%]", "")
-	textFoot = string.gsub(textFoot, "^%[NEWLINE%]", "")
+	textBody = Game.RemoveExtraNewlines(textBody)
 	
 	if showFoot and textFoot ~= "" then
 		textBody = textBody .. "[NEWLINE]----------------[NEWLINE]"

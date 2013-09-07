@@ -845,7 +845,7 @@ function OnCityViewUpdate()
 
 	if unitProduction ~= -1 then
 		local thisUnitInfo = GameInfo.Units[unitProduction]
-		szHelpText = thisUnitInfo.Help
+		szHelpText = GetUnitTip{unitID=thisUnitInfo.ID, hideName=true, hideGoodFor=true}
 		if IconHookup( thisUnitInfo.PortraitIndex, g_iPortraitSize, thisUnitInfo.IconAtlas, Controls.ProductionPortrait ) then
 			Controls.ProductionPortrait:SetHide( false )
 		else
@@ -968,7 +968,7 @@ function OnCityViewUpdate()
 			local unitClass = GameInfo.UnitClasses[specialistInfo.GreatPeopleUnitClass]
 			if(unitClass ~= nil) then
 				local gp = GameInfo.Units[ unitClass.DefaultUnit ]
-				local labelText = Locale.ConvertTextKey(unitClass.Description)
+				local labelText = LocaleMod.ConvertTextKey(unitClass.Description)
 				controlTable.GreatPersonLabel:SetText(labelText)
 				pediaSearchStrings[tostring(controlTable.GPImage)] = labelText
 				controlTable.GPImage:RegisterCallback( Mouse.eRClick, GetPedia )

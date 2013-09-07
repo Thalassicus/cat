@@ -1,12 +1,13 @@
 --? EN_US/Flavors.sql
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANKS', 'Good For Ranks', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_1', '[COLOR_PLAYER_ORANGE_TEXT]High[ENDCOLOR]', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_2', '[COLOR:255:60:255:255]Wondrous[ENDCOLOR]', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_3', '[COLOR_RESEARCH_STORED]Unique[ENDCOLOR]', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_4', '[COLOR_PLAYER_LIGHT_GREEN]Good[ENDCOLOR]', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_5', 'Average', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_6', '[COLOR_GREY]Low[ENDCOLOR]', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANKS', 'Good For', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_1', 'Highest', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_2', 'Wonder', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_3', 'Great', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_4', 'Good', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_5', 'Common', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_6', 'Low', '', '');
 /* Flavors */
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_MILITARY_TRAINING', 'Military Training', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_OFFENSE', 'Offense', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_DEFENSE', 'Defense', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_SOLDIER', 'Soldier', '', '');
