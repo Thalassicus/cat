@@ -39,7 +39,7 @@ local holidayFun = {
 
 function GetUnitTip(args)
 	-- Required arguments: unitID
-	-- Optional arguments: showRequirementsInfo
+	-- Optional arguments: hideName, hideGoodFor, hideAbilities, hideCosts
 	
 	if Game == nil then
 		print("GetBuildingTip: Game is nil")
@@ -123,10 +123,11 @@ function GetUnitTip(args)
 		local footerStrength		= ""
 		local footerMoves			= ""
 		local footerEnd				= ""
-		--[=[
+		--
 		for row in GameInfo.Unit_FreePromotions{UnitType = unitInfo.Type} do
 			local promoInfo = GameInfo.UnitPromotions[row.PromotionType]
 			if promoInfo.Class ~= "PROMOTION_CLASS_ATTRIBUTE_NEGATIVE" then
+				--
 				local promoText, section = GetPromotionTip(promoInfo.ID, unit)
 				
 				footerRangedStrength	= footerRangedStrength	.. section[TipSection.PROMO_RANGE]
@@ -143,8 +144,10 @@ function GetUnitTip(args)
 				footerEnd				= footerEnd				.. section[TipSection.PROMO_WAR]
 				footerEnd				= footerEnd				.. section[TipSection.PROMO_NEGATIVE]
 				footerEnd				= footerEnd				.. section[TipSection.PROMO_OTHER]
+				--]]
 				
 				--[[
+				local promoText = ModLocale.ConvertTextKey(promoInfo.Help) or promoInfo.Type
 				if string.find(promoText, "^.ICON_RANGE_STRENGTH") then
 					footerRangedStrength = footerRangedStrength .. "[NEWLINE]" .. promoText
 				elseif string.find(promoText, ".ICON_STRENGTH.([^%%]*%% vs)") then
@@ -471,11 +474,11 @@ function GetBuildingTip(args)
 	
 	if textBody == nil or textBody == "" then
 		if showAbilities then
-			log:Error("GetHelpTextForBuilding: %s textBody is %s for Abilities", objectInfo.Type, textBody)
+			log:Error("GetHelpTextForBuilding: %s textBody=%s for Abilities", objectInfo.Type, textBody)
 		elseif showGoodFor then
-			log:Error("GetHelpTextForBuilding: %s textBody is %s for GoodFor", objectInfo.Type, textBody)
+			log:Error("GetHelpTextForBuilding: %s textBody=%s for GoodFor", objectInfo.Type, textBody)
 		elseif showCosts then
-			log:Error("GetHelpTextForBuilding: %s textBody is %s for Costs", objectInfo.Type, textBody)
+			log:Error("GetHelpTextForBuilding: %s textBody=%s for Costs", objectInfo.Type, textBody)
 		end
 		textBody = objectInfo.Type
 	end
@@ -494,7 +497,7 @@ function GetPromotionTip(promoID, unit)
 		return ""
 	end
 	
-	local objectInfo	= GameInfo.Promotions[promoID]
+	local objectInfo	= GameInfo.UnitPromotions[promoID]
 	local textList		= {}
 	local textBody		= ""
 	local textFoot		= ""
@@ -562,9 +565,10 @@ function GetPromotionTip(promoID, unit)
 	textBody = string.gsub(textBody, "^%[NEWLINE%]", "")
 	
 	if textBody == nil or textBody == "" then
-		textBody = stat.Type
+		log:Error("GetPromotionTip: %s textBody=%s", objectInfo.Type, textBody)
+		textBody = objectInfo.Type
 	end
-	log:Debug("GetPromotionTip %30s %s %s", objectInfo.Type, textBody, section)
+	log:Trace("GetPromotionTip %30s %s %s", objectInfo.Type, textBody, section)
 	return textBody, section
 end
 

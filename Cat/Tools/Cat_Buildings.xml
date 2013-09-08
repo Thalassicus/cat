@@ -67,6 +67,7 @@
 			<PortraitIndex>17</PortraitIndex>
 			<IconAtlas>TECH_ATLAS_1</IconAtlas>
 			<IsVisible>1</IsVisible>
+			<ShowInPedia>0</ShowInPedia>
 			<CheckWithYieldLibrary>0</CheckWithYieldLibrary>
 		</Row>
 		<Row>
@@ -85,6 +86,7 @@
 			<PortraitIndex>17</PortraitIndex>
 			<IconAtlas>TECH_ATLAS_1</IconAtlas>
 			<IsVisible>1</IsVisible>
+			<ShowInPedia>0</ShowInPedia>
 			<CheckWithYieldLibrary>0</CheckWithYieldLibrary>
 		</Row>
 	</Buildings>

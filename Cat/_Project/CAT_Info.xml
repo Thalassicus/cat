@@ -8,4 +8,9 @@
 			<Value>3.1.5b</Value>
 		</Row>
 	</Defines>
+	<Cep>
+		<Row Name="DEBUG_TIMER_LEVEL">
+			<Value>0</Value>
+		</Row>
+	</Cep>
 </GameData>

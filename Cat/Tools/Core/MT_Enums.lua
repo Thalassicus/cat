@@ -4,9 +4,8 @@
 --------------------------------------------------------------
 
 
-
 TipSection = {}
-	
+		
 TipSection.BUILDING_HEADER			= 0
 TipSection.BUILDING_SPECIAL_ABILITY	= 1
 TipSection.BUILDING_ABILITY			= 2
@@ -29,8 +28,8 @@ TipSection.PROMO_NEGATIVE			= 13
 TipSection.PROMO_OTHER				= 14
 
 TipSectionIcon = {
-	[TipSection.PROMO_RANGE]			= "[ICON_RANGED_STRENGTH]"	,
-	[TipSection.PROMO_RANGED_STRENGTH]	= "[ICON_RANGED_STRENGTH]"	,
+	[TipSection.PROMO_RANGE]			= "[ICON_RANGE_STRENGTH]"	,
+	[TipSection.PROMO_RANGED_STRENGTH]	= "[ICON_RANGE_STRENGTH]"	,
 	[TipSection.PROMO_STRENGTH]			= "[ICON_STRENGTH]"			,
 	[TipSection.PROMO_MOVES]			= "[ICON_MOVES]"			,
 	[TipSection.PROMO_HEAL]				= "[ICON_HEAL]"				,

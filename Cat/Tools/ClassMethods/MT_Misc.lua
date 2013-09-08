@@ -13,9 +13,9 @@ log:SetLevel("INFO")
 --
 -- Ideally replace vanilla functions, but Locale table is sadly read-only
 
-LocaleMod = {}
+ModLocale = {}
 
-function LocaleMod.ConvertTextKey(...)
+function ModLocale.ConvertTextKey(...)
 	local arg = {...}
 	if not arg[1] or arg[1] == "" then
 		return ""

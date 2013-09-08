@@ -776,8 +776,9 @@ function City_GetBaseYieldRateModifier(city, yieldID, itemTable, itemID, queueNu
 		if yieldID == YieldTypes.YIELD_FOOD then
 			yieldMod = yieldMod + City_GetCapitalSettlerModifier(city, yieldID, itemTable, itemID, queueNum)
 		elseif yieldID == YieldTypes.YIELD_PRODUCTION then
-			if Game.Round(cityOwner:GetYieldRate(YieldTypes.YIELD_HAPPINESS_NATIONAL)) <= GameDefines.VERY_UNHAPPY_THRESHOLD then
-				yieldMod = yieldMod + GameDefines.VERY_UNHAPPY_PRODUCTION_PENALTY
+			local happiness = Game.Round(cityOwner:GetYieldRate(YieldTypes.YIELD_HAPPINESS_NATIONAL))
+			if happiness <= 0 then--GameDefines.VERY_UNHAPPY_THRESHOLD then
+				yieldMod = yieldMod + happiness * GameDefines.VERY_UNHAPPY_PRODUCTION_PENALTY_PER_UNHAPPY
 			end
 			if city:IsCapital() and cityOwner:HasTech("TECH_RAILROAD") then
 				yieldMod = yieldMod + GameDefines.INDUSTRIAL_ROUTE_PRODUCTION_MOD

@@ -63,7 +63,7 @@
 			<Where Type="HANDICAP_SETTLER" />
 			<Set Description               = "TXT_KEY_HANDICAP_SETTLER"
 			Help                           = "TXT_KEY_HANDICAP_SETTLER_HELP"
-			HappinessDefault               = "8"
+			HappinessDefault               = "18"
 			NumCitiesUnhappinessMod        = "40"
 			PopulationUnhappinessMod       = "40"
 			AIGrowthPercent                = "160"
@@ -143,7 +143,7 @@
 			<Where Type="HANDICAP_CHIEFTAIN" />
 			<Set Description               = "TXT_KEY_HANDICAP_CHIEFTAIN"
 			Help                           = "TXT_KEY_HANDICAP_CHIEFTAIN_HELP"
-			HappinessDefault               = "5"
+			HappinessDefault               = "15"
 			NumCitiesUnhappinessMod        = "60"
 			PopulationUnhappinessMod       = "60"
 			AIGrowthPercent                = "130"
@@ -223,7 +223,7 @@
 			<Where Type="HANDICAP_WARLORD" />
 			<Set Description               = "TXT_KEY_HANDICAP_WARLORD"
 			Help                           = "TXT_KEY_HANDICAP_WARLORD_HELP"
-			HappinessDefault               = "0"
+			HappinessDefault               = "10"
 			NumCitiesUnhappinessMod        = "75"
 			PopulationUnhappinessMod       = "75"
 			AIGrowthPercent                = "100"
@@ -303,7 +303,7 @@
 			<Where Type="HANDICAP_PRINCE" />
 			<Set Description               = "TXT_KEY_HANDICAP_PRINCE"
 			Help                           = "TXT_KEY_HANDICAP_PRINCE_HELP"
-			HappinessDefault               = "0"
+			HappinessDefault               = "10"
 			NumCitiesUnhappinessMod        = "100"
 			PopulationUnhappinessMod       = "100"
 			AIGrowthPercent                = "100"
@@ -383,7 +383,7 @@
 			<Where Type="HANDICAP_KING" />
 			<Set Description               = "TXT_KEY_HANDICAP_KING"
 			Help                           = "TXT_KEY_HANDICAP_KING_HELP"
-			HappinessDefault               = "0"
+			HappinessDefault               = "10"
 			NumCitiesUnhappinessMod        = "100"
 			PopulationUnhappinessMod       = "100"
 			AIGrowthPercent                = "100"
@@ -463,7 +463,7 @@
 			<Where Type="HANDICAP_EMPEROR" />
 			<Set Description               = "TXT_KEY_HANDICAP_EMPEROR"
 			Help                           = "TXT_KEY_HANDICAP_EMPEROR_HELP"
-			HappinessDefault               = "0"
+			HappinessDefault               = "10"
 			NumCitiesUnhappinessMod        = "100"
 			PopulationUnhappinessMod       = "100"
 			AIGrowthPercent                = "100"
@@ -543,7 +543,7 @@
 			<Where Type="HANDICAP_IMMORTAL" />
 			<Set Description               = "TXT_KEY_HANDICAP_IMMORTAL"
 			Help                           = "TXT_KEY_HANDICAP_IMMORTAL_HELP"
-			HappinessDefault               = "0"
+			HappinessDefault               = "10"
 			NumCitiesUnhappinessMod        = "100"
 			PopulationUnhappinessMod       = "100"
 			AIGrowthPercent                = "100"
@@ -623,7 +623,7 @@
 			<Where Type="HANDICAP_DEITY" />
 			<Set Description               = "TXT_KEY_HANDICAP_DEITY"
 			Help                           = "TXT_KEY_HANDICAP_DEITY_HELP"
-			HappinessDefault               = "0"
+			HappinessDefault               = "10"
 			NumCitiesUnhappinessMod        = "100"
 			PopulationUnhappinessMod       = "100"
 			AIGrowthPercent                = "100"
@@ -703,7 +703,7 @@
 			<Where Type="HANDICAP_AI_DEFAULT" />
 			<Set Description               = "TXT_KEY_HANDICAP_AI_DEFAULT"
 			Help                           = "TXT_KEY_HANDICAP_AI_DEFAULT_HELP"
-			HappinessDefault               = "4"
+			HappinessDefault               = "14"
 			NumCitiesUnhappinessMod        = "90"
 			PopulationUnhappinessMod       = "90"
 			AIGrowthPercent                = "100"
@@ -779,5 +779,6 @@
 />
 		</Update>
 	</HandicapInfos>
+
 
 </GameData>

@@ -18,53 +18,55 @@ print("Initializing TW_Init.lua")
 --
 
 do
-	log = Events.LuaLogger:New()
-	log:SetLevel("DEBUG")
 
-	timeStart = os.clock()
+log = Events.LuaLogger:New()
+log:SetLevel("DEBUG")
+
+timeStart = os.clock()
+
+isFirstTimePromotions = true
+errorMsg = {Type=statType, Section=statSection, Priority=linePriority, TextBody=statType}
+
+Game.Stats				= Game.Stats or {}
+Game.Stats.Units		= Game.Stats.Units or {}
+Game.Stats.Buildings	= Game.Stats.Buildings or {}
+Game.Stats.Promotions	= Game.Stats.Promotions or {}
+
+MAX_RESOURCES = {}
+for resourceInfo in GameInfo.Resources() do
+	resUsageType = Game.GetResourceUsageType(resourceInfo.ID)
+	MAX_RESOURCES[resUsageType] = (MAX_RESOURCES[resUsageType] or 0) + 1
+end
+
+MAX_SPECIALISTS = 0
+for specialistInfo in GameInfo.Specialists() do
+	MAX_SPECIALISTS = MAX_SPECIALISTS + 1
+end
+
+resUsageTypeStr = {}
+resUsageTypeStr[ResourceUsageTypes.RESOURCEUSAGE_STRATEGIC] = Locale.ConvertTextKey("TXT_KEY_CIV5_RESOURCE_STRATEGIC")
+resUsageTypeStr[ResourceUsageTypes.RESOURCEUSAGE_LUXURY] = Locale.ConvertTextKey("TXT_KEY_CIV5_RESOURCE_LUXURY")
+resUsageTypeStr[ResourceUsageTypes.RESOURCEUSAGE_BONUS] = Locale.ConvertTextKey("TXT_KEY_CIV5_RESOURCE_BONUS")
+
+statTextKey			= nil
+statFootKey			= nil
+statFoot			= nil
+statPriority		= nil
+lineType			= nil
+lineTextKey			= nil
+lineSection			= nil
+linePriority		= nil
+linePrefix			= nil
+lineSign			= nil
+lineValue			= nil
+lineExtra			= nil
+objectInfo			= nil
+objectClassInfo		= nil
+activePlayer		= nil
+activeTeam			= nil
+adjustedCost		= nil
+subStats			= nil
 	
-	isFirstTimePromotions = true
-	errorMsg = {Type=statType, Section=statSection, Priority=linePriority, TextBody=statType}
-
-	Game.Stats				= Game.Stats or {}
-	Game.Stats.Units		= Game.Stats.Units or {}
-	Game.Stats.Buildings	= Game.Stats.Buildings or {}
-	Game.Stats.Promotions	= Game.Stats.Promotions or {}
-
-	MAX_RESOURCES = {}
-	for resourceInfo in GameInfo.Resources() do
-		resUsageType = Game.GetResourceUsageType(resourceInfo.ID)
-		MAX_RESOURCES[resUsageType] = (MAX_RESOURCES[resUsageType] or 0) + 1
-	end
-
-	MAX_SPECIALISTS = 0
-	for specialistInfo in GameInfo.Specialists() do
-		MAX_SPECIALISTS = MAX_SPECIALISTS + 1
-	end
-
-	resUsageTypeStr = {}
-	resUsageTypeStr[ResourceUsageTypes.RESOURCEUSAGE_STRATEGIC] = Locale.ConvertTextKey("TXT_KEY_CIV5_RESOURCE_STRATEGIC")
-	resUsageTypeStr[ResourceUsageTypes.RESOURCEUSAGE_LUXURY] = Locale.ConvertTextKey("TXT_KEY_CIV5_RESOURCE_LUXURY")
-	resUsageTypeStr[ResourceUsageTypes.RESOURCEUSAGE_BONUS] = Locale.ConvertTextKey("TXT_KEY_CIV5_RESOURCE_BONUS")
-	
-	statTextKey			= nil
-	statFootKey			= nil
-	statFoot			= nil
-	statPriority		= nil
-	lineType			= nil
-	lineTextKey			= nil
-	lineSection			= nil
-	linePriority		= nil
-	linePrefix			= nil
-	lineSign			= nil
-	lineValue			= nil
-	lineExtra			= nil
-	objectInfo			= nil
-	objectClassInfo		= nil
-	activePlayer		= nil
-	activeTeam			= nil
-	adjustedCost		= nil
-	subStats			= nil
 end
 
 
@@ -80,24 +82,24 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 		return {}
 	end
 	
-	lineType			= statType
-	objectInfo			= GameInfo.Buildings[objectID]
-	objectClassInfo		= GameInfo.BuildingClasses[objectInfo.BuildingClass]
-	activePlayer		= Players[Game.GetActivePlayer()]
-	activeTeam			= Teams[Game.GetActiveTeam()]
-	adjustedCost		= activePlayer:GetBuildingProductionNeeded(objectID)	
-	statTextKey			= "TXT_KEY_BUILDING_EFFECT" .. string.upper( string.gsub(lineType, '(%u)',  function(x) return "_"..x end) )
-	statFootKey			= Locale.ConvertTextKey(statTextKey.."_FOOT")
-	statFoot			= (statFootKey ~= (statTextKey.."_FOOT")) and statFootKey
-	statPriority		= sPriority
-	lineTextKey			= statTextKey
-	lineSection			= statSection
-	linePriority		= statPriority
-	linePrefix			= ""
-	lineSign			= ""
-	lineValue			= statValue
-	lineExtra			= ""	
-	subStats			= {}
+	lineType		= statType
+	objectInfo		= GameInfo.Buildings[objectID]
+	objectClassInfo	= GameInfo.BuildingClasses[objectInfo.BuildingClass]
+	activePlayer	= Players[Game.GetActivePlayer()]
+	activeTeam		= Teams[Game.GetActiveTeam()]
+	adjustedCost	= activePlayer:GetBuildingProductionNeeded(objectID)	
+	statTextKey		= "TXT_KEY_BUILDING_EFFECT" .. string.upper( string.gsub(lineType, '(%u)',  function(x) return "_"..x end) )
+	statFootKey		= Locale.ConvertTextKey(statTextKey.."_FOOT")
+	statFoot		= (statFootKey ~= (statTextKey.."_FOOT")) and statFootKey
+	statPriority	= sPriority
+	lineTextKey		= statTextKey
+	lineSection		= statSection
+	linePriority	= statPriority
+	linePrefix		= ""
+	lineSign		= ""
+	lineValue		= statValue
+	lineExtra		= ""	
+	subStats		= {}
 	
 	if type(lineValue) == "number" then
 		lineValue = ToDecimal(lineValue)
@@ -111,47 +113,39 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 		
 	elseif lineType == "Cost" then
 		lineValue = activePlayer:GetBuildingProductionNeeded(objectID)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 		
 	elseif lineType == "FaithCost" then
 		lineValue = activePlayer:GetBuildingProductionNeeded(objectID)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "HurryCostModifier" then
 		if objectInfo.Cost <= 0 or objectInfo[lineType] == -1 then return {} end
 		lineValue = activePlayer:GetPurchaseCostMod(activePlayer:GetBuildingProductionNeeded(objectID), objectInfo[lineType])
-		InsertBuildSubStat()
-
-	elseif lineType == "NumCityCostMod" then
-		lineValue = objectInfo[lineType]
-		InsertBuildSubStat()
-
-	elseif lineType == "PopCostMod" then
-		lineValue = objectInfo[lineType]
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "GoldMaintenance" then
 		if city and city:GetNumFreeBuilding(objectID) > 0 then return {} end
 		lineValue = objectInfo[lineType]
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "UnmoddedHappiness" then
 		lineValue = activePlayer:GetBuildingYield(objectID, YieldTypes.YIELD_HAPPINESS_NATIONAL, city)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "Happiness" then
 		lineValue = activePlayer:GetBuildingYield(objectID, YieldTypes.YIELD_HAPPINESS_CITY, city)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "AlreadyBuilt" then
 		lineValue = Building_IsAlreadyBuilt(objectID, activePlayer)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "Replaces" then
 		local defaultObjectType = objectClassInfo.DefaultBuilding
 		if objectInfo.Type ~= defaultObjectType then		
 			lineValue = Locale.ConvertTextKey(GameInfo.Buildings[defaultObjectType].Description or GameInfo.Buildings[defaultObjectType].Type)
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "YieldChange" then
@@ -165,7 +159,7 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			if lineValue ~= 0 then
 				linePrefix = string.format("%s {%s}", yieldInfo.IconString or ("ICON:"..yieldInfo.Type), yieldInfo.Description or yieldInfo.Type)
 				linePriority = statPriority + (100 * yieldInfo.ListPriority)
-				InsertBuildSubStat()
+				InsertBuildingSubStat()
 			end
 		end
 
@@ -175,7 +169,7 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			if lineValue ~= 0 then
 				linePrefix = string.format("%s {%s}", yieldInfo.IconString or ("ICON:"..yieldInfo.Type), yieldInfo.Description or yieldInfo.Type)
 				linePriority = statPriority + (100 * yieldInfo.ListPriority)
-				InsertBuildSubStat()
+				InsertBuildingSubStat()
 			end
 		end
 
@@ -233,30 +227,30 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 		
 	elseif lineType == "YieldModMilitary" or lineType == "YieldModBuilding" or lineType == "YieldModWonder" or lineType == "YieldModSpace" then
 		lineType = string.gsub(lineType, "YieldMod(.*)", function(x) return x.."ProductionModifier" end)
-		InsertBuildSubStat(GameInfo.Yields.YIELD_PRODUCTION)
+		InsertBuildingSubStat(GameInfo.Yields.YIELD_PRODUCTION)
 
 	elseif lineType == "YieldStorage" then
 		lineType = "FoodKept"
-		InsertBuildSubStat(GameInfo.Yields.YIELD_FOOD)
+		InsertBuildingSubStat(GameInfo.Yields.YIELD_FOOD)
 
 	elseif lineType == "InstantBorderPlots" then
-		InsertBuildSubStat(GameInfo.Yields.YIELD_CULTURE)
+		InsertBuildingSubStat(GameInfo.Yields.YIELD_CULTURE)
 
 	elseif lineType == "InstantBorderRadius" then
-		InsertBuildSubStat(GameInfo.Yields.YIELD_CULTURE)
+		InsertBuildingSubStat(GameInfo.Yields.YIELD_CULTURE)
 
 	elseif lineType == "YieldFromUsingGreatPeople" then
 		lineType = "GreatPersonExpendGold"
-		InsertBuildSubStat(GameInfo.Yields.YIELD_GOLD)
+		InsertBuildingSubStat(GameInfo.Yields.YIELD_GOLD)
 
 	elseif lineType == "TradeRouteModifier" then
-		InsertBuildSubStat(GameInfo.Yields.YIELD_GOLD)
+		InsertBuildingSubStat(GameInfo.Yields.YIELD_GOLD)
 
 	elseif lineType == "MedianTechPercentChange" then
-		InsertBuildSubStat(GameInfo.Yields.YIELD_SCIENCE)
+		InsertBuildingSubStat(GameInfo.Yields.YIELD_SCIENCE)
 
 	elseif lineType == "ReligiousPressureModifier" then
-		InsertBuildSubStat(GameInfo.Yields.YIELD_FAITH)
+		InsertBuildingSubStat(GameInfo.Yields.YIELD_FAITH)
 
 	elseif lineType == "YieldFromResources" then
 		local yieldRes = {}
@@ -315,14 +309,14 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			lineTextKey = "TXT_KEY_BUILDING_EFFECT_SPECIALIST_POINTS"
 			linePrefix = string.format("%s {%s}", specInfo.IconString or ("ICON:"..specInfo.Type), specInfo.Description or specInfo.Type)
 			lineValue = objectInfo.SpecialistCount
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 		if objectInfo.GreatPeopleRateChange ~= 0 then
 			lineTextKey = "TXT_KEY_BUILDING_EFFECT_GREAT_PERSON_POINTS"
 			linePrefix = specInfo.IconString or ("ICON:"..specInfo.Type)
 			lineValue = objectInfo.GreatPeopleRateChange
 			lineExtra = string.format("{%s}", specInfo.Description or specInfo.Type)
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "GreatWorkSlotType" then
@@ -331,36 +325,36 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 		if objectInfo.GreatWorkCount ~= 0 then
 			lineTextKey = gwInfo.SlotsToolTipText or gwInfo.Type
 			linePrefix = objectInfo.GreatWorkCount
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 		
 	elseif lineType == "ExperienceDomain" then
 		for row in GameInfo.Building_DomainFreeExperiences{BuildingType = objectInfo.Type} do
 			lineValue = row.Experience
 			lineExtra = Locale.ConvertTextKey(GameInfo.Domains[row.DomainType].Description or GameInfo.Domains[row.DomainType].Type)
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "ExperienceCombat" then
 		for row in GameInfo.Building_UnitCombatFreeExperiences{BuildingType = objectInfo.Type} do
 			lineValue = row.Experience
 			lineExtra = Locale.ConvertTextKey(GameInfo.UnitCombatInfos[row.UnitCombatType].Description or GameInfo.UnitCombatInfos[row.UnitCombatType].Type)
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "FreeGreatWork" then
 		lineValue = string.format("{%s}", GameInfo.GreatWorks[objectInfo.FreeGreatWork].Description or GameInfo.GreatWorks[objectInfo.FreeGreatWork].Type)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "FreeBuildingThisCity" then
 		local uniqueID = activePlayer:GetUniqueBuildingID(objectInfo[lineType])
 		lineValue = string.format("{%s}", GameInfo.Buildings[uniqueID].Description or GameInfo.Buildings[uniqueID].Type)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "FreeBuilding" then
 		local uniqueID = activePlayer:GetUniqueBuildingID(objectInfo[lineType])
 		lineValue = string.format("{%s}", GameInfo.Buildings[uniqueID].Description or GameInfo.Buildings[uniqueID].Type)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "FreeUnits" then
 		for row in GameInfo.Building_FreeUnits{BuildingType = objectInfo.Type} do
@@ -370,7 +364,7 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			if unitInfo.MoveRate == "GREAT_PERSON" then
 				lineTextKey = "TXT_KEY_BUILDING_EFFECT_FREE_GREAT_PERSON"
 			end
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "FreeResources" then
@@ -379,49 +373,49 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			linePrefix = resInfo.IconString or ("ICON:"..resInfo.Type)
 			lineValue = row.Quantity
 			lineExtra = Locale.ConvertTextKey(resInfo.Description or resInfo.Type)
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "NotFeature" then
 		lineValue = string.format("{%s}", GameInfo.Features[lineValue].Description or GameInfo.Features[lineValue].Type)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "RequiresNearAll" then
 		lineValue = ""
 		for row in GameInfo.Building_LocalResourceAnds{BuildingType = objectInfo.Type} do
 			lineValue = lineValue .. (GameInfo.Resources[row.ResourceType].IconString or ("ICON:"..GameInfo.Resources[row.ResourceType].Type))
 		end
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "RequiresNearAny" then
 		lineValue = ""
 		for row in GameInfo.Building_LocalResourceOrs{BuildingType = objectInfo.Type} do
 			lineValue = lineValue .. (GameInfo.Resources[row.ResourceType].IconString or ("ICON:"..GameInfo.Resources[row.ResourceType].Type))
 		end
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "RequiresResourceConsumption" then
 		lineValue = ""
 		for row in GameInfo.Building_ResourceQuantityRequirements{BuildingType = objectInfo.Type} do
 			lineValue = string.format("%s%s%s ", lineValue, row.Cost, GameInfo.Resources[row.ResourceType].IconString or ("ICON:"..GameInfo.Resources[row.ResourceType].Type))
 		end
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "NearbyTerrainRequired" then
 		lineValue = string.format("{%s}", GameInfo.Terrains[lineValue].Description or GameInfo.Terrains[lineValue].Type)
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 
 	elseif lineType == "RequiresTech" then
 		for row in GameInfo.Building_TechAndPrereqs{BuildingType = objectInfo.Type} do
 			lineValue = string.format("{%s}", GameInfo.Technologies[row.TechType].Description or GameInfo.Technologies[row.TechType].Type)
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "RequiresBuilding" then
 		for row in GameInfo.Building_ClassesNeededInCity{BuildingType = objectInfo.Type} do
 			local uniqueID = activePlayer:GetUniqueBuildingID(row.BuildingClassType)
 			lineValue = string.format("{%s}", GameInfo.Buildings[uniqueID].Description or GameInfo.Buildings[uniqueID].Type)
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "RequiresBuildingInCities" then
@@ -433,7 +427,7 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			else
 				lineExtra = row.NumBuildingNeeded
 			end
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 
 	elseif lineType == "RequiresBuildingInPercentCities" then
@@ -445,12 +439,12 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			else
 				lineExtra = row.PercentBuildingNeeded
 			end
-			InsertBuildSubStat()
+			InsertBuildingSubStat()
 		end
 		
 	else
 		-- ** DEFAULT STRING HANDLING ** --
-		InsertBuildSubStat()
+		InsertBuildingSubStat()
 	end
 	
 	return subStats
@@ -472,11 +466,11 @@ Game.GetDefaultPromotionStatText = Game.GetDefaultPromotionStatText or function(
 	statTextKey			= "TXT_KEY_PROMOTION_EFFECT" .. string.upper( string.gsub(lineType, '(%u)',  function(x) return "_"..x end) )
 	statPriority		= sPriority
 	lineTextKey			= statTextKey
-	lineSection			= statSection
+	lineSection			= statSection or 14
 	linePriority		= statPriority
-	linePrefix			= TipSectionIcon[lineSection]
+	linePrefix			= TipSectionIcon[lineSection] or "[ICON_BULLET]"
 	lineSign			= ""
-	lineValue			= tostring(statValue) .. " " .. tostring(statType)
+	lineValue			= statValue
 	lineExtra			= ""	
 	subStats			= {}
 	
@@ -484,6 +478,7 @@ Game.GetDefaultPromotionStatText = Game.GetDefaultPromotionStatText or function(
 		lineValue = ToDecimal(lineValue)
 		lineSign = GetSign(lineValue)
 	end
+	
 	
 	if lineType == "Name" then
 		
@@ -494,7 +489,7 @@ Game.GetDefaultPromotionStatText = Game.GetDefaultPromotionStatText or function(
 	
 	return subStats
 end
-	
+
 --
 -- Private Helper Methods
 --
@@ -508,19 +503,46 @@ function GetSign(value)
 	return value > 0 and "+" or ""
 end
 
-
 function InsertPromoSubStat()
+	if type(lineValue) == "function" then
+		-- not handled by a specific if-else clause, so use default behavior
+		lineValue = objectInfo[lineType]
+		--log:Warn("InsertPromoSubStat %s value is an unhandled function!", lineType)
+	end
 	if not lineValue or lineValue == 0 or lineValue == -1 or lineValue == "" then
 		return
 	end
-	if type(lineValue) == "function" then
-		log:Warn("InsertPromoSubStat %s value is an unhandled function!", lineType)
-		return
+	local text = Locale.ConvertTextKey(statTextKey)
+	if text == statTextKey then
+		-- no text key, use default behavior
+		text = lineType
 	end
-	local text = Locale.ConvertTextKey(lineTextKey, linePrefix, lineSign, lineValue, lineExtra)
+	if type(lineValue) == "boolean" then
+		text = string.format("%s %s", linePrefix, text)
+	else
+		text = string.format("%s %s: %s", linePrefix, text, lineValue)
+	end
 	table.insert(subStats, {Type=lineType, Section=lineSection, Priority=linePriority, TextBody=text})
 end
 
+function InsertBuildingSubStat(yieldInfo)
+	if yieldInfo then
+		linePrefix		= string.format("%s {%s}", yieldInfo.IconString or ("ICON:"..yieldInfo.Type), yieldInfo.Description or yieldInfo.Type)
+		linePriority	= statPriority + (100 * yieldInfo.ListPriority)
+		lineValue		= objectInfo[lineType]
+	end
+	if type(lineValue) == "function" then
+		-- not handled by a specific if-else clause, so use default behavior
+		lineValue = objectInfo[lineType]
+		--log:Warn("InsertBuildingSubStat %30s value is an unhandled function!", lineType)
+		--return
+	end
+	if not lineValue or lineValue == 0 or lineValue == -1 or lineValue == "" then
+		return
+	end
+	local text = Locale.ConvertTextKey(lineTextKey, linePrefix, lineSign, lineValue, lineExtra)
+	table.insert(subStats, {Type=lineType, Section=lineSection, Priority=linePriority, TextBody=text, TextFoot=statFoot})
+end
 
 function ConvertYieldList(statType, statSection, statPriority, lineTextKey, yieldList)
 	local subStats = {}
@@ -599,22 +621,10 @@ function GetYieldInfo(info)
 	return ConvertYieldList(lineType, lineSection, linePriority, lineTextKey, yieldList)
 end
 
-function InsertBuildSubStat(yieldInfo)
-	if yieldInfo then
-		linePrefix		= string.format("%s {%s}", yieldInfo.IconString or ("ICON:"..yieldInfo.Type), yieldInfo.Description or yieldInfo.Type)
-		linePriority	= statPriority + (100 * yieldInfo.ListPriority)
-		lineValue		= objectInfo[lineType]
-	end
-	if not lineValue or lineValue == 0 or lineValue == -1 or lineValue == "" then
-		return
-	end
-	if type(lineValue) == "function" then
-		log:Warn("InsertBuildSubStat %s value is an unhandled function!", lineType)
-		return
-	end
-	local text = Locale.ConvertTextKey(lineTextKey, linePrefix, lineSign, lineValue, lineExtra)
-	table.insert(subStats, {Type=lineType, Section=lineSection, Priority=linePriority, TextBody=text, TextFoot=statFoot})
-end
+
+--
+-- Read Data
+--
 
 --print(string.format("%3s ms loading InfoTooltipInclude.lua building stat functions", Game.Round(os.clock() - buildingStatStartTime, 8)))
 local buildingStatStartTime = os.clock()
@@ -631,16 +641,16 @@ cepClassInfo = nil
 		Game.Stats.Buildings[objectID] = {}
 		for row in GameInfo.BuildingStats() do
 			if row.Value then
-				local v = {Type=row.Type, Section=row.Section, Priority=row.Priority, Dynamic=row.Dynamic, Value=assert(loadstring("return " .. row.Value))()}
-				if v.Value and v.Value ~= 0 and v.Value ~= -1 and v.Value ~= "" then
-					if v.Dynamic == 1 then
-						table.insert(Game.Stats.Buildings[objectID], v)
+				local stat = {Type=row.Type, Section=row.Section, Priority=row.Priority, Dynamic=(row.Dynamic == 1), Value=assert(loadstring("return " .. row.Value))()}
+				if stat.Value and stat.Value ~= 0 and stat.Value ~= -1 and stat.Value ~= "" then
+					if stat.Dynamic then
+						table.insert(Game.Stats.Buildings[objectID], stat)
 					else
-						for _, subStat in pairs(Game.GetDefaultBuildingStatText(objectID, v.Type, v.Section, v.Priority, v.Value)) do
+						for _, subStat in pairs(Game.GetDefaultBuildingStatText(objectID, stat.Type, stat.Section, stat.Priority, stat.Value)) do
 							if subStat.Section and subStat.Priority and subStat.TextBody then
-								table.insert(Game.Stats.Buildings[objectID], {Type=v.Type, Section=subStat.Section, Priority=subStat.Priority, TextBody=subStat.TextBody, TextFoot=subStat.TextFoot})
+								table.insert(Game.Stats.Buildings[objectID], {Type=stat.Type, Section=subStat.Section, Priority=subStat.Priority, TextBody=subStat.TextBody, TextFoot=subStat.TextFoot})
 							else
-								log:Error("Init Stats %25s %20s %20s section=%3s priority=%3s textBody=%s", objectInfo.Type, v.Type, subStat.Type, subStat.Section, subStat.Priority, subStat.TextBody)
+								log:Error("Init Stats %25s %20s %20s section=%3s priority=%3s textBody=%s", objectInfo.Type, stat.Type, subStat.Type, subStat.Section, subStat.Priority, subStat.TextBody)
 							end
 						end
 					end
@@ -660,24 +670,24 @@ cepClassInfo = nil
 			if not row.Value then
 				log:Error("cepObjectInfo %s value is nil!", row.Type)
 			else
-				local v = {
+				local stat = {
 					Type		= row.Type,
 					Section		= row.Section, 
 					Priority	= row.Priority, 
-					Dynamic		= row.Dynamic, 
+					Dynamic		= (row.Dynamic == 1), 
 					Attack		= row.Attack, 
 					Defense		= row.Defense, 
 					Opposite	= row.Opposite, 
 					Value		= assert(loadstring("return " .. row.Value))()
 				}
-				if v.Value and v.Value ~= 0 and v.Value ~= -1 and v.Value ~= "" then
-					if v.Dynamic == 1 then
-						table.insert(Game.Stats.Promotions[objectID], v)
+				if stat.Value and stat.Value ~= 0 and stat.Value ~= -1 and stat.Value ~= "" then
+					if stat.Dynamic then
+						table.insert(Game.Stats.Promotions[objectID], stat)
 					else
-						for _, subStat in pairs(Game.GetDefaultPromotionStatText(objectID, v.Type, v.Section, v.Priority, v.Value)) do
+						for _, subStat in pairs(Game.GetDefaultPromotionStatText(objectID, stat.Type, stat.Section, stat.Priority, stat.Value)) do
 							if subStat.Section and subStat.Priority and subStat.TextBody then
 								table.insert(Game.Stats.Promotions[objectID], {
-								Type		= v.Type,
+								Type		= stat.Type,
 								Section		= subStat.Section,
 								Priority	= subStat.Priority,
 								Attack		= subStat.Attack,
@@ -688,7 +698,7 @@ cepClassInfo = nil
 							else
 								log:Error("Init Stats %25s %20s %20s section=%3s priority=%3s attack=%3s defense=%3s opposite=%3s textBody=%s",
 									objectInfo.Type,
-									v.Type,
+									stat.Type,
 									subStat.Type,
 									subStat.Section, 
 									subStat.Priority,

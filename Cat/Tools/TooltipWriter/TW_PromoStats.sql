@@ -87,8 +87,9 @@ INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (8,  4, 'Embar
 INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (9,  1, 'UpgradeDiscount'                    , 'cepObjectInfo.UpgradeDiscount');
 
 -- Great_General --
-INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (10,  1, 'GreatGeneral'                       , 'cepObjectInfo.GreatGeneral');
-INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (10,  2, 'GreatGeneralModifier'               , 'cepObjectInfo.GreatGeneralModifier');
+INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (10,  1, 'GreatAdmiral'                       , 'cepObjectInfo.GreatAdmiral');
+INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (10,  2, 'GreatGeneral'                       , 'cepObjectInfo.GreatGeneral');
+INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (10,  3, 'GreatGeneralModifier'               , 'cepObjectInfo.GreatGeneralModifier');
 
 -- Res_Uranium --
 INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (11,  1, 'NukeImmune'                         , 'cepObjectInfo.NukeImmune');
@@ -108,8 +109,7 @@ INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (13,  6, 'Enem
 INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (13,  7, 'NeutralDamageChance'                , 'cepObjectInfo.NeutralDamageChance');
 
 -- Other --
-INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (14,  1, 'LostWithUpgrade'                    , 'cepObjectInfo.LostWithUpgrade');
-INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (14,  2, 'Leader'                             , 'cepObjectInfo.Leader');
-INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (14,  3, 'HiddenNationality'                  , 'cepObjectInfo.HiddenNationality');
+INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (14,  1, 'Leader'                             , 'cepObjectInfo.Leader');
+INSERT INTO PromotionStats(Section, Priority, Type, Value) VALUES (14,  2, 'HiddenNationality'                  , 'cepObjectInfo.HiddenNationality');
 
 UPDATE LoadedFile SET Value=1 WHERE Type='TW_PromoStats.sql';

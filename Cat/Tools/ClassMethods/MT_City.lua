@@ -154,28 +154,32 @@ function City_GetBuildingsOfFlavor(city, flavorType, goldMin, includeWonders)
 	local itemFlavors = {}
 	local numItems = 0
 	for flavorInfo in GameInfo.Building_Flavors(string.format("FlavorType = '%s'", flavorType)) do
-		local itemInfo = GameInfo.Buildings[flavorInfo.BuildingType]
-		--log:Warn("BuildingType=%s itemInfo.Type=%s itemInfo.ID=%s", flavorInfo.BuildingType, itemInfo.Type, itemInfo.ID)
+		if not flavorInfo.BuildingType then
+			log:Error("BuildingType=%s FlavorType=%s", flavorInfo.BuildingType, flavorType)
+		else
+			local itemInfo = GameInfo.Buildings[flavorInfo.BuildingType]
+			--log:Warn("BuildingType=%s itemInfo.Type=%s itemInfo.ID=%s", flavorInfo.BuildingType, itemInfo.Type, itemInfo.ID)
 
-		if not itemInfo then
-			log:Error("City_GetBuildingsOfFlavor: %s does not exist in GameInfo.Buildings  (FlavorType=%s)", flavorInfo.BuildingType, flavorType)
-		elseif (City_CanBuild(city, itemInfo.ID, 0, 1)
-				and (includeWonders or not Building_IsWonder(itemInfo.ID))
-				and not (goldMin and player:IsBudgetGone(goldMin + City_GetPurchaseCost(city, YieldTypes.YIELD_GOLD, GameInfo.Buildings, itemInfo.ID), itemInfo.GoldMaintenance))
-				) then
-			local isResourceAvailable = true
-			for row in GameInfo.Building_ResourceQuantityRequirements(string.format("BuildingType = '%s'", itemInfo.Type)) do
-				if player:GetNumResourceAvailable(GameInfo.Resources[row.ResourceType].ID, true) <= Cep.MIN_RESOURCE_QUANTITY_FREE_FLAVOR_BUILDINGS then
-					isResourceAvailable = false
-					break
+			if not itemInfo then
+				log:Error("City_GetBuildingsOfFlavor: %s does not exist in GameInfo.Buildings  (FlavorType=%s)", flavorInfo.BuildingType, flavorType)
+			elseif (City_CanBuild(city, itemInfo.ID, 0, 1)
+					and (includeWonders or not Building_IsWonder(itemInfo.ID))
+					and not (goldMin and player:IsBudgetGone(goldMin + City_GetPurchaseCost(city, YieldTypes.YIELD_GOLD, GameInfo.Buildings, itemInfo.ID), itemInfo.GoldMaintenance))
+					) then
+				local isResourceAvailable = true
+				for row in GameInfo.Building_ResourceQuantityRequirements(string.format("BuildingType = '%s'", itemInfo.Type)) do
+					if player:GetNumResourceAvailable(GameInfo.Resources[row.ResourceType].ID, true) <= Cep.MIN_RESOURCE_QUANTITY_FREE_FLAVOR_BUILDINGS then
+						isResourceAvailable = false
+						break
+					end
 				end
-			end
-			if isResourceAvailable then
+				if isResourceAvailable then
+					itemFlavors[itemInfo.ID] = flavorInfo.Flavor
+					numItems = numItems + 1
+				end
 				itemFlavors[itemInfo.ID] = flavorInfo.Flavor
 				numItems = numItems + 1
 			end
-			itemFlavors[itemInfo.ID] = flavorInfo.Flavor
-			numItems = numItems + 1
 		end
 	end
 	return itemFlavors, numItems
@@ -316,9 +320,7 @@ function Map_GetCity(cityID)
 end
 
 ---------------------------------------------------------------------
---[[ City_GetNumBuilding(city, buildingID) usage example:
-
-]]
+-- City_GetNumBuilding(city, buildingID)
 function City_GetNumBuilding(city, building)
 	if not city then
 		log:Fatal("City_GetNumBuilding city=%s", city)

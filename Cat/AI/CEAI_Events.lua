@@ -4,6 +4,7 @@
 --------------------------------------------------------------
 
 include("MT_Events.lua")
+include("YieldLibrary.lua")
 include("FLuaVector")
 
 local log = Events.LuaLogger:New()
@@ -13,7 +14,7 @@ if not Cep then
 	print("Cep table does not exist!")
 	--return
 end
---[=[
+--
 
 --
 -- Spend AI gold more intelligently
@@ -43,22 +44,22 @@ An AI with +20g per turn, 800g stored and a 500g threshold decides:
 --]]
 
 local warUnitFlavorsEarly = {
-	{FlavorType="FLAVOR_SOLDIER",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID}}}			,
-	{FlavorType="FLAVOR_MOBILE",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}			,
+	{FlavorType="FLAVOR_SOLDIER",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID}}		,
+	{FlavorType="FLAVOR_MOBILE",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}		,
 	{FlavorType="FLAVOR_SIEGE",				Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SIEGE.ID}}			,
 	{FlavorType="FLAVOR_RANGED",			Num=2, Promos={GameInfo.UnitPromotions.PROMOTION_BARRAGE_1.ID}}		,
 	{FlavorType="FLAVOR_NAVAL_BOMBARDMENT",	Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_1.ID}}	,
-	{FlavorType="FLAVOR_VANGUARD",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_TRENCHES_1.ID}}		,
-	{FlavorType="FLAVOR_ANTI_MOBILE",		Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}
+	{FlavorType="FLAVOR_VANGUARD",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}		,
+	{FlavorType="FLAVOR_ANTI_MOBILE",		Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}
 }
 
 local warUnitFlavorsLate = {
 	{FlavorType="FLAVOR_MOBILE",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID,		GameInfo.UnitPromotions.PROMOTION_SHOCK_2.ID}}			,
 	{FlavorType="FLAVOR_AIR",				Num=1, Promos={}},
-	{FlavorType="FLAVOR_SIEGE",				Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_ACCURACY_1.ID,	GameInfo.UnitPromotions.PROMOTION_SIEGE.ID}}			,
+	{FlavorType="FLAVOR_VANGUARD",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID,		GameInfo.UnitPromotions.PROMOTION_DRILL_2.ID}}			,
+	{FlavorType="FLAVOR_SIEGE",				Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_ACCURACY_1.ID,		GameInfo.UnitPromotions.PROMOTION_SIEGE.ID}}			,
 	{FlavorType="FLAVOR_RANGED",			Num=2, Promos={GameInfo.UnitPromotions.PROMOTION_BARRAGE_1.ID,		GameInfo.UnitPromotions.PROMOTION_BARRAGE_2.ID}}		,
 	{FlavorType="FLAVOR_NAVAL_BOMBARDMENT",	Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_1.ID,	GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_2.ID}}	,
-	{FlavorType="FLAVOR_SOLDIER",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID,		GameInfo.UnitPromotions.PROMOTION_DRILL_2.ID}}			,
 	{FlavorType="FLAVOR_ANTI_MOBILE",		Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID,		GameInfo.UnitPromotions.PROMOTION_SHOCK_2.ID}}			,
 	{FlavorType="FLAVOR_ANTIAIR",			Num=1, Promos={}}			
 }
@@ -456,13 +457,16 @@ end
 function PurchaseOneUnitOfFlavor(player, cities, goldMin, flavorType)
 	for _,cityInfo in ipairs(cities) do
 		local city = Map_GetCity(cityInfo.id)
-		local itemID = Game.GetRandomWeighted(City_GetUnitsOfFlavor(city, flavorType, goldMin))
-		if itemID ~= -1 then
-			local cost = City_GetPurchaseCost(city, YieldTypes.YIELD_GOLD, GameInfo.Units, itemID)
-			local unit = player:InitUnitType(itemID, city:Plot(), City_GetUnitExperience(city, itemID))				
-			log:Info("%-15s %20s %3s/%-4s PAID for                      %-25s %s", "AIPurchase", player:GetName(), cost, player:GetYieldStored(YieldTypes.YIELD_GOLD), flavorType, GameInfo.Units[itemID].Type)
-			player:ChangeYieldStored(YieldTypes.YIELD_GOLD, -1 * cost)
-			return unit
+		local units = City_GetUnitsOfFlavor(city, flavorType, goldMin)
+		if #units > 0 then
+			local itemID = Game.GetRandomWeighted(units)
+			if itemID ~= -1 then
+				local cost = City_GetPurchaseCost(city, YieldTypes.YIELD_GOLD, GameInfo.Units, itemID)
+				local unit = player:InitUnitType(itemID, city:Plot(), City_GetUnitExperience(city, itemID))				
+				log:Info("%-15s %20s %3s/%-4s PAID for                      %-25s %s", "AIPurchase", player:GetName(), cost, player:GetYieldStored(YieldTypes.YIELD_GOLD), flavorType, GameInfo.Units[itemID].Type)
+				player:ChangeYieldStored(YieldTypes.YIELD_GOLD, -1 * cost)
+				return unit
+			end
 		end
 	end
 	log:Info("%-15s %20s %3s %-4s no affordable unit of         %s", "", player:GetName(), " ", " ", flavorType)
@@ -476,13 +480,16 @@ function PurchaseBuildingOfFlavor(player, cities, goldMin, flavorType)
 	end
 	for _,cityInfo in ipairs(cities) do
 		local city = Map_GetCity(cityInfo.id)
-		local itemID = Game.GetRandomWeighted(City_GetBuildingsOfFlavor(city, flavorType, goldMin))
-		if itemID ~= -1 then
-			local cost = City_GetPurchaseCost(city, YieldTypes.YIELD_GOLD, GameInfo.Buildings, itemID)
-			city:SetNumRealBuilding(itemID, 1)	
-			log:Info("%-15s %20s %3s/%-4s PAID for                      %-25s %s", "AIPurchase", player:GetName(), cost, player:GetYieldStored(YieldTypes.YIELD_GOLD), flavorType, GameInfo.Buildings[itemID].Type)
-			player:ChangeYieldStored(YieldTypes.YIELD_GOLD, -1 * cost)
-			return true
+		local buildings = City_GetBuildingsOfFlavor(city, flavorType, goldMin)
+		if #buildings > 0 then
+			local itemID = Game.GetRandomWeighted(buildings)
+			if itemID ~= -1 then
+				local cost = City_GetPurchaseCost(city, YieldTypes.YIELD_GOLD, GameInfo.Buildings, itemID)
+				city:SetNumRealBuilding(itemID, 1)	
+				log:Info("%-15s %20s %3s/%-4s PAID for                      %-25s %s", "AIPurchase", player:GetName(), cost, player:GetYieldStored(YieldTypes.YIELD_GOLD), flavorType, GameInfo.Buildings[itemID].Type)
+				player:ChangeYieldStored(YieldTypes.YIELD_GOLD, -1 * cost)
+				return true
+			end
 		end
 	end
 	log:Info("%-15s %20s %3s %-4s no affordable building of     %s", "", player:GetName(), " ", " ", flavorType)
@@ -604,6 +611,16 @@ function CheckDiploVictoryUnlocked()
 	if MapModData.Cep_DiploVictoryUnlocked or not PreGame.IsVictory(GameInfo.Victories.VICTORY_DIPLOMATIC.ID) then
 		return
 	end
+	
+	for playerID, player in pairs(Players) do
+		if player:IsAliveCiv() and not player:IsMinorCiv() and player:GetCurrentEra() >= GameInfo.Eras.ERA_POSTMODERN.ID then
+			log:Info("DiploVictoryUnlocked")
+			MapModData.Cep_DiploVictoryUnlocked = true
+			return
+		end
+	end
+	
+	--[[
 	for buildingInfo in GameInfo.Buildings("VictoryPrereq = 'VICTORY_DIPLOMATIC'") do
 		local tech = buildingInfo.PrereqTech
 		for playerID, player in pairs(Players) do
@@ -614,6 +631,7 @@ function CheckDiploVictoryUnlocked()
 			end
 		end
 	end
+	--]]
 end
 LuaEvents.ActivePlayerTurnStart_Turn.Add(CheckDiploVictoryUnlocked)
 
@@ -929,13 +947,13 @@ function CheckAIEarlyBonuses(player)
 end
 LuaEvents.ActivePlayerTurnEnd_Player.Add(CheckAIEarlyBonuses)
 
---[=[
+--
 function AIPerTurnBonuses(player)
 	local capitalCity = player:GetCapitalCity()
 	if capitalCity == nil or player:IsMinorCiv() or player:IsHuman() then
 		return
 	end
-	--log:Info("%-25s %15s", "AIPerTurnBonuses", player:GetName())
+	log:Debug("%-25s %15s", "AIPerTurnBonuses", player:GetName())
 	local activePlayer		= Players[Game.GetActivePlayer()]
 	local handicapInfo		= Game.GetHandicapInfo()
 	local yieldStored		= player:GetYieldStored(YieldTypes.YIELD_SCIENCE)
@@ -943,8 +961,8 @@ function AIPerTurnBonuses(player)
 	local yieldMod			= handicapInfo.AIResearchPercent/100
 	local yieldModPerEra	= handicapInfo.AIResearchPercentPerEra/100 * Game.GetAverageHumanEra()
 	player:ChangeYieldStored(YieldTypes.YIELD_SCIENCE, Game.Round(yieldRate * (yieldMod + yieldModPerEra)))
-	--[[
-	--log:Debug(Sci bonus for %-25s: %5s + %4s * (%4s + %-4s) = %5s (+%s),
+	--
+	log:Debug("Sci bonus for %-25s: %5s + %4s * (%4s + %-4s) = %5s (+%s)",
 		player:GetName(),
 		yieldStored,
 		yieldRate,
@@ -1253,9 +1271,10 @@ function ClearCampsCity(city, player)
 		end
 		if impID == campID then
 			log:Debug("ClearCampsCity %s %s distance=%s", player:GetName(), city:GetName(), distance)
+			local campUnit = nearPlot:GetUnit(0)
 			if Plot_IsNearHuman(nearPlot, searchRange) then
 				log:Debug("ClearCampsCity aborting: near human", player:GetName(), city:GetName())
-			elseif nearPlot:GetUnit(0):FortifyModifier() > GameDefines.FORTIFY_MODIFIER_PER_TURN then  -- barb has been here a while
+			elseif (not campUnit) or campUnit:FortifyModifier() > GameDefines.FORTIFY_MODIFIER_PER_TURN then  -- barb has been here a while
 				ClearCamp(player, nearPlot)
 			end
 		end

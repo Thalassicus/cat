@@ -819,7 +819,7 @@ function UpdateWindow( city )
 
 	if unitProduction ~= -1 then
 		local thisUnitInfo = GameInfo.Units[unitProduction];
-		--ModChange
+		--Cep
 		local portraitOffset, portraitAtlas = UI.GetUnitPortraitIcon(unitProduction, city:GetOwner());
 		if IconHookup( portraitOffset, 128, portraitAtlas, Controls.ProductionPortrait ) then
 			Controls.ProductionPortrait:SetHide( false );
@@ -832,7 +832,7 @@ function UpdateWindow( city )
 		end
 	elseif buildingProduction ~= -1 then
 		local thisBuildingInfo = GameInfo.Buildings[buildingProduction];
-		--ModChange
+		--Cep
 		if IconHookup( thisBuildingInfo.PortraitIndex, 128, thisBuildingInfo.IconAtlas, Controls.ProductionPortrait ) then
 			Controls.ProductionPortrait:SetHide( false );
 			
@@ -844,7 +844,7 @@ function UpdateWindow( city )
 		end
 	elseif projectProduction ~= -1 then
 		local thisProjectInfo = GameInfo.Projects[projectProduction];
-		--ModChange
+		--Cep
 		if IconHookup( thisProjectInfo.PortraitIndex, 128, thisProjectInfo.IconAtlas, Controls.ProductionPortrait ) then
 			Controls.ProductionPortrait:SetHide( false );
 			
@@ -856,7 +856,7 @@ function UpdateWindow( city )
 		end
 	elseif processProduction ~= -1 then
 		local thisProcessInfo = GameInfo.Processes[processProduction];
-		--ModChange
+		--Cep
 		if IconHookup( thisProcessInfo.PortraitIndex, 128, thisProcessInfo.IconAtlas, Controls.ProductionPortrait ) then
 			Controls.ProductionPortrait:SetHide( false );
 		else

@@ -1,14 +1,14 @@
 -------------------------------------------------
 -- Civilopedia screen
--- Mod changes marked with "--ModChange"
+-- Mod changes marked with "--Cep"
 -------------------------------------------------
 
---ModChange
+--Cep
 include("InfoTooltipInclude");
 include( "InstanceManager" );
 include( "IconSupport" );
 
---ModChange
+--Cep
 function print() end
 
 -- table.sort method for sorting alphabetically.
@@ -471,7 +471,7 @@ CivilopediaCategory[CategoryUnits].PopulateList = function()
 		local faithUnits = {};
 		sortedList[CategoryUnits][0] = {};
 		local tableid = 1;
-		--ModChange
+		--Cep
 		for unit in DB.Query("SELECT Units.ID, Units.Description, Units.PortraitIndex, Units.IconAtlas From Units where FaithCost > 0 and Cost = -1 and not RequiresFaithPurchaseEnabled and ShowInPedia == 1") do 
 			AddArticle(0, tableid, unit);
 			tableid = tableid + 1;
@@ -483,12 +483,12 @@ CivilopediaCategory[CategoryUnits].PopulateList = function()
 	local sql = [[
 		SELECT Units.ID, Units.Description, Units.PortraitIndex, Units.IconAtlas 
 		FROM Units INNER JOIN Technologies on PreReqTech = Technologies.Type 
-		--ModChange
-		WHERE (Units.FaithCost = 0 or RequiresFaithPurchaseEnabled) and Units.ShowInPedia = 1 and Technologies.Era = ?;]];--ModChange
+		--Cep
+		WHERE (Units.FaithCost = 0 or RequiresFaithPurchaseEnabled) and Units.ShowInPedia = 1 and Technologies.Era = ?;]];--Cep
 						
 	local UnitsByEra = DB.CreateQuery(sql);
 	
-	--ModChange
+	--Cep
 	for era in GameInfo.Eras() do
 	
 		local eraID = era.ID + sectionID;
@@ -502,16 +502,16 @@ CivilopediaCategory[CategoryUnits].PopulateList = function()
 		end
 			
 		-- put in all of the units that do not have tech requirements in the Ancient Era for lack of a better place
-		--ModChange
+		--Cep
 		if(eraID == 1) then
-			--ModChange
+			--Cep
 			for unit in DB.Query("SELECT Units.ID, Units.Description, Units.PortraitIndex, Units.IconAtlas From Units where PreReqTech is NULL and Special is NULL and (Units.FaithCost = 0 or RequiresFaithPurchaseEnabled) and Units.ShowInPedia = 1") do
 				AddArticle(eraID, tableid, unit);
 				tableid = tableid + 1;
 			end
 		end	
 		
-		--ModChange
+		--Cep
 	end
 	
 	-- sort this list alphabetically by localized name
@@ -533,7 +533,7 @@ CivilopediaCategory[CategoryPromotions].PopulateList = function()
 		if thisPromotion.PediaType == "PEDIA_MELEE" then
 			-- add an article to the list (localized name, unit tag, etc.)
 			local article = {};
-			--ModChange
+			--Cep
 			local name = Locale.ConvertTextKey( thisPromotion.Description )
 			article.entryName = name;
 			article.entryID = thisPromotion.ID;
@@ -555,7 +555,7 @@ CivilopediaCategory[CategoryPromotions].PopulateList = function()
 		if thisPromotion.PediaType == "PEDIA_RANGED" then
 			-- add an article to the list (localized name, unit tag, etc.)
 			local article = {};
-			--ModChange
+			--Cep
 			local name = Locale.ConvertTextKey( thisPromotion.Description )
 			article.entryName = name;
 			article.entryID = thisPromotion.ID;
@@ -577,7 +577,7 @@ CivilopediaCategory[CategoryPromotions].PopulateList = function()
 		if thisPromotion.PediaType == "PEDIA_NAVAL" then
 			-- add an article to the list (localized name, unit tag, etc.)
 			local article = {};
-			--ModChange
+			--Cep
 			local name = Locale.ConvertTextKey( thisPromotion.Description )
 			article.entryName = name;
 			article.entryID = thisPromotion.ID;
@@ -599,7 +599,7 @@ CivilopediaCategory[CategoryPromotions].PopulateList = function()
 		if thisPromotion.PediaType == "PEDIA_HEAL" then
 			-- add an article to the list (localized name, unit tag, etc.)
 			local article = {};
-			--ModChange
+			--Cep
 			local name = Locale.ConvertTextKey( thisPromotion.Description )
 			article.entryName = name;
 			article.entryID = thisPromotion.ID;
@@ -621,7 +621,7 @@ CivilopediaCategory[CategoryPromotions].PopulateList = function()
 		if thisPromotion.PediaType == "PEDIA_SCOUTING" then
 			-- add an article to the list (localized name, unit tag, etc.)
 			local article = {};
-			--ModChange
+			--Cep
 			local name = Locale.ConvertTextKey( thisPromotion.Description )
 			article.entryName = name;
 			article.entryID = thisPromotion.ID;
@@ -643,7 +643,7 @@ CivilopediaCategory[CategoryPromotions].PopulateList = function()
 		if thisPromotion.PediaType == "PEDIA_AIR" then
 			-- add an article to the list (localized name, unit tag, etc.)
 			local article = {};
-			--ModChange
+			--Cep
 			local name = Locale.ConvertTextKey( thisPromotion.Description )
 			article.entryName = name;
 			article.entryID = thisPromotion.ID;
@@ -665,7 +665,7 @@ CivilopediaCategory[CategoryPromotions].PopulateList = function()
 		if thisPromotion.PediaType == "PEDIA_SHARED" then
 			-- add an article to the list (localized name, unit tag, etc.)
 			local article = {};
-			--ModChange
+			--Cep
 			local name = Locale.ConvertTextKey( thisPromotion.Description )
 			article.entryName = name;
 			article.entryID = thisPromotion.ID;
@@ -687,7 +687,7 @@ CivilopediaCategory[CategoryPromotions].PopulateList = function()
 		if thisPromotion.PediaType == "PEDIA_ATTRIBUTES" then
 			-- add an article to the list (localized name, unit tag, etc.)
 			local article = {};
-			--ModChange
+			--Cep
 			local name = Locale.ConvertTextKey( thisPromotion.Description )
 			article.entryName = name;
 			article.entryID = thisPromotion.ID;
@@ -740,7 +740,7 @@ CivilopediaCategory[CategoryBuildings].PopulateList = function()
 		--Add Faith Buildings first
 		sortedList[CategoryBuildings][sectionID] = {};
 		local tableid = 1;
-		--ModChange
+		--Cep
 		local query = [[
 			SELECT Buildings.ID, Buildings.Description, Buildings.PortraitIndex, Buildings.IconAtlas
 			FROM Buildings INNER JOIN BuildingClasses ON Buildings.BuildingClass = BuildingClasses.Type
@@ -764,7 +764,7 @@ CivilopediaCategory[CategoryBuildings].PopulateList = function()
 		FROM Buildings 
 		INNER JOIN BuildingClasses ON Buildings.BuildingClass = BuildingClasses.Type 
 		INNER JOIN Technologies ON Buildings.PrereqTech = Technologies.Type 
-		--ModChange
+		--Cep
 		WHERE ( Buildings.IsVisible = 1
 			AND Buildings.ShowInPedia = 1
 			AND Buildings.FaithCost = 0
@@ -778,7 +778,7 @@ CivilopediaCategory[CategoryBuildings].PopulateList = function()
 	
 	
 	-- for each era
-	--ModChange
+	--Cep
 	for era in GameInfo.Eras() do
 	
 		local eraID = era.ID + sectionID;
@@ -792,13 +792,13 @@ CivilopediaCategory[CategoryBuildings].PopulateList = function()
 		end
 	
 		-- put in all of the buildings that do not have tech requirements in the Ancient Era for lack of a better place
-		--ModChange
+		--Cep
 		if(eraID == 1) then
 			local sql = [[
 				SELECT Buildings.ID, Buildings.Description, Buildings.PortraitIndex, Buildings.IconAtlas 
 				FROM Buildings 
 				INNER JOIN BuildingClasses ON Buildings.BuildingClass = BuildingClasses.Type 
-				--ModChange
+				--Cep
 				WHERE ( Buildings.IsVisible = 1
 					AND Buildings.ShowInPedia = 1
 					AND Buildings.PrereqTech IS NULL
@@ -814,7 +814,7 @@ CivilopediaCategory[CategoryBuildings].PopulateList = function()
 			end
 		end
 		
-		--ModChange
+		--Cep
 	end
 		
 	for k,v in pairs(sortedList[CategoryBuildings]) do
@@ -832,7 +832,7 @@ CivilopediaCategory[CategoryWonders].PopulateList = function()
 	sortedList[CategoryWonders][1] = {};
 	local tableid = 1;
 
-	--ModChange
+	--Cep
 	for building in GameInfo.Buildings{IsVisible=1, ShowInPedia=1} do	
 		-- exclude wonders etc.				
 		local thisBuildingClass = GameInfo.BuildingClasses[building.BuildingClass];
@@ -867,7 +867,7 @@ CivilopediaCategory[CategoryWonders].PopulateList = function()
 
 	for building in GameInfo.Buildings() do	
 		local thisBuildingClass = GameInfo.BuildingClasses[building.BuildingClass];
-		--ModChange
+		--Cep
 		if thisBuildingClass.MaxPlayerInstances == 1 then
 			local article = {};
 			local name = Locale.ConvertTextKey( building.Description )
@@ -1984,7 +1984,7 @@ end;
 
 -- put text into a text block and resize the block
 function UpdateTextBlock( localizedString, label, innerFrame, outerFrame )
-	--ModChange
+	--Cep
 	if not localizedString or localizedString == "" then return end
 	local contentSize;
 	local frameSize = {};
@@ -2348,7 +2348,7 @@ CivilopediaCategory[CategoryTech].SelectArticle = function( techID, shouldAddToL
 				thisBuildingInstance.UnlockedBuildingButton:SetToolTipString( Locale.ConvertTextKey( thisBuildingInfo.Description ) );
 				thisBuildingInstance.UnlockedBuildingButton:SetVoids( thisBuildingInfo.ID, addToList );
 				local thisBuildingClass = GameInfo.BuildingClasses[thisBuildingInfo.BuildingClass];
-				--ModChange
+				--Cep
 				if thisBuildingClass.MaxGlobalInstances > 0 or thisBuildingClass.MaxPlayerInstances == 1 or thisBuildingClass.MaxTeamInstances > 0 then
 					thisBuildingInstance.UnlockedBuildingButton:RegisterCallback( Mouse.eLClick, CivilopediaCategory[CategoryWonders].SelectArticle );
 				else
@@ -2511,7 +2511,7 @@ CivilopediaCategory[CategoryTech].SelectArticle = function( techID, shouldAddToL
 			numAbilities = numAbilities + 1;
 		end
 	
-		--ModChange
+		--Cep
 		if thisTech.AllowEmbassyTradingAllowed then
 			if numAbilities > 0 then
 				abilitiesString = abilitiesString .. "[NEWLINE]";
@@ -2561,10 +2561,10 @@ CivilopediaCategory[CategoryTech].SelectArticle = function( techID, shouldAddToL
 		end
 
 		if numAbilities > 0 then
-			--ModChange
+			--Cep
 			UpdateTextBlock( Locale.ConvertTextKey( abilitiesString ), Controls.SpecialLabel, Controls.SpecialInnerFrame, Controls.SpecialFrame );
 		else
-			--ModChange
+			--Cep
 			Controls.SpecialFrame:SetHide( true );			
 		end
 		
@@ -2599,7 +2599,7 @@ CivilopediaCategory[CategoryUnits].SelectArticle = function( unitID, shouldAddTo
 		endTopic = currentTopic;
 	end
 	
-	--ModChange
+	--Cep
 	if unitID == -1 then
 		ResizeEtc();
 		return
@@ -2617,7 +2617,7 @@ CivilopediaCategory[CategoryUnits].SelectArticle = function( unitID, shouldAddTo
 			Controls.PortraitFrame:SetHide( true );
 		end
 
-		--ModChange
+		--Cep
  		
  		-- update the free promotions
 		g_PromotionsManager:ResetInstances();
@@ -2684,7 +2684,7 @@ CivilopediaCategory[CategoryUnits].SelectArticle = function( unitID, shouldAddTo
 				end	
 			end
 		end	
- 		--ModChange
+ 		--Cep
 		for info in GameInfo.Unit_TechTypes(string.format("UnitType = '%s'", thisUnit.Type)) do
 			local prereq = GameInfo.Technologies[info.TechType];
 			if prereq then
@@ -2813,21 +2813,21 @@ CivilopediaCategory[CategoryUnits].SelectArticle = function( unitID, shouldAddTo
 		end
 		UpdateButtonFrame( buttonAdded, Controls.CivilizationsInnerFrame, Controls.CivilizationsFrame );
 		
- 		--ModChange
+ 		--Cep
 		-- update the good for
 		local text = GetUnitTip{unitID=unitID, hideName=true, hideGoodFor=false, hideAbilities=true, hideCosts=true}
 		UpdateTextBlock( Locale.ConvertTextKey( text ), Controls.GoodForLabel, Controls.GoodForInnerFrame, Controls.GoodForFrame );
 		
 		-- update the abilities
 		text = GetUnitTip{unitID=unitID, hideName=true, hideGoodFor=true, hideAbilities=false, hideCosts=true}
-		UpdateTextBlock( LocaleMod.ConvertTextKey( text ), Controls.AbilitiesLabel, Controls.AbilitiesInnerFrame, Controls.AbilitiesFrame );
+		UpdateTextBlock( ModLocale.ConvertTextKey( text ), Controls.AbilitiesLabel, Controls.AbilitiesInnerFrame, Controls.AbilitiesFrame );
 		
 		-- update the costs
 		text = GetUnitTip{unitID=unitID, hideName=true, hideGoodFor=true, hideAbilities=true, hideCosts=false}
-		UpdateTextBlock( LocaleMod.ConvertTextKey( text ), Controls.CostsLabel, Controls.CostsInnerFrame, Controls.CostsFrame );
+		UpdateTextBlock( ModLocale.ConvertTextKey( text ), Controls.CostsLabel, Controls.CostsInnerFrame, Controls.CostsFrame );
 		
 		-- update the historical info
-		UpdateTextBlock( LocaleMod.ConvertTextKey( thisUnit.Civilopedia ), Controls.HistoryLabel, Controls.HistoryInnerFrame, Controls.HistoryFrame );
+		UpdateTextBlock( ModLocale.ConvertTextKey( thisUnit.Civilopedia ), Controls.HistoryLabel, Controls.HistoryInnerFrame, Controls.HistoryFrame );
 		
 		-- update the related images
 		Controls.RelatedImagesFrame:SetHide( true );
@@ -2981,7 +2981,7 @@ CivilopediaCategory[CategoryPromotions].SelectArticle = function( promotionID, s
 end
 
 function SelectBuildingOrWonderArticle( buildingID )
-	--ModChange
+	--Cep
 	if buildingID == -1 then
 		return
 	end
@@ -2998,7 +2998,7 @@ function SelectBuildingOrWonderArticle( buildingID )
 			Controls.PortraitFrame:SetHide( true );
 		end
 		
-		--ModChange
+		--Cep
 
 		-- update the Great People
 		local iGPType = thisBuilding.SpecialistType;
@@ -3083,7 +3083,7 @@ function SelectBuildingOrWonderArticle( buildingID )
 						thisBuildingInstance.RequiredBuildingButton:SetToolTipString( Locale.ConvertTextKey( thisBuildingInfo.Description ) );
 						thisBuildingInstance.RequiredBuildingButton:SetVoids( thisBuildingInfo.ID, addToList );
 						local thisBuildingClass = GameInfo.BuildingClasses[thisBuildingInfo.BuildingClass];
-						--ModChange
+						--Cep
 						if thisBuildingClass.MaxGlobalInstances > 0 or thisBuildingClass.MaxPlayerInstances == 1 or thisBuildingClass.MaxTeamInstances > 0 then
 							thisBuildingInstance.RequiredBuildingButton:RegisterCallback( Mouse.eLClick, CivilopediaCategory[CategoryWonders].SelectArticle );
 						else
@@ -3203,23 +3203,23 @@ function SelectBuildingOrWonderArticle( buildingID )
 		end	
 		UpdateButtonFrame( buttonAdded, Controls.GreatWorksInnerFrame, Controls.GreatWorksFrame );
 
- 		--ModChange
+ 		--Cep
 		-- update the good for
 		local buildingText = GetBuildingTip{buildingID=buildingID, hideName=true, hideGoodFor=false, hideAbilities=true, hideCosts=true}
 		UpdateTextBlock( Locale.ConvertTextKey( buildingText ), Controls.GoodForLabel, Controls.GoodForInnerFrame, Controls.GoodForFrame );
 		
 		-- update the abilities
 		buildingText = GetBuildingTip{buildingID=buildingID, hideName=true, hideGoodFor=true, hideAbilities=false, hideCosts=true}
-		UpdateTextBlock( LocaleMod.ConvertTextKey( buildingText ), Controls.AbilitiesLabel, Controls.AbilitiesInnerFrame, Controls.AbilitiesFrame );
+		UpdateTextBlock( ModLocale.ConvertTextKey( buildingText ), Controls.AbilitiesLabel, Controls.AbilitiesInnerFrame, Controls.AbilitiesFrame );
 		
 		-- update the costs
 		buildingText = GetBuildingTip{buildingID=buildingID, hideName=true, hideGoodFor=true, hideAbilities=true, hideCosts=false}
-		UpdateTextBlock( LocaleMod.ConvertTextKey( buildingText ), Controls.CostsLabel, Controls.CostsInnerFrame, Controls.CostsFrame );
+		UpdateTextBlock( ModLocale.ConvertTextKey( buildingText ), Controls.CostsLabel, Controls.CostsInnerFrame, Controls.CostsFrame );
 		
 		-- update the historical info
-		UpdateTextBlock( LocaleMod.ConvertTextKey( thisBuilding.Civilopedia ), Controls.HistoryLabel, Controls.HistoryInnerFrame, Controls.HistoryFrame );
+		UpdateTextBlock( ModLocale.ConvertTextKey( thisBuilding.Civilopedia ), Controls.HistoryLabel, Controls.HistoryInnerFrame, Controls.HistoryFrame );
 		
-		UpdateTextBlock( LocaleMod.ConvertTextKey( thisBuilding.Quote ), Controls.SilentQuoteLabel, Controls.SilentQuoteInnerFrame, Controls.SilentQuoteFrame );
+		UpdateTextBlock( ModLocale.ConvertTextKey( thisBuilding.Quote ), Controls.SilentQuoteLabel, Controls.SilentQuoteInnerFrame, Controls.SilentQuoteFrame );
 		
 		-- update the related images
 		Controls.RelatedImagesFrame:SetHide( true );
@@ -3350,7 +3350,7 @@ CivilopediaCategory[CategoryWonders].SelectArticle = function( wonderID, shouldA
 							thisBuildingInstance.RequiredBuildingButton:SetToolTipString( Locale.ConvertTextKey( thisBuildingInfo.Description ) );
 							thisBuildingInstance.RequiredBuildingButton:SetVoids( thisBuildingInfo.ID, addToList );
 							local thisBuildingClass = GameInfo.BuildingClasses[thisBuildingInfo.BuildingClass];
-							--ModChange
+							--Cep
 							if thisBuildingClass.MaxGlobalInstances > 0 or thisBuildingClass.MaxPlayerInstances == 1 or thisBuildingClass.MaxTeamInstances > 0 then
 								thisBuildingInstance.RequiredBuildingButton:RegisterCallback( Mouse.eLClick, CivilopediaCategory[CategoryWonders].SelectArticle );
 							else
@@ -3365,13 +3365,13 @@ CivilopediaCategory[CategoryWonders].SelectArticle = function( wonderID, shouldA
 			
 			-- update the game info
 			if thisProject.Help then
-				--ModChange
+				--Cep
 				UpdateTextBlock( Locale.ConvertTextKey( thisProject.Help ), Controls.AbilitiesLabel, Controls.AbilitiesInnerFrame, Controls.AbilitiesFrame );
 			end
 					
 			-- update the strategy info
 			if (thisProject.Strategy) then
-				--ModChange
+				--Cep
 				UpdateTextBlock( Locale.ConvertTextKey( thisProject.Strategy ), Controls.GoodForLabel, Controls.GoodForInnerFrame, Controls.GoodForFrame );
 			end
 			
@@ -3488,7 +3488,7 @@ CivilopediaCategory[CategoryPolicies].SelectArticle = function( policyID, should
 		end
 				
 		-- update the strategy info
-		--ModChange
+		--Cep
 		--UpdateTextBlock( Locale.ConvertTextKey( thisPolicy.Strategy ), Controls.GoodForLabel, Controls.GoodForInnerFrame, Controls.GoodForFrame );
 		
 		-- update the historical info
@@ -3548,7 +3548,7 @@ CivilopediaCategory[CategoryPeople].SelectArticle =  function( rawPeopleID, shou
 					
 			-- update the strategy info
 			if thisPerson.Strategy then
---ModChange
+--Cep
 				UpdateTextBlock( Locale.ConvertTextKey( thisPerson.Strategy ), Controls.GoodForLabel, Controls.GoodForInnerFrame, Controls.GoodForFrame );
 			end
 			
@@ -3588,7 +3588,7 @@ CivilopediaCategory[CategoryPeople].SelectArticle =  function( rawPeopleID, shou
 					
 			-- update the strategy info
 			if (thisPerson.Strategy) then
---ModChange
+--Cep
 				UpdateTextBlock( Locale.ConvertTextKey( thisPerson.Strategy ), Controls.GoodForLabel, Controls.GoodForInnerFrame, Controls.GoodForFrame );
 			end
 			
@@ -3724,7 +3724,7 @@ print("CivilopediaCategory[CategoryCivilizations].SelectArticle");
 								thisBuildingInstance.UniqueBuildingButton:SetToolTipString( Locale.ConvertTextKey( thisBuildingInfo.Description ) );
 								thisBuildingInstance.UniqueBuildingButton:SetVoids( thisBuildingInfo.ID, addToList );
 								local thisBuildingClass = GameInfo.BuildingClasses[thisBuildingInfo.BuildingClass];
---ModChange
+--Cep
 								if thisBuildingClass.MaxGlobalInstances > 0 or thisBuildingClass.MaxPlayerInstances == 1 or thisBuildingClass.MaxTeamInstances > 0 then
 									thisBuildingInstance.UniqueBuildingButton:RegisterCallback( Mouse.eLClick, CivilopediaCategory[CategoryWonders].SelectArticle );
 								else
@@ -4667,7 +4667,7 @@ CivilopediaCategory[CategoryImprovements].SelectArticle = function( improvementI
 
 			-- generic text
 			if (thisImprovement.Civilopedia) then
-				--ModChange
+				--Cep
 				UpdateTextBlock( Locale.ConvertTextKey( thisImprovement.Civilopedia ), Controls.AbilitiesLabel, Controls.AbilitiesInnerFrame, Controls.AbilitiesFrame );
 			end
 			
@@ -4721,7 +4721,7 @@ CivilopediaCategory[CategoryImprovements].SelectArticle = function( improvementI
 
 			-- generic text
 			if (thisImprovement.Civilopedia) then
-				--ModChange
+				--Cep
 				UpdateTextBlock( Locale.ConvertTextKey( thisImprovement.Civilopedia ), Controls.AbilitiesLabel, Controls.AbilitiesInnerFrame, Controls.AbilitiesFrame );
 			end
 			
@@ -6771,7 +6771,7 @@ function ClearArticle()
 	Controls.SpecialistsFrame:SetHide( true );
 	Controls.RelatedArticlesFrame:SetHide( true );
 	Controls.GameInfoFrame:SetHide( true );
-	--ModChange
+	--Cep
 	Controls.GoodForFrame:SetHide( true );
 	Controls.CostsFrame:SetHide( true );
 	Controls.SpecialFrame:SetHide( true );		
