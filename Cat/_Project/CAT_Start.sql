@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS Cep(Type text NOT NULL UNIQUE, Value);
 CREATE TABLE IF NOT EXISTS LoadedFile(Type text, Value);
 INSERT INTO LoadedFile(Type, Value) VALUES ('MT_Data.xml'			, 0);
 INSERT INTO LoadedFile(Type, Value) VALUES ('CAT_Misc.sql'			, 0);
+INSERT INTO LoadedFile(Type, Value) VALUES ('Cat_Options.sql'		, 0);
 INSERT INTO LoadedFile(Type, Value) VALUES ('Cat_Promotions.sql'	, 0);
 INSERT INTO LoadedFile(Type, Value) VALUES ('Cep_Options.sql'		, 0);
 INSERT INTO LoadedFile(Type, Value) VALUES ('MT_AlterTables.sql'	, 0);
