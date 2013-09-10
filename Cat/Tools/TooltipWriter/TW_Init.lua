@@ -515,13 +515,14 @@ function InsertPromoSubStat()
 	local text = Locale.ConvertTextKey(statTextKey)
 	if text == statTextKey then
 		-- no text key, use default behavior
-		text = lineType
+		text = string.gsub(lineType, '(%u)',  function(x) return " "..x end)
 	end
 	if type(lineValue) == "boolean" then
 		text = string.format("%s %s", linePrefix, text)
 	else
 		text = string.format("%s %s: %s", linePrefix, text, lineValue)
 	end
+	text = string.gsub(text, '  ', ' ')
 	table.insert(subStats, {Type=lineType, Section=lineSection, Priority=linePriority, TextBody=text})
 end
 

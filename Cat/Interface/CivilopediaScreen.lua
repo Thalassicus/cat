@@ -9,7 +9,7 @@ include( "InstanceManager" );
 include( "IconSupport" );
 
 --Cep
-function print() end
+--function print() end
 
 -- table.sort method for sorting alphabetically.
 function Alphabetically(a, b)
@@ -2562,7 +2562,7 @@ CivilopediaCategory[CategoryTech].SelectArticle = function( techID, shouldAddToL
 
 		if numAbilities > 0 then
 			--Cep
-			UpdateTextBlock( Locale.ConvertTextKey( abilitiesString ), Controls.SpecialLabel, Controls.SpecialInnerFrame, Controls.SpecialFrame );
+			UpdateTextBlock( Locale.ConvertTextKey( abilitiesString ), Controls.AbilitiesLabel, Controls.AbilitiesInnerFrame, Controls.AbilitiesFrame );
 		else
 			--Cep
 			Controls.SpecialFrame:SetHide( true );			

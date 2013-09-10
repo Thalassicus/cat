@@ -6,6 +6,7 @@ INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALU
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_PRODUCTION_UNIT_MAINTENANCE', '[ICON_GOLD] Maintenance: {1_value}', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_PRODUCTION_UNIT_HURRY_COST_MODIFIER', '[ICON_GOLD] Purchase: {1_value}%', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_HURRY_COST_MODIFIER', '[ICON_GOLD] Purchase: {3_value}%', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_PRODUCTION_UNIT_CATEGORY', '[ICON_BULLET] Category: {1_value}', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_PRODUCTION_UNIT_FOUND', '[ICON_TRADE] Founds Cities to expand your empire.', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_PRODUCTION_UNIT_FOOD', '[ICON_BULLET] Builds faster in high-growth cities by turning [ICON_FOOD] Food into [ICON_PRODUCTION] Production.', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_PRODUCTION_UNIT_WORK_RATE', '[ICON_WORKER] Improvement Rate: {1_value}%', '', '');
@@ -197,7 +198,7 @@ INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALU
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-09'), 'TXT_KEY_BUILDING_EFFECT_GREAT_WORK_COUNT', '{3_value}', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-09'), 'TXT_KEY_BUILDING_EFFECT_FREE_GREAT_WORK', '[ICON_GREAT_WORK] Free Great Work: {3_value}', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-09'), 'TXT_KEY_BUILDING_EFFECT_EXTRA_LEAGUE_VOTES', '[ICON_CHECKBOX] Congress Votes: {3_value}', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-09'), 'TXT_KEY_EXPERIENCE_PER_GREAT_WORK', '[ICON_WAR] Experience: {3_value} per Great Work', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-09'), 'TXT_KEY_BUILDING_EFFECT_EXPERIENCE_PER_GREAT_WORK', '[ICON_WAR] Experience: {3_value} per Great Work', '', '');
 
 
 

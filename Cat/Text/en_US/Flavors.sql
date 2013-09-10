@@ -8,15 +8,15 @@ INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALU
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_GOOD_FOR_RANK_6', 'Low', '', '');
 /* Flavors */
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_MILITARY_TRAINING', 'Military Training', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_OFFENSE', 'Offense', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_OFFENSE', 'Conquest', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_DEFENSE', 'Defense', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_SOLDIER', 'Soldier', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_SOLDIER', 'Elite', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_MOBILE', 'Mobile', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_ANTI_MOBILE', 'Anti-Mobile', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_RECON', 'Detection', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_HEALING', 'Healing', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_PILLAGE', 'Pillage', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_VANGUARD', 'Vanguard', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_MELEE', 'Melee', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_RANGED', 'Ranged', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_SIEGE', 'Siege', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-08-26'), 'TXT_KEY_FLAVOR_NAVAL', 'Anti-Ship', '', '');

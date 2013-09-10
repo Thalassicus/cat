@@ -102,6 +102,46 @@ INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_WONDERS'		, 1);
 INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_TECHS'		, 1);
 
 
+/*
+Unit Movement Animation Duration
+The animation time required for a unit to visually move between tiles.
+The default Cep values are 50% of vanilla (half duration = twice as fast).
+*/
+UPDATE MovementRates SET
+TotalTime			= 0.5 * TotalTime,
+EaseIn				= 0.5 * EaseIn,
+EaseOut				= 0.5 * EaseOut,
+IndividualOffset	= 0.5 * IndividualOffset,
+RowOffset			= 0.5 * RowOffset;
+
+
+/*
+Aircraft Move Speed
+The speed of aircraft movement.
+The default Cep values are 400% of vanilla (four times as fast).
+*/
+
+UPDATE ArtDefine_UnitMemberCombats
+SET MoveRate = 4 * MoveRate;
+
+UPDATE ArtDefine_UnitMemberCombats
+SET TurnRateMin = 4 * TurnRateMin
+WHERE MoveRate > 0;
+
+UPDATE ArtDefine_UnitMemberCombats
+SET TurnRateMax = 4 * TurnRateMax
+WHERE MoveRate > 0;
+
+
+/*
+Debug Mode
+1 = display lua logger messages
+0 = do not display messages
+*/
+INSERT INTO Defines (Name, Value)
+VALUES ('CEP_DEBUG_MODE', 1);
+
+
 
 
 

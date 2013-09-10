@@ -49,14 +49,14 @@ local warUnitFlavorsEarly = {
 	{FlavorType="FLAVOR_SIEGE",				Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SIEGE.ID}}			,
 	{FlavorType="FLAVOR_RANGED",			Num=2, Promos={GameInfo.UnitPromotions.PROMOTION_BARRAGE_1.ID}}		,
 	{FlavorType="FLAVOR_NAVAL_BOMBARDMENT",	Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_1.ID}}	,
-	{FlavorType="FLAVOR_VANGUARD",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}		,
+	{FlavorType="FLAVOR_MELEE",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}		,
 	{FlavorType="FLAVOR_ANTI_MOBILE",		Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}
 }
 
 local warUnitFlavorsLate = {
 	{FlavorType="FLAVOR_MOBILE",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID,		GameInfo.UnitPromotions.PROMOTION_SHOCK_2.ID}}			,
 	{FlavorType="FLAVOR_AIR",				Num=1, Promos={}},
-	{FlavorType="FLAVOR_VANGUARD",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID,		GameInfo.UnitPromotions.PROMOTION_DRILL_2.ID}}			,
+	{FlavorType="FLAVOR_MELEE",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID,		GameInfo.UnitPromotions.PROMOTION_DRILL_2.ID}}			,
 	{FlavorType="FLAVOR_SIEGE",				Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_ACCURACY_1.ID,		GameInfo.UnitPromotions.PROMOTION_SIEGE.ID}}			,
 	{FlavorType="FLAVOR_RANGED",			Num=2, Promos={GameInfo.UnitPromotions.PROMOTION_BARRAGE_1.ID,		GameInfo.UnitPromotions.PROMOTION_BARRAGE_2.ID}}		,
 	{FlavorType="FLAVOR_NAVAL_BOMBARDMENT",	Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_1.ID,	GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_2.ID}}	,
@@ -645,7 +645,7 @@ DoFlavorFunction = {
 	FLAVOR_RECON				= PurchaseOneUnitOfFlavor,
 	FLAVOR_HEALING				= PurchaseOneUnitOfFlavor,
 	FLAVOR_PILLAGE				= PurchaseOneUnitOfFlavor,
-	FLAVOR_VANGUARD				= PurchaseOneUnitOfFlavor,
+	FLAVOR_MELEE				= PurchaseOneUnitOfFlavor,
 	FLAVOR_RANGED				= PurchaseOneUnitOfFlavor,
 	FLAVOR_SIEGE				= PurchaseOneUnitOfFlavor,
 	FLAVOR_NAVAL				= PurchaseOneUnitOfFlavor,
@@ -787,7 +787,7 @@ function PlayerStartBonuses(player)
 	end
 
 	if leaderInfo.AIBonus then
-		--player:InitUnitClass("UNITCLASS_WARRIOR", startPlot)
+		player:InitUnitClass("UNITCLASS_WARRIOR", startPlot)
 	end
 
 	if leaderInfo.Type == "LEADER_GENGHIS_KHAN" then

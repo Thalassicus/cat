@@ -166,7 +166,7 @@
 		<Update><Where Type="FLAVOR_RECON"/>					<Set Description="TXT_KEY_FLAVOR_RECON"						 IconString="[ICON_SIGHT_LAND]"		 PurchasePriority="0"/></Update>
 		<Update><Where Type="FLAVOR_HEALING"/>					<Set Description="TXT_KEY_FLAVOR_HEALING"					 IconString="[ICON_HEAL]"			 PurchasePriority="0"/></Update>
 		<Update><Where Type="FLAVOR_PILLAGE"/>					<Set Description="TXT_KEY_FLAVOR_PILLAGE"					 IconString="[ICON_BLOCKADED]"		 PurchasePriority="0"/></Update>
-		<Update><Where Type="FLAVOR_VANGUARD"/>					<Set Description="TXT_KEY_FLAVOR_VANGUARD"					 IconString="[ICON_VANGUARD]"		 PurchasePriority="10"/></Update>
+		<Update><Where Type="FLAVOR_MELEE"/>					<Set Description="TXT_KEY_FLAVOR_MELEE"						 IconString="[ICON_STRENGTH]"		 PurchasePriority="10"/></Update>
 		<Update><Where Type="FLAVOR_RANGED"/>					<Set Description="TXT_KEY_FLAVOR_RANGED"					 IconString="[ICON_RANGE_STRENGTH]"	 PurchasePriority="10"/></Update>
 		<Update><Where Type="FLAVOR_SIEGE"/>					<Set Description="TXT_KEY_FLAVOR_SIEGE"						 IconString="[ICON_RAZING]"			 PurchasePriority="10"/></Update>
 		<Update><Where Type="FLAVOR_NAVAL"/>					<Set Description="TXT_KEY_FLAVOR_NAVAL"						 IconString="[ICON_NAVAL]"			 PurchasePriority="30"/></Update>

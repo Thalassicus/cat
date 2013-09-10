@@ -1,11 +1,13 @@
 -------------------------------------------------
 -- Tech Tree Popup
 -------------------------------------------------
+--cep
 include("InstanceManager");
 include("YieldLibrary.lua");
 
 local log = Events.LuaLogger:New()
 log:SetLevel("WARN")
+--function print() end
 
 g_UseSmallIcons = true;
 
@@ -57,6 +59,7 @@ local pinkColor = {x = 2, y = 0, z = 2, w = 1};
 
 local blockSpacingX = 270 + 96;
 local blockSizeX = 270;
+--cep
 local blockPreviousX = 270 + 96 * 2;
 local blockSpacingY = 68;
 local extraYOffset = 32;
@@ -85,6 +88,7 @@ function InitialSetup()
 
 	-- add the pipes
 	local techPipes = {};
+	--cep
 	local i = 0;
 
 	for row in GameInfo.Technology_PrereqTechs() do
@@ -145,10 +149,12 @@ function InitialSetup()
 		i = i + 1;
 		end
 	end
-
+	
 	local cnxCenter = 1
 	local cnxUp = 2
 	local cnxDown = 4
+	
+	--cep
 
 	for pipeIndex, thisPipe in pairs(techPipes) do
 		if thisPipe.leftConnectionDown then
@@ -216,6 +222,7 @@ function InitialSetup()
 				vConnection.TechPipeIcon:SetSize(size);
 			end
 			
+			--cep
 			if tech.GridY - prereq.GridY == 5 or tech.GridY - prereq.GridY == -5 then
 				local vConnection = g_PipeManager:GetInstance();
 				vConnection.TechPipeIcon:SetOffsetVal((tech.GridX-1)*blockSpacingX + blockSizeX + 96, ((tech.GridY-5)*blockSpacingY) - (((tech.GridY-prereq.GridY) * blockSpacingY) / 2) + extraYOffset);
@@ -511,6 +518,7 @@ function AddTechButton( tech )
 		thisTechButtonInstance.LockedTechName:SetText( techName );
 		thisTechButtonInstance.FreeTechName:SetText( techName );
 		
+		--cep
 		local bShowProgress = false;
 		thisTechButtonInstance.TechButton:SetToolTipString( GetHelpTextForTech(tech.ID, bShowProgress) );
 		
@@ -541,11 +549,9 @@ function OnDisplay( popupInfo )
 
 	m_PopupInfo = popupInfo;
 
-	--[[
 	print("popupInfo.Data1: " .. popupInfo.Data1);
 	print("popupInfo.Data2: " .. popupInfo.Data2);
 	print("popupInfo.Data3: " .. popupInfo.Data3);
-	--]]
 
     g_isOpen = true;
     if not g_NeedsFullRefresh then
@@ -575,7 +581,7 @@ Events.SerialEventGameMessagePopup.Add( OnDisplay );
 
 function RefreshDisplay()
 
-	--print("REFRESHING TECH DISPLAY");
+	--cep
 	local earliestTechColumn = 999
 	for tech in GameInfo.Technologies() do
 		RefreshDisplayOfSpecificTech( tech );
@@ -616,20 +622,22 @@ function RefreshDisplay()
 	
 	g_NeedsFullRefresh = false;
 end
-Events.SerialEventResearchDirty.Add(RefreshDisplay);
 
 function RefreshDisplayOfSpecificTech( tech )
 	local techID = tech.ID;
 	local thisTechButton = techButtons[techID];
   	local numFreeTechs = player:GetNumFreeTechs();
+	--cep
  	local researchTurnsLeft = player:GetYieldTurns(YieldTypes.YIELD_SCIENCE, techID);
  	local turnText = tostring( researchTurnsLeft ).." "..turnsString;
 	local isAllowedToStealTech = false;
 	local isAllowedToGetTechFree = false;
 
+	--cep
 	if not thisTechButton then
 		log:Error("Button does not exist for techID   %s", techID)
-		log:Fatal("Button does not exist for techType %s", GameInfo.Technologies[techID].Type)
+		log:Error("Button does not exist for techType %s", GameInfo.Technologies[techID].Type)
+		return
 	end
 	
 	-- Espionage - stealing a tech!
@@ -656,6 +664,8 @@ function RefreshDisplayOfSpecificTech( tech )
  	if (g_NeedsFullRefresh) then
 		AddSmallButtonsToTechButton( thisTechButton, tech, maxSmallButtons, 45 );
  	end
+ 	
+ 	thisTechButton.TechButton:SetToolTipString( GetHelpTextForTech(techID) );
  	
  	local scienceDisabled = Game.IsOption(GameOptionTypes.GAMEOPTION_NO_SCIENCE);
  	if (scienceDisabled) then
@@ -705,6 +715,7 @@ function RefreshDisplayOfSpecificTech( tech )
   			thisTechButton.FreeTech:SetHide( false );
  			thisTechButton.CurrentlyResearching:SetHide( true );
 			-- update number of turns to research
+			--cep
  			if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 and stealingTechTargetPlayerID == -1 then
   				thisTechButton.FreeTurns:SetText( turnText );
   				thisTechButton.FreeTurns:SetHide( false );
@@ -717,6 +728,7 @@ function RefreshDisplayOfSpecificTech( tech )
   			thisTechButton.FreeTech:SetHide( true );
  			thisTechButton.CurrentlyResearching:SetHide( false );
 			-- update number of turns to research
+			--cep
  			if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 then
   				thisTechButton.CurrentlyResearchingTurns:SetText( turnText );
   				thisTechButton.CurrentlyResearchingTurns:SetHide( false );
@@ -729,6 +741,7 @@ function RefreshDisplayOfSpecificTech( tech )
 		local teamTechs = activeTeam:GetTeamTechs();
 		local researchProgressPercent = 0;
 		local researchProgressPlusThisTurnPercent = 0;
+		--cep
 		local researchTurnsLeft = player:GetYieldTurns(YieldTypes.YIELD_SCIENCE,  techID);
 		local currentResearchProgress = player:GetYieldStored(YieldTypes.YIELD_SCIENCE);
 		local researchNeeded = player:GetYieldNeeded(YieldTypes.YIELD_SCIENCE);
@@ -751,6 +764,7 @@ function RefreshDisplayOfSpecificTech( tech )
  			thisTechButton.FreeTech:SetHide( false );
  			thisTechButton.Available:SetHide( true );
 			-- update number of turns to research
+			--cep
  			if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 and stealingTechTargetPlayerID == -1 then
   				thisTechButton.FreeTurns:SetText( turnText );
   				thisTechButton.FreeTurns:SetHide( false );
@@ -764,6 +778,7 @@ function RefreshDisplayOfSpecificTech( tech )
  			thisTechButton.FreeTech:SetHide( true );
  			thisTechButton.Available:SetHide( false );
 			-- update number of turns to research
+			--cep
  			if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 then
   				thisTechButton.AvailableTurns:SetText( turnText );
   				thisTechButton.AvailableTurns:SetHide( false );
@@ -806,6 +821,7 @@ function RefreshDisplayOfSpecificTech( tech )
 		thisTechButton.Locked:SetHide( true );
   		thisTechButton.FreeTech:SetHide( true );
  		-- update number of turns to research
+		--cep
  		if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 then
   			thisTechButton.UnavailableTurns:SetText( turnText );
   			thisTechButton.UnavailableTurns:SetHide( false );
@@ -856,8 +872,7 @@ Controls.CloseButton:RegisterCallback( Mouse.eLClick, OnCloseButtonClicked );
 function InputHandler( uiMsg, wParam, lParam )
     if g_isOpen and uiMsg == KeyEvents.KeyDown then
         if wParam == Keys.VK_ESCAPE or wParam == Keys.VK_RETURN then
-            UIManager:DequeuePopup( ContextPtr );
-            g_isOpen = false;
+            OnCloseButtonClicked();
             return true;
         end
     end
@@ -899,6 +914,15 @@ function OnTechTreeActivePlayerChanged( iActivePlayer, iPrevActivePlayer )
 	OnCloseButtonClicked();
 end
 Events.GameplaySetActivePlayer.Add(OnTechTreeActivePlayerChanged);
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+function OnEventResearchDirty()
+	if (g_isOpen) then
+		RefreshDisplay();
+	end
+end
+Events.SerialEventResearchDirty.Add(OnEventResearchDirty);
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------

@@ -22,6 +22,15 @@ Game.Stats				= Game.Stats or {}
 Game.Stats.Units		= Game.Stats.Units or {}
 Game.Stats.Buildings	= Game.Stats.Buildings or {}
 
+local holidayFun = {
+	["01/01"] = "TXT_KEY_HOLIDAY_NEW_YEAR"		,
+	["04/01"] = "TXT_KEY_HOLIDAY_APRIL_FOOLS"	,
+	["07/02"] = "TXT_KEY_HOLIDAY_UFO"			,
+	["10/31"] = "TXT_KEY_HOLIDAY_HALLOWEEN"		
+}
+
+
+
 
 -- UNIT
 
@@ -29,13 +38,6 @@ Game.Stats.Buildings	= Game.Stats.Buildings or {}
 function GetHelpTextForUnit(unitIDA, showRequirementsInfo)
 	return GetUnitTip{unitID=unitIDA, hideCosts=(not showRequirementsInfo)}
 end
-
-local holidayFun = {
-	["01/01"] = "TXT_KEY_HOLIDAY_NEW_YEAR"		,
-	["04/01"] = "TXT_KEY_HOLIDAY_APRIL_FOOLS"	,
-	["07/02"] = "TXT_KEY_HOLIDAY_UFO"			,
-	["10/31"] = "TXT_KEY_HOLIDAY_HALLOWEEN"		
-}
 
 function GetUnitTip(args)
 	-- Required arguments: unitID
@@ -210,6 +212,14 @@ function GetUnitTip(args)
 		end
 		if unitInfo.NukeDamageLevel >= 1 then
 			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_NUKE_RADIUS", unitInfo.NukeDamageLevel)		
+		end
+		
+		-- Category
+		local category = GameInfo.UnitCombatInfos[unitInfo.CombatClass]
+		if category then
+			textBody = textBody .. "[NEWLINE]" .. Locale.ConvertTextKey("TXT_KEY_PRODUCTION_UNIT_CATEGORY", category.Description)
+		else
+			log:Error("GetUnitTip %s CombatClass=%s", unitInfo.Type, unitInfo.CombatClass)
 		end
 		
 		-- Replaces
@@ -502,22 +512,22 @@ function GetPromotionTip(promoID, unit)
 	local textBody		= ""
 	local textFoot		= ""
 	local unit			= unit
-	local section		= {}
+	local textSection	= {}
 		
-	section[TipSection.PROMO_RANGE]				= ""
-	section[TipSection.PROMO_RANGED_STRENGTH]	= ""
-	section[TipSection.PROMO_STRENGTH]			= ""
-	section[TipSection.PROMO_MOVES]				= ""
-	section[TipSection.PROMO_HEAL]				= ""
-	section[TipSection.PROMO_SIGHT]				= ""
-	section[TipSection.PROMO_AIR]				= ""
-	section[TipSection.PROMO_NAVAL]				= ""
-	section[TipSection.PROMO_GOLD]				= ""
-	section[TipSection.PROMO_GREAT_GENERAL]		= ""
-	section[TipSection.PROMO_RES_URANIUM]		= ""
-	section[TipSection.PROMO_WAR]				= ""
-	section[TipSection.PROMO_NEGATIVE]			= ""
-	section[TipSection.PROMO_OTHER]				= ""
+	textSection[TipSection.PROMO_RANGE]				= ""
+	textSection[TipSection.PROMO_RANGED_STRENGTH]	= ""
+	textSection[TipSection.PROMO_STRENGTH]			= ""
+	textSection[TipSection.PROMO_MOVES]				= ""
+	textSection[TipSection.PROMO_HEAL]				= ""
+	textSection[TipSection.PROMO_SIGHT]				= ""
+	textSection[TipSection.PROMO_AIR]				= ""
+	textSection[TipSection.PROMO_NAVAL]				= ""
+	textSection[TipSection.PROMO_GOLD]				= ""
+	textSection[TipSection.PROMO_GREAT_GENERAL]		= ""
+	textSection[TipSection.PROMO_RES_URANIUM]		= ""
+	textSection[TipSection.PROMO_WAR]				= ""
+	textSection[TipSection.PROMO_NEGATIVE]			= ""
+	textSection[TipSection.PROMO_OTHER]				= ""
 	
 	if Game.Stats.Promotions[promoID] == nil then
 		log:Warn("GetHelpTextForPromotion: stat data is nil for %s!", objectInfo.Type)
@@ -534,14 +544,14 @@ function GetPromotionTip(promoID, unit)
 				if subStat.Section and subStat.Priority and subStat.TextBody then
 					table.insert(textList, {Section=subStat.Section, Priority=subStat.Priority, TextBody=subStat.TextBody, TextFoot=subStat.TextFoot})
 				else
-					log:Error("GetHelpTextForPromotion %s Stat %s SubStat %s section=%s priority=%s textBody=%s", objectInfo.Type, stat.Type, subStat.Type, subStat.Section, subStat.Priority, subStat.TextBody)
+					log:Error("GetHelpTextForPromotion %s Stat %s SubStat %s textSection=%s priority=%s textBody=%s", objectInfo.Type, stat.Type, subStat.Type, subStat.Section, subStat.Priority, subStat.TextBody)
 				end
 			end
 		elseif type(stat.TextBody) == "string" then
 			if stat.Section and stat.Priority and stat.TextBody then
 				table.insert(textList, {Section=stat.Section, Priority=stat.Priority, TextBody=stat.TextBody, TextFoot=stat.TextFoot})
 			else
-				log:Error("GetHelpTextForPromotion %s Stat %s section=%s priority=%s textBody=%s", objectInfo.Type, stat.Type, stat.Section, stat.Priority, stat.TextBody)				
+				log:Error("GetHelpTextForPromotion %s Stat %s textSection=%s priority=%s textBody=%s", objectInfo.Type, stat.Type, stat.Section, stat.Priority, stat.TextBody)				
 			end
 		end
 	end
@@ -558,18 +568,20 @@ function GetPromotionTip(promoID, unit)
 	for _, stat in ipairs(textList) do
 		if stat.TextBody then
 			textBody = textBody .. "[NEWLINE]" .. stat.TextBody
-			section[stat.Section] = section[stat.Section] .. "[NEWLINE]" .. stat.TextBody
+			textSection[stat.Section] = textSection[stat.Section] .. "[NEWLINE]" .. stat.TextBody
 		end
+	end
+	
+	if textBody == nil or textBody == "" then
+		--log:Warn("GetPromotionTip: %s textBody=%s", objectInfo.Type, textBody)
+		textBody = "[NEWLINE][ICON_BULLET] " .. ModLocale.ConvertTextKey(objectInfo.Description)
+		textSection[TipSection.PROMO_OTHER] = textBody
 	end
 	
 	textBody = string.gsub(textBody, "^%[NEWLINE%]", "")
 	
-	if textBody == nil or textBody == "" then
-		log:Error("GetPromotionTip: %s textBody=%s", objectInfo.Type, textBody)
-		textBody = objectInfo.Type
-	end
-	log:Trace("GetPromotionTip %30s %s %s", objectInfo.Type, textBody, section)
-	return textBody, section
+	log:Trace("GetPromotionTip %30s %s %s", objectInfo.Type, textBody, textSection)
+	return textBody, textSection
 end
 
 

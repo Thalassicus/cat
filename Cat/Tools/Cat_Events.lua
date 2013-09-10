@@ -1376,12 +1376,14 @@ Events.SerialEventCityDestroyed.Add(ResetCityYields)
 ---------------------------------------------------------------------
 
 LuaEvents.ActivePlayerTurnStart_Turn.Add(
-	function()
-		if Game.GetGameTurn() % 50 == 0 then
+	function ()
+		if (Game.GetGameTurn() ~= 0) and (Game.GetGameTurn() % 50 == 0) then
 			LuaEvents.PrintDebug()
 		end
 	end
 )
+
+Events.SequenceGameInitComplete.Add( LuaEvents.PrintDebug );
 
 ---------------------------------------------------------------------
 ---------------------------------------------------------------------

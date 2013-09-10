@@ -9,7 +9,7 @@
 		</Row>
 	</Defines>
 	<Cep>
-		<Row Name="DEBUG_TIMER_LEVEL">
+		<Row Type="DEBUG_TIMER_LEVEL">
 			<Value>0</Value>
 		</Row>
 	</Cep>

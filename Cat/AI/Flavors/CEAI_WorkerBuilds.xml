@@ -126,7 +126,7 @@
 		<Row>
 			<BuildType>BUILD_TRADING_POST</BuildType>
 			<FlavorType>FLAVOR_SCIENCE</FlavorType>
-			<Flavor>16</Flavor>
+			<Flavor>4</Flavor>
 		</Row>
 		<Row>
 			<BuildType>BUILD_TRADING_POST</BuildType>

@@ -46,7 +46,7 @@ INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 33
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 34, 0, 'InstantSpyRankChange'        , 'cepObjectInfo.InstantSpyRankChange');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 35, 0, 'ProhibitedCityTerrain'       , 'cepObjectInfo.ProhibitedCityTerrain');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 36, 0, 'ReplacementBuildingClass'    , 'cepObjectInfo.ReplacementBuildingClass');
-INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 37, 0, 'SpecialistExtraCulture'      , 'cepObjectInfo.SpecialistExtraCulture		');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 37, 0, 'SpecialistExtraCulture'      , 'cepObjectInfo.SpecialistExtraCulture');
 
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 38, 0, 'GlobalPopulationChange'      , 'cepObjectInfo.GlobalPopulationChange');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 39, 0, 'TechShare'                   , 'cepObjectInfo.TechShare');
@@ -75,7 +75,7 @@ INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 60
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 61, 0, 'Experience'                  , 'cepObjectInfo.Experience');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 62, 0, 'ExperienceDomain'            , 'Game.HasValue({BuildingType=cepObjectInfo.Type}, GameInfo.Building_DomainFreeExperiences)');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 63, 0, 'ExperienceCombat'            , 'Game.HasValue({BuildingType=cepObjectInfo.Type}, GameInfo.Building_UnitCombatFreeExperiences)');
-INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 64, 0, 'ExperiencePerTurn'           , 'cepObjectInfo.ExperiencePerTurn		');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 64, 0, 'ExperiencePerTurn'           , 'cepObjectInfo.ExperiencePerTurn');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 65, 0, 'GlobalExperience'            , 'cepObjectInfo.GlobalExperience');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 66, 0, 'Defense'                     , 'cepObjectInfo.Defense / 100');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 67, 0, 'GlobalDefenseMod'            , 'cepObjectInfo.GlobalDefenseMod');
@@ -94,9 +94,10 @@ INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 78
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 79, 0, 'NullifyInfluenceModifier'    , 'cepObjectInfo.NullifyInfluenceModifier');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 80, 0, 'LeagueCost'                  , 'cepObjectInfo.LeagueCost');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 81, 0, 'UnlockedByLeague'            , 'cepObjectInfo.UnlockedByLeague');
-INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 82, 0, 'InstantMilitaryIncrease'     , 'cepObjectInfo.InstantMilitaryIncrease');
-INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 83, 0, 'XBuiltTriggersIdeologyChoice'       , 'cepObjectInfo.XBuiltTriggersIdeologyChoice');
-INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 84, 0, 'GreatScientistBeakerModifier'       , 'cepObjectInfo.GreatScientistBeakerModifier');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 82, 0, 'ExtraLeagueVotes'            , 'cepObjectInfo.ExtraLeagueVotes');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 83, 0, 'InstantMilitaryIncrease'     , 'cepObjectInfo.InstantMilitaryIncrease');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 84, 0, 'XBuiltTriggersIdeologyChoice'       , 'cepObjectInfo.XBuiltTriggersIdeologyChoice');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (1, 85, 0, 'GreatScientistBeakerModifier'       , 'cepObjectInfo.GreatScientistBeakerModifier');
 
 -- Abilities --
 
