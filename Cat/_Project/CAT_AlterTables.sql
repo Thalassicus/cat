@@ -317,6 +317,13 @@ CREATE TABLE IF NOT EXISTS
 );
 	
 CREATE TABLE IF NOT EXISTS
+	Building_Flavors_Human (
+	BuildingType	text REFERENCES Buildings(Type),
+	FlavorType		text REFERENCES Flavors(Type),
+	Flavor			integer
+);
+	
+CREATE TABLE IF NOT EXISTS
 	Technology_Flavors_Human (
 	TechType		text REFERENCES Technologies(Type),
 	FlavorType		text REFERENCES Flavors(Type),
@@ -331,35 +338,55 @@ CREATE TABLE IF NOT EXISTS
 -- Add Table Columns
 --
 
-ALTER TABLE Buildings		ADD AlwaysShowHelp						boolean; -- Use this to force the help text to display for a building.
-ALTER TABLE Buildings		ADD FreePromotionAllCombatUnits			text;
-ALTER TABLE Buildings		ADD CulturePerPop						integer default 0;
-ALTER TABLE Buildings		ADD InstantBorderRadius					integer default 0;
-ALTER TABLE Buildings		ADD GlobalInstantBorderRadius			integer default 0;
-ALTER TABLE Buildings		ADD MinorFriendshipFlatChange			integer default 0;
-ALTER TABLE Buildings		ADD MountainImprovement					text;
-ALTER TABLE Buildings		ADD NoOccupiedUnhappinessFixed			boolean;
-ALTER TABLE Buildings		ADD OnlyAI								boolean;
-ALTER TABLE Buildings		ADD IsVisible							boolean default 1;
-ALTER TABLE Buildings		ADD ShowInPedia							boolean default 1;
-ALTER TABLE Buildings		ADD CheckWithYieldLibrary				boolean default 1;
-ALTER TABLE Buildings		ADD CityCaptureCulture					integer default 0;
-ALTER TABLE Buildings		ADD CityCaptureCulturePerPop			integer default 0;
-ALTER TABLE Buildings		ADD CityCaptureCulturePerEra			integer default 0;
-ALTER TABLE Buildings		ADD CityCaptureCulturePerEraExponent	variant default 1;
-ALTER TABLE Buildings		ADD GreatGeneralRateChange				integer default 0;
-ALTER TABLE Buildings		ADD IsBuildingAddon						integer default 0;
-ALTER TABLE Buildings		ADD IsMarketplace						integer default 0;
+ALTER TABLE Buildings		ADD NotFeature							text;
 ALTER TABLE	Buildings		ADD	AddonParent							text;
 ALTER TABLE Buildings		ADD ShortDescription					text;
-ALTER TABLE Buildings		ADD TradeDealModifier					integer default 0;
-ALTER TABLE Buildings		ADD InstantHappiness					integer default 0;
-ALTER TABLE Buildings		ADD GoldenAgePoints						integer default 0;
-ALTER TABLE Buildings		ADD ExperiencePerTurn					integer default 0;
+ALTER TABLE Buildings		ADD FreePromotionAllCombatUnits			text;
+ALTER TABLE Buildings		ADD MountainImprovement					text;
+ALTER TABLE Buildings		ADD AlwaysShowHelp						boolean; -- Use this to force the help text to display for a building.
+ALTER TABLE Buildings		ADD NoOccupiedUnhappinessFixed			boolean;
+ALTER TABLE Buildings		ADD OnlyAI								boolean;
 ALTER TABLE Buildings		ADD OneShot								boolean;
+ALTER TABLE Buildings		ADD IsVisible							boolean default 1;
+	 UPDATE Buildings		SET IsVisible							= 1; 
+ALTER TABLE Buildings		ADD ShowInPedia							boolean default 1;
+	 UPDATE Buildings		SET ShowInPedia							= 1; 
+ALTER TABLE Buildings		ADD CheckWithYieldLibrary				boolean default 1;
+	 UPDATE Buildings		SET CheckWithYieldLibrary				= 1; 
+ALTER TABLE Buildings		ADD CityCaptureCulturePerEraExponent	variant default 1;
+	 UPDATE Buildings		SET CityCaptureCulturePerEraExponent	= 1; 
+ALTER TABLE Buildings		ADD CulturePerPop						integer default 0;
+	 UPDATE Buildings		SET CulturePerPop						= 0; 
+ALTER TABLE Buildings		ADD InstantBorderRadius					integer default 0;
+	 UPDATE Buildings		SET InstantBorderRadius					= 0; 
+ALTER TABLE Buildings		ADD GlobalInstantBorderRadius			integer default 0;
+	 UPDATE Buildings		SET GlobalInstantBorderRadius			= 0; 
+ALTER TABLE Buildings		ADD MinorFriendshipFlatChange			integer default 0;
+	 UPDATE Buildings		SET MinorFriendshipFlatChange			= 0; 
+ALTER TABLE Buildings		ADD CityCaptureCulture					integer default 0;
+	 UPDATE Buildings		SET CityCaptureCulture					= 0; 
+ALTER TABLE Buildings		ADD CityCaptureCulturePerPop			integer default 0;
+	 UPDATE Buildings		SET CityCaptureCulturePerPop			= 0; 
+ALTER TABLE Buildings		ADD CityCaptureCulturePerEra			integer default 0;
+	 UPDATE Buildings		SET CityCaptureCulturePerEra			= 0; 
+ALTER TABLE Buildings		ADD GreatGeneralRateChange				integer default 0;
+	 UPDATE Buildings		SET GreatGeneralRateChange				= 0; 
+ALTER TABLE Buildings		ADD IsBuildingAddon						integer default 0;
+	 UPDATE Buildings		SET IsBuildingAddon						= 0; 
+ALTER TABLE Buildings		ADD IsMarketplace						integer default 0;
+	 UPDATE Buildings		SET IsMarketplace						= 0; 
+ALTER TABLE Buildings		ADD TradeDealModifier					integer default 0;
+	 UPDATE Buildings		SET TradeDealModifier					= 0; 
+ALTER TABLE Buildings		ADD InstantHappiness					integer default 0;
+	 UPDATE Buildings		SET InstantHappiness					= 0; 
+ALTER TABLE Buildings		ADD GoldenAgePoints						integer default 0;
+	 UPDATE Buildings		SET GoldenAgePoints						= 0; 
+ALTER TABLE Buildings		ADD ExperiencePerTurn					integer default 0;
+	 UPDATE Buildings		SET ExperiencePerTurn					= 0; 
 ALTER TABLE Buildings		ADD GlobalExperienceFixed				integer default 0;
+	 UPDATE Buildings		SET GlobalExperienceFixed				= 0; 
 ALTER TABLE Buildings		ADD AIAvailability						integer default 0;
-ALTER TABLE Buildings		ADD NotFeature							text;
+	 UPDATE Buildings		SET AIAvailability						= 0; 
 
 ALTER TABLE Building_TechEnhancedYieldChanges ADD EnhancedYieldTech text;
 UPDATE Building_TechEnhancedYieldChanges SET EnhancedYieldTech = (

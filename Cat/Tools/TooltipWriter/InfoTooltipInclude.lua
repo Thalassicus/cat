@@ -446,7 +446,7 @@ function GetBuildingTip(args)
 				textBody = textBody .. "[NEWLINE]----------------"
 			end
 			if Cep.SHOW_GOOD_FOR_BUILDINGS == 1 and showGood then
-				local textFlavors = Game.GetFlavors("Building_Flavors", "BuildingType", objectInfo.Type)
+				local textFlavors = Game.GetFlavors("Building_Flavors_Human", "BuildingType", objectInfo.Type)
 				if textFlavors ~= "" then
 					textBody = textBody .. textFlavors .. "[NEWLINE]"
 				end

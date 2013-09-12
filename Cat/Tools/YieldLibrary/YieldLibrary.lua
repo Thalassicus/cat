@@ -1543,7 +1543,7 @@ function PlayerClass.GetYieldStored(player, yieldID, itemID)
 	if yieldID == YieldTypes.YIELD_GOLD then
 		return player:GetGold()
 	elseif yieldID == YieldTypes.YIELD_SCIENCE then
-		return Teams[player:GetTeam()]:GetTeamTechs():GetResearchProgress(itemID or player:GetCurrentResearch()) + player:GetOverflowResearch()
+		return Teams[player:GetTeam()]:GetTeamTechs():GetResearchProgress(itemID or player:GetCurrentResearch())-- + player:GetOverflowResearch()
 	elseif yieldID == YieldTypes.YIELD_CULTURE then
 		return player:GetJONSCulture()
 	elseif yieldID == YieldTypes.YIELD_HAPPINESS_CITY or yieldID == YieldTypes.YIELD_HAPPINESS_NATIONAL then

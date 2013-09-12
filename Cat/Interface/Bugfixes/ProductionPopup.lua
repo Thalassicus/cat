@@ -1236,7 +1236,7 @@ function AddProductionButton( id, description, orderType, turnsLeft, column, isD
 		controlTable.ProductionButtonImage:SetTextureOffset(textureOffset);
 		
 		-- Tooltip
-		local bIncludeRequirementsInfo = false;
+		local bIncludeRequirementsInfo = true;
 		local strToolTip = Locale.ConvertTextKey(GetHelpTextForUnit(id, bIncludeRequirementsInfo));
 		
 		-- Disabled help text

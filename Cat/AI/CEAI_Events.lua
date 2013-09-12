@@ -716,8 +716,8 @@ function PlayerStartBonuses(player)
 			if unit:GetUnitType() == settlerID then
 				startPlot = unit:GetPlot()
 				if player:IsHuman() then-- and trait.NoWarrior and trait.FreeUnit == "UNITCLASS_WORKER" then
-					for adjPlot in Plot_GetPlotsInCircle(startPlot, 2, 3) do
-						adjPlot:SetRevealed(teamID, true)
+					for nearPlot in Plot_GetPlotsInCircle(startPlot, 2, 3) do
+						nearPlot:SetRevealed(teamID, true)
 					end
 					UI.SelectUnit(unit)
 				end
@@ -794,19 +794,6 @@ function PlayerStartBonuses(player)
 		startPlot:SetResourceType(GameInfo.Resources.RESOURCE_HORSE.ID, 1)
 		player:SetHasTech(GameInfo.Technologies.TECH_ANIMAL_HUSBANDRY.ID, true)
 	end
-	
-	for adjPlot in Plot_GetPlotsInCircle(startPlot, 2, searchRange) do
-		adjPlot:SetRevealed(teamID, true)
-		local improvementID = adjPlot:GetImprovementType()
-		if improvementID ~= -1 and not adjPlot:IsVisible(Game.GetActiveTeam()) then
-			for impInfo in GameInfo.Improvements(string.format("Goody = 1 AND TilesPerGoody > 0")) do
-				if improvementID == impInfo.ID then
-					adjPlot:SetImprovementType(-1)
-					break
-				end
-			end
-		end
-	end
 	--print("PlayerStartBonuses "..player:GetName().." Done")
 end
 
@@ -863,6 +850,14 @@ function AIEarlyBonuses(player)
 	end
 	
 	log:Debug("AIEarlyBonuses %s", player:GetName())
+	
+	for nearPlot, distance in Plot_GetPlotsInCircle(startPlot, 2, searchRange) do
+		nearPlot:SetRevealed(player:GetTeam(), true)
+		local improvement = GameInfo.Improvements[nearPlot:GetImprovementType()]
+		if improvement and improvement.Goody and not Plot_IsNearHuman(nearPlot, searchRange) then
+			nearPlot:SetImprovementType(-1)
+		end
+	end
 	
 	if player:IsMinorCiv() then
 		if handicapInfo.Type == "HANDICAP_CHIEFTAIN" then
@@ -1172,8 +1167,8 @@ function DeclareWarNearestCitystate(player)
 	end
 	log:Info("%s declared permanent war on %s", player:GetName(), closestMinor:GetName())
 
-	for adjPlot in Plot_GetPlotsInCircle(closestMinor:GetCapitalCity():Plot(), 0, 3) do
-		adjPlot:SetRevealed(teamID, true)
+	for nearPlot in Plot_GetPlotsInCircle(closestMinor:GetCapitalCity():Plot(), 0, 3) do
+		nearPlot:SetRevealed(teamID, true)
 	end
 	if Game.GetAdjustedTurn() <= 20 then
 		for unit in closestMinor:Units() do
@@ -1238,6 +1233,9 @@ LuaEvents.AICaptureDecision.Add(function(city, player) return SafeCall(DoAICaptu
 -- Manually clear barbarian camps
 
 function ClearCamps()
+	if Game.GetAdjustedTurn() <= 20 or Game.GetGameTurn() % 3 ~= 0 then
+		return
+	end
 	local nonHumans = {}
 	for playerID, player in pairs(Players) do
 		if player:IsAliveCiv() and not player:IsHuman() and not player:IsMinorCiv() then
@@ -1272,7 +1270,7 @@ function ClearCampsCity(city, player)
 		if impID == campID then
 			log:Debug("ClearCampsCity %s %s distance=%s", player:GetName(), city:GetName(), distance)
 			local campUnit = nearPlot:GetUnit(0)
-			if Plot_IsNearHuman(nearPlot, searchRange) then
+			if Plot_IsNearHuman(nearPlot, 2 * distance) then
 				log:Debug("ClearCampsCity aborting: near human", player:GetName(), city:GetName())
 			elseif (not campUnit) or campUnit:FortifyModifier() > GameDefines.FORTIFY_MODIFIER_PER_TURN then  -- barb has been here a while
 				ClearCamp(player, nearPlot)
@@ -1427,8 +1425,8 @@ function PlaceTerrace(player)
 						and not plot:IsVisibleToWatchingHuman()
 						) then
 					local placeTerrace = false
-					for adjPlot in Plot_GetPlotsInCircle(plot, 1) do
-						if adjPlot:IsMountain() then
+					for nearPlot in Plot_GetPlotsInCircle(plot, 1) do
+						if nearPlot:IsMountain() then
 							placeTerrace = true
 							break
 						end

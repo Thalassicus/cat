@@ -24,9 +24,9 @@ function GetHelpTextForTech( iTechID )
 	if Cep.SHOW_GOOD_FOR_TECHS == 1 then
 		strHelpText = strHelpText .. "[NEWLINE]----------------";
 		if Cep.SHOW_GOOD_FOR_AI_NUMBERS == 1 then
-			strHelpText = strHelpText .. Game.GetFlavors("Technology_Flavors", "TechType", pTechInfo.Type, 8)
+			strHelpText = strHelpText .. Game.GetFlavors("Technology_Flavors", "TechType", pTechInfo.Type, 4)
 		else
-			strHelpText = strHelpText .. Game.GetFlavors("Technology_Flavors_Human", "TechType", pTechInfo.Type, 8)
+			strHelpText = strHelpText .. Game.GetFlavors("Technology_Flavors_Human", "TechType", pTechInfo.Type, 4)
 		end
 	end
 	strHelpText = strHelpText .. "[NEWLINE]-------------------------";
