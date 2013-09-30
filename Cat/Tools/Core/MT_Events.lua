@@ -8,7 +8,7 @@ include("ModTools.lua")
 --print("Init MT_Events.lua")
 
 local log = Events.LuaLogger:New()
-log:SetLevel("WARN")
+log:SetLevel("INFO")
 
 --
 -- Initialize data
@@ -649,7 +649,7 @@ function LuaEvents.PrintDebug()
 	text = string.format("%s%14s %-s\n", text, "Difficulty:", GameInfo.HandicapInfos[Game:GetHandicapType()].Type)
 	text = string.format("%s%14s %-s\n", text, "Size:", Game.GetWorldInfo().Type)	
 	text = string.format("%s%14s %-s%%%%\n", text, "Speed:", Game.GetSpeedInfo().VictoryDelayPercent)
-	text = string.format("%s%14s %-s\n", text, "Animations:", tostring(Cep.PLAY_COMBAT_ANIMATIONS == 1))
+	text = string.format("%s%14s %-s\n", text, "Animations:", tostring(OptionsManager.GetSinglePlayerQuickCombatEnabled_Cached()))
 	text = string.format("%s%14s %-i\n", text, "Players:", avgPlayers)
 	text = string.format("%s%14s %-i\n", text, "Cities:", avgCities)
 	text = string.format("%s%14s %-i\n", text, "Units:", avgUnits)

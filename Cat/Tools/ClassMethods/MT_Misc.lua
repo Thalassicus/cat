@@ -23,6 +23,14 @@ function ModLocale.ConvertTextKey(...)
 	return Locale.ConvertTextKey(unpack(arg))
 end
 
+function ModLocale.ComparePriority(a, b)
+	log:Debug("ComparePriority %30s=%2s %30s=%2s", a.Type, a.ListPriority, b.Type, b.ListPriority)
+	if a.ListPriority and b.ListPriority and a.ListPriority ~= b.ListPriority then
+		return a.ListPriority > b.ListPriority
+	end
+	return Locale.Compare(a.Name, b.Name) < 0
+end
+
 --
 -- Game
 --

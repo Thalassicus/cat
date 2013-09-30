@@ -65,7 +65,7 @@ function GetHelpTextForTech( iTechID )
 					strLeadsTo = strLeadsTo .. ", ";
 				end
 				
-				strLeadsTo = strLeadsTo .. "[COLOR_POSITIVE_TEXT]" .. Locale.ConvertTextKey( pLeadsToTech.Description ) .. "[ENDCOLOR]";
+				strLeadsTo = strLeadsTo .. "[COLOR_POSITIVE_TEXT]" .. ModLocale.ConvertTextKey( pLeadsToTech.Description ) .. "[ENDCOLOR]";
 			end
 		end
 	end

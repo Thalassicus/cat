@@ -3,6 +3,7 @@
 -------------------------------------------------
 include( "IconSupport" );
 include( "InfoTooltipInclude" );
+include("MT_LuaLogger.lua")
 
 -- List the textures that we will need here
 local defaultErrorTextureSheet;
@@ -217,7 +218,11 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 		local improvement = GameInfo.Improvements[row.ImprovementType];
 		local yield = GameInfo.Yields[row.YieldType];
 		
-		table.insert(yieldChanges[improvementType], Locale.Lookup( "TXT_KEY_YIELD_IMPROVED", improvement.Description , yield.Description, row.Yield));
+		if improvement then
+			table.insert(yieldChanges[improvementType], Locale.Lookup( "TXT_KEY_YIELD_IMPROVED", improvement.Description , yield.Description, row.Yield));
+		else
+			log:Error("AddSmallButtonsToTechButton: Improvement_TechYieldChanges ImprovementType=%s YieldType=%s Yield=%s", row.ImprovementType, row.YieldType, row.Yield)
+		end
 	end
 	
 	-- Let's sort the yield change butons!

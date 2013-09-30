@@ -1,5 +1,5 @@
--- This Cep_TooltipPriorities.sql data from:
--- TooltipPriorities tab of CEP_OtherData.xls spreadsheet (in mod folder).
+-- This TW_TooltipPriorities.sql data from:
+-- TooltipPriorities tab of Cat_Details.xls spreadsheet (in mod folder).
 
 /* Defines */
 INSERT INTO Defines(Value, Name) VALUES (1 , 'LIST_PRIORITY_NATIONAL_WONDER');
@@ -40,33 +40,39 @@ UPDATE Yields SET ListPriority=4  WHERE Type='YIELD_CULTURE';
 UPDATE Yields SET ListPriority=2  WHERE Type='YIELD_FAITH';
 
 /* Flavors */
-UPDATE Flavors SET ListPriority=30 WHERE Type='FLAVOR_SPACESHIP';
-UPDATE Flavors SET ListPriority=28 WHERE Type='FLAVOR_HAPPINESS';
-UPDATE Flavors SET ListPriority=26 WHERE Type='FLAVOR_EXPANSION';
-UPDATE Flavors SET ListPriority=24 WHERE Type='FLAVOR_NAVAL_GROWTH';
-UPDATE Flavors SET ListPriority=22 WHERE Type='FLAVOR_GROWTH';
-UPDATE Flavors SET ListPriority=22 WHERE Type='FLAVOR_TILE_IMPROVEMENT';
-UPDATE Flavors SET ListPriority=22 WHERE Type='FLAVOR_NAVAL_TILE_IMPROVEMENT';
-UPDATE Flavors SET ListPriority=22 WHERE Type='FLAVOR_INFRASTRUCTURE';
-UPDATE Flavors SET ListPriority=20 WHERE Type='FLAVOR_GOLD';
-UPDATE Flavors SET ListPriority=20 WHERE Type='FLAVOR_WATER_CONNECTION';
-UPDATE Flavors SET ListPriority=18 WHERE Type='FLAVOR_PRODUCTION';
-UPDATE Flavors SET ListPriority=18 WHERE Type='FLAVOR_SCIENCE';
-UPDATE Flavors SET ListPriority=16 WHERE Type='FLAVOR_ESPIONAGE';
-UPDATE Flavors SET ListPriority=14 WHERE Type='FLAVOR_RELIGION';
-UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_CULTURE';
-UPDATE Flavors SET ListPriority=10 WHERE Type='FLAVOR_GREAT_PEOPLE';
-UPDATE Flavors SET ListPriority=8  WHERE Type='FLAVOR_CITY_DEFENSE';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_MILITARY_TRAINING';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_OFFENSE';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_DEFENSE';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_RECON';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_RANGED';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_MOBILE';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_ANTIAIR';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_NAVAL';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_NAVAL_RECON';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_AIR';
-UPDATE Flavors SET ListPriority=6  WHERE Type='FLAVOR_NUKE';
-UPDATE Flavors SET ListPriority=4  WHERE Type='FLAVOR_DIPLOMACY';
-UPDATE Flavors SET ListPriority=2  WHERE Type='FLAVOR_WONDER';
+UPDATE Flavors SET ListPriority=40 WHERE Type='FLAVOR_SPACESHIP';
+UPDATE Flavors SET ListPriority=38 WHERE Type='FLAVOR_HAPPINESS';
+UPDATE Flavors SET ListPriority=36 WHERE Type='FLAVOR_EXPANSION';
+UPDATE Flavors SET ListPriority=34 WHERE Type='FLAVOR_NAVAL_GROWTH';
+UPDATE Flavors SET ListPriority=32 WHERE Type='FLAVOR_GROWTH';
+UPDATE Flavors SET ListPriority=32 WHERE Type='FLAVOR_TILE_IMPROVEMENT';
+UPDATE Flavors SET ListPriority=32 WHERE Type='FLAVOR_NAVAL_TILE_IMPROVEMENT';
+UPDATE Flavors SET ListPriority=32 WHERE Type='FLAVOR_INFRASTRUCTURE';
+UPDATE Flavors SET ListPriority=30 WHERE Type='FLAVOR_GOLD';
+UPDATE Flavors SET ListPriority=30 WHERE Type='FLAVOR_I_LAND_TRADE_ROUTE';
+UPDATE Flavors SET ListPriority=30 WHERE Type='FLAVOR_I_SEA_TRADE_ROUTE';
+UPDATE Flavors SET ListPriority=30 WHERE Type='FLAVOR_I_TRADE_ORIGIN';
+UPDATE Flavors SET ListPriority=30 WHERE Type='FLAVOR_I_TRADE_DESTINATION';
+UPDATE Flavors SET ListPriority=30 WHERE Type='FLAVOR_WATER_CONNECTION';
+UPDATE Flavors SET ListPriority=28 WHERE Type='FLAVOR_PRODUCTION';
+UPDATE Flavors SET ListPriority=26 WHERE Type='FLAVOR_SCIENCE';
+UPDATE Flavors SET ListPriority=24 WHERE Type='FLAVOR_ESPIONAGE';
+UPDATE Flavors SET ListPriority=22 WHERE Type='FLAVOR_RELIGION';
+UPDATE Flavors SET ListPriority=20 WHERE Type='FLAVOR_TOURISM';
+UPDATE Flavors SET ListPriority=20 WHERE Type='FLAVOR_ARCHAEOLOGY';
+UPDATE Flavors SET ListPriority=18 WHERE Type='FLAVOR_CULTURE';
+UPDATE Flavors SET ListPriority=16 WHERE Type='FLAVOR_GREAT_PEOPLE';
+UPDATE Flavors SET ListPriority=14 WHERE Type='FLAVOR_CITY_DEFENSE';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_MILITARY_TRAINING';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_OFFENSE';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_DEFENSE';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_RECON';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_RANGED';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_MOBILE';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_ANTIAIR';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_NAVAL';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_NAVAL_RECON';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_AIR';
+UPDATE Flavors SET ListPriority=12 WHERE Type='FLAVOR_NUKE';
+UPDATE Flavors SET ListPriority=10 WHERE Type='FLAVOR_DIPLOMACY';
+UPDATE Flavors SET ListPriority=8  WHERE Type='FLAVOR_WONDER';

@@ -100,8 +100,8 @@ function SpendAIGold(player)
 	local totalUnitFlavor	= {}
 	local medicID			= GameInfo.UnitPromotions.PROMOTION_MEDIC.ID
 	
-	--[[
-	log:Info("%-15s %20s %3s available (%s threshold, %s minimum)",
+	--
+	log:Debug("%-15s %20s %3s available (%s threshold, %s minimum)",
 		"AIPurchase",
 		player:GetName(),
 		goldStored,
@@ -392,7 +392,7 @@ function SpendAIGold(player)
 	end
 
 	-- No affordable purchase
-	log:Info("%-15s %20s %3s of %-4s (+%s/turn) saved", "", player:GetName(), goldMin, player:GetYieldStored(YieldTypes.YIELD_GOLD), player:GetYieldRate(YieldTypes.YIELD_GOLD))
+	log:Info("%-15s %20s %3s of %-4s (+%s/turn) saved", "", player:GetName(), player:GetYieldStored(YieldTypes.YIELD_GOLD) - goldMin, player:GetYieldStored(YieldTypes.YIELD_GOLD), player:GetYieldRate(YieldTypes.YIELD_GOLD))
 end
 LuaEvents.ActivePlayerTurnEnd_Player.Add(SpendAIGold)
 
@@ -853,10 +853,12 @@ function AIEarlyBonuses(player)
 	
 	for nearPlot, distance in Plot_GetPlotsInCircle(startPlot, 2, searchRange) do
 		nearPlot:SetRevealed(player:GetTeam(), true)
+		--[[
 		local improvement = GameInfo.Improvements[nearPlot:GetImprovementType()]
 		if improvement and improvement.Goody and not Plot_IsNearHuman(nearPlot, searchRange) then
 			nearPlot:SetImprovementType(-1)
 		end
+		--]]
 	end
 	
 	if player:IsMinorCiv() then
@@ -969,7 +971,7 @@ function AIPerTurnBonuses(player)
 	--]]
 end
 
-LuaEvents.ActivePlayerTurnEnd_Player.Add(AIPerTurnBonuses)
+--LuaEvents.ActivePlayerTurnEnd_Player.Add(AIPerTurnBonuses)
 --]=]
 
 --]==]

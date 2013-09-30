@@ -11,7 +11,7 @@
 			<Value>0.5</Value>
 		</Row>
 		<Row Type="AI_PURCHASE_FLAVOR_MAX_ATTEMPTS">
-			<Value>5</Value>
+			<Value>10</Value>
 		</Row>
 	</CEP>
 </GameData>

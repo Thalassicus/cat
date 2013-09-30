@@ -366,7 +366,11 @@ function Game.GetWeightedTable(list, size)
 	local position		= 1
 	
 	for key, weight in pairs(list) do
-		totalWeight = totalWeight + weight
+		if type(weight) == "number" then
+			totalWeight = totalWeight + weight
+		else
+			log:Error("Game.GetWeightedTable: weight[%s]='%s'  type(%s)=%s", key, weight, weight, type(weight))
+		end
 	end
 	
 	if totalWeight == 0 then

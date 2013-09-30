@@ -48,7 +48,7 @@ DELETE FROM Technology_Flavors_Human;
 
 -- Processes
 	INSERT OR IGNORE INTO Technology_Flavors(TechType, FlavorType, Flavor)
-	SELECT process.TechPrereq, flavor.FlavorType, 8
+	SELECT process.TechPrereq, flavor.FlavorType, 4
 	FROM Processes process, Process_ProductionYields yield, Yield_Flavors flavor
 	WHERE (process.Type = yield.ProcessType AND yield.YieldType = flavor.YieldType);
 
@@ -241,7 +241,9 @@ DELETE FROM Technology_Flavors_Human;
 		'FLAVOR_DIPLOMACY'			,
 		'FLAVOR_ESPIONAGE'			,
 		'FLAVOR_HAPPINESS'			,
-		'FLAVOR_NAVAL_GROWTH'		
+		'FLAVOR_NAVAL_GROWTH'		,
+		'FLAVOR_NUKE'				,
+		'FLAVOR_SPACESHIP'			
 	);
 	UPDATE Technology_Flavors SET Flavor = 1.5 * Flavor WHERE FlavorType IN (
 		'FLAVOR_CITY_DEFENSE'		,
@@ -257,7 +259,6 @@ DELETE FROM Technology_Flavors_Human;
 		'FLAVOR_NAVAL'				,
 		'FLAVOR_NAVAL_RECON'		,
 		'FLAVOR_AIR'				,
-		'FLAVOR_NUKE'				,
 
 		'FLAVOR_PRODUCTION'			,
 		'FLAVOR_SCIENCE'			,
@@ -267,7 +268,6 @@ DELETE FROM Technology_Flavors_Human;
 		'FLAVOR_EXPANSION'			,
 		'FLAVOR_RELIGION'			,
 		'FLAVOR_ARCHAEOLOGY'		,
-		'FLAVOR_SPACESHIP'			,
 		'FLAVOR_TILE_IMPROVEMENT'	
 	);
 	

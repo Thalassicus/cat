@@ -711,9 +711,10 @@ function City_GetSpecialistYield(city, yieldID, specialistID)
 
 	if yieldID == YieldTypes.YIELD_HAPPINESS_CITY then
 		-- todo
+	elseif yieldID == YieldTypes.YIELD_HAPPINESS_NATIONAL then
+		-- todo
 	elseif yieldID == YieldTypes.YIELD_GREAT_PEOPLE then
-		yield = yield + GameInfo.Specialists[specialistID].GreatPeopleRateChange
-
+		--yield = yield + GameInfo.Specialists[specialistID].GreatPeopleRateChange
 	elseif yieldID == YieldTypes.YIELD_EXPERIENCE then
 		yield = yield + GameInfo.Specialists[specialistID].Experience
 	elseif GameInfo.Yields[yieldID].TileTexture then
@@ -1653,7 +1654,7 @@ function PlayerClass.ChangeYieldStored(player, yieldID, yield, itemID)
 			end
 		end
 		if player:IsHuman() then
-			--log:Warn(sciString)
+			log:Warn(sciString)
 		end
 	end
 	if player == Players[Game.GetActivePlayer()] then
@@ -2254,6 +2255,7 @@ function City_UpdateModdedYields(city, player)
 end
 
 function PlayerClass.UpdateModdedYieldsEnd(player)
+	--[=[
 	if player:IsMinorCiv() then
 		return
 	end
@@ -2308,10 +2310,11 @@ function PlayerClass.UpdateModdedYieldsEnd(player)
 		--log:Info("%s %s %s vanilla=%s mod=%s", Game.GetGameTurn(), player:GetName(), GameInfo.Yields[yieldID].Type, vanillaYield, modYield)
 		player:ChangeYieldStored(yieldID, modYield-vanillaYield)
 	end
-	--]]
+	--]=]
 end
 
 function PlayerClass.UpdateModdedYieldsStart(player)
+	--[=[
 	if player:IsMinorCiv() then
 		return
 	end
@@ -2322,9 +2325,11 @@ function PlayerClass.UpdateModdedYieldsStart(player)
 
 	GetCurrentUnitSupply(player, true)
 	player:UpdateModdedHappiness()
+	--]=]
 end
 
-function PlayerClass.UpdateModdedHappiness(player)	
+function PlayerClass.UpdateModdedHappiness(player)
+	--[=[	
 	local capital = player:GetCapitalCity()
 	if not capital then
 		return
@@ -2360,6 +2365,7 @@ function PlayerClass.UpdateModdedHappiness(player)
 		city:SetNumRealBuilding(GameInfo.Buildings.BUILDING_HAPPINESS_CITY.ID, yield)
 	end
 	--]]
+	--]=]
 end
 
 

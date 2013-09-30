@@ -67,6 +67,159 @@ Controls.Backdrop:SetSize( backdropSize );
 
 local listOfStrings = {};
 
+--modchange
+-------------------------------------------------
+-- Create the production lists
+-------------------------------------------------
+
+function InitializeProductionLists()
+	--[[
+	
+	Unmodded game scans every data table, and re-sorts every list every time we call UpdateWindow.
+	
+	Mod method creates the lists just 1 time with more helpful sorting:
+	
+	- Units sort by domain (civilian, land, sea, air), then tech column (newest first), then name (alphabetical).
+	- Buildings sort by flavor (growth, science, etc), then tech column (oldest first), then name (alphabetical).
+	- Wonders sort by type (project, national, world), then tech column (oldest first), then name (alphabetical).
+	
+	--]]
+	
+	productionList				= {}
+	productionList.Units		= {}
+	productionList.Buildings	= {}
+	productionList.Projects		= {}
+	productionList.Processes	= {}
+	
+	local mainFlavor = {}
+	local tech
+	local itemPriority = 0
+	local itemName
+	
+	-- Units
+	for unit in GameInfo.Units() do
+		itemName = Locale.ConvertTextKey(unit.Description)
+		itemPriority = unit.ListPriority
+		if itemPriority == nil or itemPriority == -1 then
+			itemPriority = GameInfo.Domains[unit.Domain].ListPriority
+		end
+		
+		if unit.Combat == 0 and unit.RangedCombat == 0 then
+			itemPriority = itemPriority + GameDefines.LIST_PRIORITY_NONCOMBAT
+		end
+		
+		tech = unit.PrereqTech
+		tech = tech and GameInfo.Technologies[tech].GridX or 0
+		table.insert(productionList.Units, {
+			ID=unit.ID,
+			Priority=itemPriority,
+			TechColumn=-1 * tech,
+			Name=itemName
+		})
+	end
+
+	-- Buildings
+	for row in GameInfo.Building_Flavors() do
+		if row.FlavorType == nil then
+			log:Fatal("ProductionPopup Sorting: %s FlavorType is nil", row.buildingType)
+		elseif row.Flavor == nil then
+			log:Fatal("ProductionPopup Sorting: %s Flavor is nil", row.buildingType)
+		elseif string.find(row.FlavorType, "FLAVOR_RES") then
+			-- skip these
+		else
+			local buildingType = row.BuildingType
+			if mainFlavor[buildingType] == nil then
+				mainFlavor[buildingType] = {}
+				mainFlavor[buildingType].Flavor = row.Flavor
+				mainFlavor[buildingType].FlavorType = row.FlavorType
+			elseif row.Flavor > mainFlavor[buildingType].Flavor then
+				mainFlavor[buildingType].Flavor = row.Flavor
+				mainFlavor[buildingType].FlavorType = row.FlavorType
+			end
+		end
+	end
+	for building in GameInfo.Buildings() do
+		local buildingClass = GameInfo.BuildingClasses[building.BuildingClass]
+		itemName = Locale.ConvertTextKey(building.Description)
+		itemPriority = building.ListPriority
+		if itemPriority == nil or itemPriority == -1 then
+			if buildingClass.MaxGlobalInstances == 1 then
+				itemPriority = GameDefines.LIST_PRIORITY_WORLD_WONDER
+			elseif buildingClass.MaxPlayerInstances == 1 then
+				itemPriority = GameDefines.LIST_PRIORITY_NATIONAL_WONDER
+			else
+				local flavor = mainFlavor[building.Type]
+				if flavor then
+					itemPriority = GameInfo.Flavors[flavor.FlavorType].ListPriority
+					--print(tostring(itemPriority).." "..flavor.FlavorType.." "..itemName)
+				end
+			end
+		end	
+		tech = building.PrereqTech
+		if tech then
+			tech = GameInfo.Technologies[tech]
+			if tech then
+				tech = tech.GridX
+			else
+				log:Error("%s PrereqTech=%s", building.Type, building.PrereqTech)
+				tech = 0
+			end
+		else
+			tech = 0
+		end
+		table.insert(productionList.Buildings, {
+			ID=building.ID,
+			Priority=itemPriority,
+			TechColumn=tech,
+			Name=itemName
+		})
+	end
+
+	-- Projects
+	for project in GameInfo.Projects() do
+		itemName = Locale.ConvertTextKey(project.Description)
+		itemPriority = project.ListPriority or 0
+		tech = 0
+		table.insert(productionList.Projects, {
+			ID=project.ID,
+			Priority=itemPriority,
+			TechColumn=tech,
+			Name=itemName
+		})
+	end
+
+	-- Processes
+	for process in GameInfo.Processes() do
+		itemPriority = process.ListPriority or 0
+		tech = 0
+		itemName = Locale.ConvertTextKey(process.Description)
+		table.insert(productionList.Processes, {
+			ID=process.ID,
+			Priority=itemPriority,
+			TechColumn=tech,
+			Name=itemName
+		})
+	end
+
+	function SortProductionTable(a,b)
+		if a.Priority ~= b.Priority then
+			return a.Priority > b.Priority
+		elseif a.TechColumn ~= b.TechColumn then
+			return a.TechColumn < b.TechColumn
+		else
+			return a.Name < b.Name
+		end
+	end
+
+	table.sort(productionList.Units, SortProductionTable)
+	table.sort(productionList.Buildings, SortProductionTable)
+	table.sort(productionList.Projects, SortProductionTable)
+	table.sort(productionList.Processes, SortProductionTable)
+end
+
+
+
+
 -------------------------------------------------
 -- Get the current city the popup is working with
 -- Can return nil
@@ -224,6 +377,10 @@ function UpdateWindow( city )
 		OnClose();
 		return;
     end
+	
+	if not productionList then
+		InitializeProductionLists()
+	end
    
 	local qMode = g_append and g_IsProductionMode;
  
@@ -370,37 +527,15 @@ function UpdateWindow( city )
 		erasByTech[row.Type] =  (eraIDs[row.Era] + 10);
 	end
 	
-	function GetUnitSortPriority(unitInfo)
-		local eraPriority = 0;
-		if(unitInfo.PrereqTech ~= nil) then
-			eraPriority = erasByTech[unitInfo.PrereqTech];
-		end
-	
-		if(unitInfo.CivilianAttackPriority ~= nil) then
-			if(unitInfo.Domain == "DOMAIN_LAND") then
-				return eraPriority;
-			else
-				return eraPriority + 1000;
-			end
-		else
-			if(unitInfo.Domain == "DOMAIN_LAND") then
-				return eraPriority + 2000;
-			else
-				return eraPriority + 3000;
-			end
-		end	
-	end
-		
-	function GetBuildingSortPriority(buildingInfo)
-		if(buildingInfo.PrereqTech ~= nil) then
-			return erasByTech[buildingInfo.PrereqTech];
-		else
-			return 0;
-		end
-	end
+	--modchange
+	numUnitButtons = 0;
+	numBuildingButtons = 0;
+	numWonderButtons = 0;
 	
     -- Units
- 	for unit in GameInfo.Units() do
+ 	for k,v in ipairs(productionList.Units) do
+ 		local unitID = v.ID;
+		local unit = GameInfo.Units[unitID];
  		local unitID = unit.ID;
  		if g_IsProductionMode then
  			-- test w/ visible (ie COULD train if ... )
@@ -422,16 +557,9 @@ function UpdateWindow( city )
 					strTurnsLeft = g_strInfiniteTurns;
 				end
 				
-				table.insert(listUnits, {
-					ID = unitID,
-					Description = unit.Description,
-					DisplayDescription = Locale.Lookup(unit.Description),
-					OrderType = OrderTypes.ORDER_TRAIN,
-					Cost = strTurnsLeft,
-					Disabled = isDisabled,
-					YieldType = YieldTypes.NO_YIELD,
-					SortPriority = GetUnitSortPriority(unit)
-				});
+				--modchange
+				AddProductionButton(unit.ID, unit.Description, OrderTypes.ORDER_TRAIN, strTurnsLeft, 1, isDisabled, YieldTypes.NO_YIELD)
+				numUnitButtons = numUnitButtons + 1
 			end
  		else
 			if city:IsCanPurchase(false, false, unitID, -1, -1, YieldTypes.YIELD_GOLD) then
@@ -444,16 +572,9 @@ function UpdateWindow( city )
 	 			
  				local cost = city:GetUnitPurchaseCost( unitID );
  				
- 				table.insert(listUnits, {
- 					ID = unitID,
- 					Description = unit.Description,
- 					DisplayDescription = Locale.Lookup(unit.Description),
- 					OrderType = OrderTypes.ORDER_TRAIN,
- 					Cost = cost,
- 					Disabled = isDisabled,
- 					YieldType = YieldTypes.YIELD_GOLD,
- 					SortPriority = GetUnitSortPriority(unit)
- 				});
+				--modchange
+				AddProductionButton(unit.ID, unit.Description, OrderTypes.ORDER_TRAIN, cost, 1, isDisabled, YieldTypes.YIELD_GOLD)
+				numUnitButtons = numUnitButtons + 1
  			end
 			if city:IsCanPurchase(false, false, unitID, -1, -1, YieldTypes.YIELD_FAITH) then
  				local isDisabled = false;
@@ -464,24 +585,19 @@ function UpdateWindow( city )
 				end
 	 			
  				local cost = city:GetUnitFaithPurchaseCost( unitID, true );
-				table.insert(listUnits, {
-					ID = unitID,
-					Description = unit.Description,
-					DisplayDescription = Locale.Lookup(unit.Description),
-					OrderType = OrderTypes.ORDER_TRAIN,
-					Cost = cost,
-					Disabled = isDisabled,
-					YieldType = YieldTypes.YIELD_FAITH,
-					SortPriority = GetUnitSortPriority(unit)
-				});
+				--modchange
+				AddProductionButton(unit.ID, unit.Description, OrderTypes.ORDER_TRAIN, cost, 1, isDisabled, YieldTypes.YIELD_FAITH)
+				numUnitButtons = numUnitButtons + 1
 			end
  		end
 	end
 
 
     -- Projects	
- 	for project in GameInfo.Projects() do
- 		local projectID = project.ID;
+	--modchange
+ 	for k,v in ipairs(productionList.Projects) do
+ 		local projectID = v.ID;
+		local project = GameInfo.Projects[projectID];
  	 	if g_IsProductionMode then
  	 	 	-- test w/ visible (ie COULD train if ... )
 			if city:CanCreate( projectID, 0, 1 ) then
@@ -499,37 +615,27 @@ function UpdateWindow( city )
 					strTurnsLeft = g_strInfiniteTurns;
 				end
 				
-				table.insert(listWonders, {
-					ID = projectID,
-					Description = project.Description,
-					DisplayDescription = Locale.Lookup(project.Description),
-					OrderType = OrderTypes.ORDER_CREATE,
-					Cost = strTurnsLeft,
-					Disabled = isDisabled,
-					YieldType = YieldTypes.NO_YIELD,
-				});
+				--modchange
+				AddProductionButton(projectID, project.Description, OrderTypes.ORDER_CREATE, strTurnsLeft, 3, isDisabled, YieldTypes.NO_YIELD);
+ 				numWonderButtons = numWonderButtons + 1
 			end
 		else
 			if city:IsCanPurchase(false, false, -1, -1, projectID, YieldTypes.YIELD_GOLD) then
 				local isDisabled = true;		    
  				local cost = city:GetProjectPurchaseCost( projectID );
  				
- 				table.insert(listWonders, {
- 					ID = projectID,
- 					Description = project.Description,
- 					DisplayDescription = Locale.Lookup(project.Description),
- 					OrderType = OrderTypes.ORDER_CREATE,
- 					Cost = cost,
- 					Disabled = isDisabled,
- 					YieldType = YieldTypes.YIELD_GOLD,
- 				});
+				--modchange
+				AddProductionButton(projectID, project.Description, OrderTypes.ORDER_CREATE, cost, 3, isDisabled, YieldTypes.YIELD_GOLD);
+ 				numWonderButtons = numWonderButtons + 1
 			end
 		end
 	end
 
     -- Buildings	
- 	for building in GameInfo.Buildings() do
- 		local buildingID = building.ID;
+	--modchange
+ 	for k,v in ipairs(productionList.Buildings) do
+ 		local buildingID = v.ID;
+		local building = GameInfo.Buildings[buildingID];
  		if g_IsProductionMode then
  			-- test w/ visible (ie COULD train if ... )
 			if city:CanConstruct( buildingID, 0, 1 ) then
@@ -544,6 +650,9 @@ function UpdateWindow( city )
 				local thisBuildingClass = GameInfo.BuildingClasses[building.BuildingClass];
 				if thisBuildingClass.MaxGlobalInstances > 0 or thisBuildingClass.MaxPlayerInstances == 1 or thisBuildingClass.MaxTeamInstances > 0 then
 					col = 3;
+					numWonderButtons = numWonderButtons + 1
+				else
+					numBuildingButtons = numBuildingButtons + 1
 				end
 				
 				if (bGeneratingProduction) then
@@ -551,22 +660,9 @@ function UpdateWindow( city )
 				else
 					strTurnsLeft = g_strInfiniteTurns;
 				end
-				local building = {
-					ID = buildingID,
-					Description = building.Description,
-					DisplayDescription = Locale.Lookup(building.Description),
-					OrderType = OrderTypes.ORDER_CONSTRUCT,
-					Cost = strTurnsLeft,
-					Disabled = isDisabled,
-					YieldType = YieldTypes.NO_YIELD,
-					SortPriority = GetBuildingSortPriority(building)
-				};
 				
-				if col == 2 then
-					table.insert(listBuildings, building);
-				else
-					table.insert(listWonders, building);
-				end
+				--modchange
+				AddProductionButton(buildingID, building.Description, OrderTypes.ORDER_CONSTRUCT, strTurnsLeft, col, isDisabled, YieldTypes.NO_YIELD);
 			end
 		else
 			if city:IsCanPurchase(false, false, -1, buildingID, -1, YieldTypes.YIELD_GOLD) then
@@ -574,38 +670,31 @@ function UpdateWindow( city )
 				local thisBuildingClass = GameInfo.BuildingClasses[building.BuildingClass];
 				if thisBuildingClass.MaxGlobalInstances > 0 or thisBuildingClass.MaxPlayerInstances == 1 or thisBuildingClass.MaxTeamInstances > 0 then
 					col = 3;
+					numWonderButtons = numWonderButtons + 1
+				else
+					numBuildingButtons = numBuildingButtons + 1
 				end
 
  				local isDisabled = false;
     			if (not city:IsCanPurchase(true, true, -1, buildingID, -1, YieldTypes.YIELD_GOLD)) then
  					isDisabled = true;
  				end
-	 			
- 				local cost = city:GetBuildingPurchaseCost( buildingID );
-				local building = {
-					ID = buildingID,
-					Description = building.Description,
-					DisplayDescription = Locale.Lookup(building.Description),
-					OrderType = OrderTypes.ORDER_CONSTRUCT,
-					Cost = cost,
-					Disabled = isDisabled,
-					YieldType = YieldTypes.YIELD_GOLD,
-					SortPriority = GetBuildingSortPriority(building)
-				};
 				
-				if col == 2 then
-					table.insert(listBuildings, building);
-				else
-					table.insert(listWonders, building);
-				end
+ 				local cost = city:GetBuildingPurchaseCost( buildingID );
+				
+				--modchange
+				AddProductionButton(buildingID, building.Description, OrderTypes.ORDER_CONSTRUCT, cost, col, isDisabled, YieldTypes.YIELD_GOLD);
 			end
 			if city:IsCanPurchase(false, false, -1, buildingID, -1, YieldTypes.YIELD_FAITH) then
 				local col = 2;
 				local thisBuildingClass = GameInfo.BuildingClasses[building.BuildingClass];
 				if thisBuildingClass.MaxGlobalInstances > 0 or thisBuildingClass.MaxPlayerInstances > 0 or thisBuildingClass.MaxTeamInstances > 0 then
 					col = 3;
+					numWonderButtons = numWonderButtons + 1
+				else
+					numBuildingButtons = numBuildingButtons + 1
 				end
-
+				
  				local isDisabled = false;
     			if (not city:IsCanPurchase(true, true, -1, buildingID, -1, YieldTypes.YIELD_FAITH)) then
  					isDisabled = true;
@@ -613,66 +702,13 @@ function UpdateWindow( city )
 	 			
  				local cost = city:GetBuildingFaithPurchaseCost( buildingID );
 				
-				local building = {
-					ID = buildingID,
-					Description = building.Description,
-					DisplayDescription = Locale.Lookup(building.Description),
-					OrderType = OrderTypes.ORDER_CONSTRUCT,
-					Cost = cost,
-					Disabled = isDisabled,
-					YieldType = YieldTypes.YIELD_FAITH,
-					SortPriority = GetBuildingSortPriority(building)
-				};
-				
-				if col == 2 then
-					table.insert(listBuildings, building);
-				else
-					table.insert(listWonders, building);
-				end
+				--modchange
+				AddProductionButton(buildingID, building.Description, OrderTypes.ORDER_CONSTRUCT, cost, col, isDisabled, YieldTypes.YIELD_FAITH);
 			end
 		end
 	end
 	
-	local GenericSort = function(a,b)
-		local aSort = a.SortPriority or 0;
-		local bSort = b.SortPriority or 0;
-	
-		if(aSort == bSort) then
-			local comp = Locale.Compare(a.DisplayDescription, b.DisplayDescription);
-			if(comp == 0) then
-				local aYT = a.YieldType == YieldTypes.YIELD_FAITH and 1 or 0;
-				local bYT = b.YieldType == YieldTypes.YIELD_FAITH and 1 or 0;
-				
-				return aYT < bYT;
-			else
-				return comp == -1;
-			end
-		else
-			return aSort < bSort;
-		end	
-	end
-	
-	numUnitButtons = #listUnits;
-	numBuildingButtons = #listBuildings;
-	numWonderButtons = #listWonders;
-	
-	table.sort(listUnits, GenericSort);
-	table.sort(listBuildings, GenericSort);
-	table.sort(listWonders, GenericSort);
-	
-	
-	for _, unit in ipairs(listUnits) do
-		AddProductionButton(unit.ID, unit.Description, unit.OrderType, unit.Cost, 1, unit.Disabled, unit.YieldType);
-	end
-	for _, building in ipairs(listBuildings) do
-		AddProductionButton(building.ID, building.Description, building.OrderType, building.Cost, 2, building.Disabled, building.YieldType);
-	end
-	
-	for _ , wonder in ipairs(listWonders) do
-		AddProductionButton(wonder.ID, wonder.Description, wonder.OrderType, wonder.Cost, 3, wonder.Disabled, wonder.YieldType);
-	end
-	
-	
+	--modchange
 	
 	if unitHeadingOpen then
 		local localizedLabel = "[ICON_MINUS] "..Locale.ConvertTextKey( "TXT_KEY_POP_UNITS" );
@@ -727,8 +763,10 @@ function UpdateWindow( city )
     	
 	-- Processes
 	local numOtherButtons = 0;
-	for process in GameInfo.Processes() do
-		local processID = process.ID;
+	--modchange
+ 	for k,v in ipairs(productionList.Processes) do
+ 		local processID = v.ID;
+		local process = GameInfo.Processes[processID];
 		if g_IsProductionMode then
 			if city:CanMaintain( processID ) then
 				local isDisabled = false;

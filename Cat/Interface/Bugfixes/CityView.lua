@@ -500,7 +500,7 @@ function AddBuildingButton( pCity, building )
 			-- Yield
 			for pYieldInfo in GameInfo.Yields() do
 				local iYieldID = pYieldInfo.ID;
-				local iYieldAmount = pCity:GetSpecialistYield(iSpecialistID, iYieldID);
+				local iYieldAmount = City_GetSpecialistYield(pCity, iYieldID, iSpecialistID);
 				
 				--Specialist Yield included in pCity:GetSpecialistYield();
 				--iYieldAmount = iYieldAmount + Players[pCity:GetOwner()]:GetSpecialistExtraYield(iSpecialistID, iYieldID);
@@ -619,7 +619,7 @@ function AddBuildingButton( pCity, building )
 				-- Yield
 				for pYieldInfo in GameInfo.Yields() do
 					local iYieldID = pYieldInfo.ID;
-					local iYieldAmount = pCity:GetSpecialistYield(iSpecialistID, iYieldID);
+					local iYieldAmount = City_GetSpecialistYield(pCity, iYieldID, iSpecialistID);
 					
 					if (iYieldAmount > 0) then
 						table.insert(yields, tostring(iYieldAmount) .. pYieldInfo.IconString);
@@ -1275,7 +1275,7 @@ function OnCityViewUpdate()
 				-- Yield
 				for pYieldInfo in GameInfo.Yields() do
 					local iYieldID = pYieldInfo.ID;
-					local iYieldAmount = pCity:GetSpecialistYield(iSpecialistID, iYieldID);
+					local iYieldAmount = City_GetSpecialistYield(pCity, iYieldID, iSpecialistID);
 					
 					--Specialist Yield included in pCity:GetSpecialistYield();
 					--iYieldAmount = iYieldAmount + pPlayer:GetSpecialistExtraYield(iSpecialistID, iYieldID);

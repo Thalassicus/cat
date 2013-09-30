@@ -1,7 +1,7 @@
 -------------------------------------------------
 -- Tech Tree Popup
 -------------------------------------------------
---cep
+--modchange
 include("InstanceManager");
 include("YieldLibrary.lua");
 
@@ -59,7 +59,7 @@ local pinkColor = {x = 2, y = 0, z = 2, w = 1};
 
 local blockSpacingX = 270 + 96;
 local blockSizeX = 270;
---cep
+--modchange
 local blockPreviousX = 270 + 96 * 2;
 local blockSpacingY = 68;
 local extraYOffset = 32;
@@ -88,7 +88,7 @@ function InitialSetup()
 
 	-- add the pipes
 	local techPipes = {};
-	--cep
+	--modchange
 	local i = 0;
 
 	for row in GameInfo.Technology_PrereqTechs() do
@@ -154,7 +154,7 @@ function InitialSetup()
 	local cnxUp = 2
 	local cnxDown = 4
 	
-	--cep
+	--modchange
 
 	for pipeIndex, thisPipe in pairs(techPipes) do
 		if thisPipe.leftConnectionDown then
@@ -218,16 +218,18 @@ function InitialSetup()
 				local vConnection = g_PipeManager:GetInstance();
 				vConnection.TechPipeIcon:SetOffsetVal((tech.GridX-1)*blockSpacingX + blockSizeX + 96, ((tech.GridY-5)*blockSpacingY) - (((tech.GridY-prereq.GridY) * blockSpacingY) / 2) + extraYOffset);
 				vConnection.TechPipeIcon:SetTexture(vTexture);
-				local size = { x = 32; y = blockSpacingY * 3 + 8; };
+				--modchange
+				local size = { x = 32; y = blockSpacingY * 3 + 20; };
 				vConnection.TechPipeIcon:SetSize(size);
 			end
 			
-			--cep
+			--modchange
 			if tech.GridY - prereq.GridY == 5 or tech.GridY - prereq.GridY == -5 then
 				local vConnection = g_PipeManager:GetInstance();
 				vConnection.TechPipeIcon:SetOffsetVal((tech.GridX-1)*blockSpacingX + blockSizeX + 96, ((tech.GridY-5)*blockSpacingY) - (((tech.GridY-prereq.GridY) * blockSpacingY) / 2) + extraYOffset);
 				vConnection.TechPipeIcon:SetTexture(vTexture);
-				local size = { x = 32; y = blockSpacingY * 4 + 8; };
+				--modchange
+				local size = { x = 32; y = blockSpacingY * 4 + 20; };
 				vConnection.TechPipeIcon:SetSize(size);
 			end
 		
@@ -518,7 +520,7 @@ function AddTechButton( tech )
 		thisTechButtonInstance.LockedTechName:SetText( techName );
 		thisTechButtonInstance.FreeTechName:SetText( techName );
 		
-		--cep
+		--modchange
 		local bShowProgress = false;
 		thisTechButtonInstance.TechButton:SetToolTipString( GetHelpTextForTech(tech.ID, bShowProgress) );
 		
@@ -581,7 +583,7 @@ Events.SerialEventGameMessagePopup.Add( OnDisplay );
 
 function RefreshDisplay()
 
-	--cep
+	--modchange
 	local earliestTechColumn = 999
 	for tech in GameInfo.Technologies() do
 		RefreshDisplayOfSpecificTech( tech );
@@ -627,13 +629,13 @@ function RefreshDisplayOfSpecificTech( tech )
 	local techID = tech.ID;
 	local thisTechButton = techButtons[techID];
   	local numFreeTechs = player:GetNumFreeTechs();
-	--cep
+	--modchange
  	local researchTurnsLeft = player:GetYieldTurns(YieldTypes.YIELD_SCIENCE, techID);
  	local turnText = tostring( researchTurnsLeft ).." "..turnsString;
 	local isAllowedToStealTech = false;
 	local isAllowedToGetTechFree = false;
 
-	--cep
+	--modchange
 	if not thisTechButton then
 		log:Error("Button does not exist for techID   %s", techID)
 		log:Error("Button does not exist for techType %s", GameInfo.Technologies[techID].Type)
@@ -715,7 +717,7 @@ function RefreshDisplayOfSpecificTech( tech )
   			thisTechButton.FreeTech:SetHide( false );
  			thisTechButton.CurrentlyResearching:SetHide( true );
 			-- update number of turns to research
-			--cep
+			--modchange
  			if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 and stealingTechTargetPlayerID == -1 then
   				thisTechButton.FreeTurns:SetText( turnText );
   				thisTechButton.FreeTurns:SetHide( false );
@@ -728,7 +730,7 @@ function RefreshDisplayOfSpecificTech( tech )
   			thisTechButton.FreeTech:SetHide( true );
  			thisTechButton.CurrentlyResearching:SetHide( false );
 			-- update number of turns to research
-			--cep
+			--modchange
  			if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 then
   				thisTechButton.CurrentlyResearchingTurns:SetText( turnText );
   				thisTechButton.CurrentlyResearchingTurns:SetHide( false );
@@ -741,7 +743,7 @@ function RefreshDisplayOfSpecificTech( tech )
 		local teamTechs = activeTeam:GetTeamTechs();
 		local researchProgressPercent = 0;
 		local researchProgressPlusThisTurnPercent = 0;
-		--cep
+		--modchange
 		local researchTurnsLeft = player:GetYieldTurns(YieldTypes.YIELD_SCIENCE,  techID);
 		local currentResearchProgress = player:GetYieldStored(YieldTypes.YIELD_SCIENCE);
 		local researchNeeded = player:GetYieldNeeded(YieldTypes.YIELD_SCIENCE);
@@ -764,7 +766,7 @@ function RefreshDisplayOfSpecificTech( tech )
  			thisTechButton.FreeTech:SetHide( false );
  			thisTechButton.Available:SetHide( true );
 			-- update number of turns to research
-			--cep
+			--modchange
  			if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 and stealingTechTargetPlayerID == -1 then
   				thisTechButton.FreeTurns:SetText( turnText );
   				thisTechButton.FreeTurns:SetHide( false );
@@ -778,7 +780,7 @@ function RefreshDisplayOfSpecificTech( tech )
  			thisTechButton.FreeTech:SetHide( true );
  			thisTechButton.Available:SetHide( false );
 			-- update number of turns to research
-			--cep
+			--modchange
  			if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 then
   				thisTechButton.AvailableTurns:SetText( turnText );
   				thisTechButton.AvailableTurns:SetHide( false );
@@ -821,7 +823,7 @@ function RefreshDisplayOfSpecificTech( tech )
 		thisTechButton.Locked:SetHide( true );
   		thisTechButton.FreeTech:SetHide( true );
  		-- update number of turns to research
-		--cep
+		--modchange
  		if 	player:GetYieldRate(YieldTypes.YIELD_SCIENCE) > 0 then
   			thisTechButton.UnavailableTurns:SetText( turnText );
   			thisTechButton.UnavailableTurns:SetHide( false );

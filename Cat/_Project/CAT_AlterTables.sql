@@ -513,6 +513,7 @@ ALTER TABLE Units			ADD PopCostMod integer default 0;
 ALTER TABLE Buildings		ADD PopCostMod integer default 0;
 ALTER TABLE Projects		ADD PopCostMod integer default 0;
 
+ALTER TABLE Beliefs			ADD ListPriority integer default -1;
 ALTER TABLE Units			ADD ListPriority integer default -1;
 ALTER TABLE Domains			ADD ListPriority integer default -1;
 ALTER TABLE Buildings		ADD ListPriority integer default -1;
@@ -523,6 +524,7 @@ ALTER TABLE Yields			ADD ListPriority integer default -1;
 ALTER TABLE Specialists		ADD ListPriority integer default -1;
 ALTER TABLE GreatWorkSlots	ADD ListPriority integer default -1;
 
+UPDATE Beliefs SET ListPriority = 999;
 
 
 

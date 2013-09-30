@@ -376,10 +376,6 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			InsertBuildingSubStat()
 		end
 
-	elseif lineType == "NotFeature" then
-		lineValue = string.format("{%s}", GameInfo.Features[lineValue].Description or GameInfo.Features[lineValue].Type)
-		InsertBuildingSubStat()
-
 	elseif lineType == "RequiresNearAll" then
 		lineValue = ""
 		for row in GameInfo.Building_LocalResourceAnds{BuildingType = objectInfo.Type} do
@@ -400,10 +396,14 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			lineValue = string.format("%s%s%s ", lineValue, row.Cost, GameInfo.Resources[row.ResourceType].IconString or ("ICON:"..GameInfo.Resources[row.ResourceType].Type))
 		end
 		InsertBuildingSubStat()
-
-	elseif lineType == "NearbyTerrainRequired" then
+		--
+	elseif lineType == "NotFeature" then
+		lineValue = string.format("{%s}", GameInfo.Features[lineValue].Description or GameInfo.Features[lineValue].Type)
+		InsertBuildingSubStat()--]]
+		--
+	elseif lineType == "NearbyTerrainRequired" or lineType == "ProhibitedCityTerrain" then
 		lineValue = string.format("{%s}", GameInfo.Terrains[lineValue].Description or GameInfo.Terrains[lineValue].Type)
-		InsertBuildingSubStat()
+		InsertBuildingSubStat()--]]
 
 	elseif lineType == "RequiresTech" then
 		for row in GameInfo.Building_TechAndPrereqs{BuildingType = objectInfo.Type} do
