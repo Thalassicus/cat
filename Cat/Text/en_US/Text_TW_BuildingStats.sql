@@ -202,4 +202,4 @@ INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALU
 
 
 
-UPDATE LoadedFile SET Value=1 WHERE Type='Cat_TW_BuildingStats.sql';
+UPDATE LoadedFile SET Value=1 WHERE Type='Text_TW_BuildingStats.sql';

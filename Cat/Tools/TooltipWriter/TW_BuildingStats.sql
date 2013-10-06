@@ -161,9 +161,9 @@ INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5,  6
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5,  7, 0, 'NationalLimit'               , 'cepClassInfo.MaxPlayerInstances');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5,  8, 0, 'TeamLimit'                   , 'cepClassInfo.MaxTeamInstances');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5,  9, 0, 'WorldLimit'                  , 'cepClassInfo.MaxGlobalInstances');
-INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 10, 0, 'NotFeature'                  , 'cepObjectInfo.NotFeature and Locale.ConvertTextKey(GameInfo.Features[cepObjectInfo.NotFeature].Description or (cepObjectInfo.NotFeature .. “_DESCRIPTION”))');
-INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 11, 0, 'NearbyTerrainRequired'       , 'cepObjectInfo.NearbyTerrainRequired and Locale.ConvertTextKey(GameInfo.Terrains[cepObjectInfo.NearbyTerrainRequired].Description or (cepObjectInfo.NearbyTerrainRequired .. "_DESCRIPTION"))');
-INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 12, 0, 'ProhibitedCityTerrain'       , 'cepObjectInfo.ProhibitedCityTerrain and Locale.ConvertTextKey(GameInfo.Terrains[cepObjectInfo.ProhibitedCityTerrain].Description or (cepObjectInfo.ProhibitedCityTerrain .. "_DESCRIPTION"))');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 10, 0, 'NotFeature'                  , 'cepObjectInfo.NotFeature');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 11, 0, 'NearbyTerrainRequired'       , 'cepObjectInfo.NearbyTerrainRequired');
+INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 12, 0, 'ProhibitedCityTerrain'       , 'cepObjectInfo.ProhibitedCityTerrain');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 12, 0, 'Water'                       , 'cepObjectInfo.Water');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 13, 0, 'River'                       , 'cepObjectInfo.River');
 INSERT INTO BuildingStats(Section, Priority, Dynamic, Type, Value) VALUES (5, 14, 0, 'FreshWater'                  , 'cepObjectInfo.FreshWater and (cepObjectInfo.BuildingClass ~= "BUILDINGCLASS_GARDEN")');
