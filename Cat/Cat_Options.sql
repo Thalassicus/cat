@@ -98,8 +98,8 @@ Speech
 0 = silence speech
 */
 INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_START'		, 0);
-INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_WONDERS'		, 1);
-INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_TECHS'		, 1);
+INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_WONDERS'		, 0);
+INSERT INTO Cep (Type, Value) VALUES ('PLAY_SPEECH_TECHS'		, 0);
 
 
 /*

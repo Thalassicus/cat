@@ -396,14 +396,14 @@ Game.GetDefaultBuildingStatText = Game.GetDefaultBuildingStatText or function(ob
 			lineValue = string.format("%s%s%s ", lineValue, row.Cost, GameInfo.Resources[row.ResourceType].IconString or ("ICON:"..GameInfo.Resources[row.ResourceType].Type))
 		end
 		InsertBuildingSubStat()
-		--
+		
 	elseif lineType == "NotFeature" then
 		lineValue = string.format("{%s}", GameInfo.Features[lineValue].Description or GameInfo.Features[lineValue].Type)
-		InsertBuildingSubStat()--]]
-		--
+		InsertBuildingSubStat()
+		
 	elseif lineType == "NearbyTerrainRequired" or lineType == "ProhibitedCityTerrain" then
 		lineValue = string.format("{%s}", GameInfo.Terrains[lineValue].Description or GameInfo.Terrains[lineValue].Type)
-		InsertBuildingSubStat()--]]
+		InsertBuildingSubStat()
 
 	elseif lineType == "RequiresTech" then
 		for row in GameInfo.Building_TechAndPrereqs{BuildingType = objectInfo.Type} do
@@ -642,16 +642,34 @@ cepClassInfo = nil
 		Game.Stats.Buildings[objectID] = {}
 		for row in GameInfo.BuildingStats() do
 			if row.Value then
-				local stat = {Type=row.Type, Section=row.Section, Priority=row.Priority, Dynamic=(row.Dynamic == 1), Value=assert(loadstring("return " .. row.Value))()}
+				local stat = {
+					Type 		= row.Type,
+					Section 	= row.Section,
+					Priority 	= row.Priority,
+					Dynamic 	= (row.Dynamic == 1),
+					Value 		= assert(loadstring("return " .. row.Value))()
+				}
 				if stat.Value and stat.Value ~= 0 and stat.Value ~= -1 and stat.Value ~= "" then
 					if stat.Dynamic then
 						table.insert(Game.Stats.Buildings[objectID], stat)
 					else
 						for _, subStat in pairs(Game.GetDefaultBuildingStatText(objectID, stat.Type, stat.Section, stat.Priority, stat.Value)) do
 							if subStat.Section and subStat.Priority and subStat.TextBody then
-								table.insert(Game.Stats.Buildings[objectID], {Type=stat.Type, Section=subStat.Section, Priority=subStat.Priority, TextBody=subStat.TextBody, TextFoot=subStat.TextFoot})
+								table.insert(Game.Stats.Buildings[objectID], {
+									Type 		= stat.Type,
+									Section 	= subStat.Section,
+									Priority 	= subStat.Priority,
+									TextBody 	= subStat.TextBody,
+									TextFoot 	= subStat.TextFoot})
 							else
-								log:Error("Init Stats %25s %20s %20s section=%3s priority=%3s textBody=%s", objectInfo.Type, stat.Type, subStat.Type, subStat.Section, subStat.Priority, subStat.TextBody)
+								log:Error("Init Stats %25s %20s %20s section=%3s priority=%3s textBody=%s",
+									objectInfo.Type,
+									stat.Type,
+									subStat.Type,
+									subStat.Section,
+									subStat.Priority,
+									subStat.TextBody
+								)
 							end
 						end
 					end
