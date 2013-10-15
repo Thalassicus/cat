@@ -767,7 +767,7 @@ CivilopediaCategory[CategoryBuildings].PopulateList = function()
 		--Cep
 		WHERE ( Buildings.IsVisible = 1
 			AND Buildings.ShowInPedia = 1
-			AND Buildings.FaithCost = 0
+			AND (Buildings.FaithCost = 0 or Buildings.Cost > 0)
 			AND BuildingClasses.MaxGlobalInstances <> 1
 			AND BuildingClasses.MaxPlayerInstances <> 1
 			AND BuildingClasses.MaxTeamInstances <> 1
