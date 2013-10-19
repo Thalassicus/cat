@@ -44,23 +44,22 @@ An AI with +20g per turn, 800g stored and a 500g threshold decides:
 --]]
 
 local warUnitFlavorsEarly = {
-	{FlavorType="FLAVOR_SOLDIER",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID}}		,
 	{FlavorType="FLAVOR_MOBILE",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}		,
+	{FlavorType="FLAVOR_MELEE",				Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID}}		,
 	{FlavorType="FLAVOR_SIEGE",				Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SIEGE.ID}}			,
 	{FlavorType="FLAVOR_RANGED",			Num=2, Promos={GameInfo.UnitPromotions.PROMOTION_BARRAGE_1.ID}}		,
 	{FlavorType="FLAVOR_NAVAL_BOMBARDMENT",	Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_1.ID}}	,
-	{FlavorType="FLAVOR_MELEE",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}		,
-	{FlavorType="FLAVOR_ANTI_MOBILE",		Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}
+	{FlavorType="FLAVOR_ANTI_MOBILE",		Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID}}		
 }
 
 local warUnitFlavorsLate = {
 	{FlavorType="FLAVOR_MOBILE",			Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID,		GameInfo.UnitPromotions.PROMOTION_SHOCK_2.ID}}			,
 	{FlavorType="FLAVOR_AIR",				Num=1, Promos={}},
-	{FlavorType="FLAVOR_MELEE",			Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID,		GameInfo.UnitPromotions.PROMOTION_DRILL_2.ID}}			,
+	{FlavorType="FLAVOR_MELEE",				Num=3, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID,		GameInfo.UnitPromotions.PROMOTION_DRILL_2.ID}}			,
 	{FlavorType="FLAVOR_SIEGE",				Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_ACCURACY_1.ID,		GameInfo.UnitPromotions.PROMOTION_SIEGE.ID}}			,
-	{FlavorType="FLAVOR_RANGED",			Num=2, Promos={GameInfo.UnitPromotions.PROMOTION_BARRAGE_1.ID,		GameInfo.UnitPromotions.PROMOTION_BARRAGE_2.ID}}		,
+	{FlavorType="FLAVOR_RANGED",			Num=2, Promos={GameInfo.UnitPromotions.PROMOTION_DRILL_1.ID,		GameInfo.UnitPromotions.PROMOTION_DRILL_2.ID}}			,
 	{FlavorType="FLAVOR_NAVAL_BOMBARDMENT",	Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_1.ID,	GameInfo.UnitPromotions.PROMOTION_BOMBARDMENT_2.ID}}	,
-	{FlavorType="FLAVOR_ANTI_MOBILE",		Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID,		GameInfo.UnitPromotions.PROMOTION_SHOCK_2.ID}}			,
+	{FlavorType="FLAVOR_ANTI_MOBILE",		Num=1, Promos={GameInfo.UnitPromotions.PROMOTION_SHOCK_1.ID,		GameInfo.UnitPromotions.PROMOTION_AMBUSH_VANGUARD_1.ID}},
 	{FlavorType="FLAVOR_ANTIAIR",			Num=1, Promos={}}			
 }
 
