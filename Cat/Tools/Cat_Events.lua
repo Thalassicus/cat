@@ -1137,13 +1137,15 @@ function UpdatePromotions(unit, isUpgrading)
 	local unitInfo = GameInfo.Units[unit:GetUnitType()]
 	if isUpgrading then
 		unitInfo = GameInfo.Units[unit:GetUpgradeUnitType()]
-		--log:Debug("UpdatePromotions upgrade %s to %s", GameInfo.Units[unit:GetUnitType()].Type, tostring(unitInfo.Type))
+		log:Debug("UpdatePromotions upgrade %s to %s", GameInfo.Units[unit:GetUnitType()].Type, tostring(unitInfo.Type))
 	end
+	
+	log:Info("Debug %s", unitInfo.Type)
 		
-	local promoCategory = GameInfo.UnitCombatInfos[unitInfo.CombatClass].PromotionCategory
+	local upgradingUnitPromotionSet = GameInfo.UnitCombatInfos[unitInfo.CombatClass].PromotionCategory
 
 	if isUpgrading then
-		--log:Debug("New promotion category: %s", promoCategory)
+		log:Debug("New promotion column: %s", upgradingUnitPromotionSet)
 	end
 
 	if GameInfo.UnitPromotions.PROMOTION_REPAIR and (unitInfo.CombatClass == "_UNITCOMBAT_ARMOR" or unitInfo.CombatClass == "UNITCOMBAT_ARMOR") then
@@ -1154,22 +1156,22 @@ function UpdatePromotions(unit, isUpgrading)
 			)
 	end
 
-	for swapInfo in GameInfo.UnitPromotions_Equivilancy() do
-		local newPromoType = swapInfo[promoCategory]
+	for swapRow in GameInfo.UnitPromotions_Equivilancy() do
+		local newPromo = swapRow[upgradingUnitPromotionSet]
 		local newPromoID = -1
-		if newPromoType then
-			if GameInfo.UnitPromotions[newPromoType] then
-				newPromoID = GameInfo.UnitPromotions[newPromoType].ID
+		if newPromo then
+			if GameInfo.UnitPromotions[newPromo] then
+				newPromoID = GameInfo.UnitPromotions[newPromo].ID
 			else
-				log:Warn("UpdatePromotions: %s does not exist in UnitPromotions!", newPromoType)					
+				log:Warn("UpdatePromotions: %s does not exist in UnitPromotions!", newPromo)					
 			end
 		end
-		for category, oldPromoType in pairs(swapInfo) do
+		for column, oldPromoType in pairs(swapRow) do
 			if (oldPromoType == "PROMOTION_SIEGE" and (unitInfo.CombatClass == "_UNITCOMBAT_SIEGE" or unitInfo.CombatClass == "UNITCOMBAT_SIEGE")
 				or (oldPromoType == "PROMOTION_SIEGE" and unitInfo.Range > 0)
 				) then
 				-- do not replace
-			elseif category ~= promoCategory then
+			elseif column ~= upgradingUnitPromotionSet then
 				if GameInfo.UnitPromotions[oldPromoType] then
 					CheckReplacePromotion(unit, GameInfo.UnitPromotions[oldPromoType].ID, newPromoID)
 				else
@@ -1183,12 +1185,14 @@ end
 LuaEvents.ActivePlayerTurnStart_Unit.Add(UpdatePromotions)
 LuaEvents.UnitUpgraded.Add(function(unit) UpdatePromotions(unit, true) end)
 
-function CheckReplacePromotion(unit, oldPromo, newPromo)
-	if unit:IsHasPromotion(oldPromo) then
-		--log:Trace("%s replace %s with %s", unit:GetName(), GameInfo.UnitPromotions[oldPromo].Type, newPromo and GameInfo.UnitPromotions[newPromo].Type or "none")
-		unit:SetHasPromotion(oldPromo, false)
-		if newPromo ~= -1 then
-			unit:SetHasPromotion(newPromo, true)
+function CheckReplacePromotion(unit, oldPromoID, newPromoID)
+	if unit:IsHasPromotion(oldPromoID) and (oldPromoID ~= newPromoID) then
+		--log:Trace("%s replace %s with %s", unit:GetName(), GameInfo.UnitPromotions[oldPromoID].Type, newPromoID and GameInfo.UnitPromotions[newPromoID].Type or "none")
+		if newPromoID == -1 then
+			
+		else
+			unit:SetHasPromotion(oldPromoID, false)
+			unit:SetHasPromotion(newPromoID, true)
 			--LuaEvents.RefreshUnitFlagPromotions(unit)
 		end
 	end
