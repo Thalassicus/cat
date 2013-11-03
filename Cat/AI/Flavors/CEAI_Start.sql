@@ -49,7 +49,7 @@ UPDATE UnitCombatInfos SET FlavorType = 'FLAVOR_AIR_CARRIER'	WHERE Type IN ('UNI
 
 
 
--- TODO: Temporary changes to remove once we set up full AI enhancements for new leaders
+/*-- TODO: Temporary changes to remove once we set up full AI enhancements for new leaders
 UPDATE Leader_Flavors
 SET Flavor = MIN(10, Flavor + 3)
 WHERE FlavorType = 'FLAVOR_EXPANSION';
@@ -59,5 +59,5 @@ SET Bias = Bias + 2
 WHERE Bias >= 5 AND MajorCivApproachType = 'MAJOR_CIV_APPROACH_WAR';
 
 UPDATE Leaders SET Personality = 'PERSONALITY_EXPANSIONIST';
-
+*/
 UPDATE LoadedFile SET Value=1 WHERE Type='CEAI__Start.sql';
