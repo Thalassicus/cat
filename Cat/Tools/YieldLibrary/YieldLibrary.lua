@@ -684,6 +684,10 @@ function City_GetSpecialistYield(city, yieldID, specialistID)
 	if specialistID == nil then
 		log:Fatal("City_GetSpecialistYield specialistID=nil")
 	end
+
+	if type(specialistID) ~= "number" and type(specialistID) ~= "string" then
+		log:Fatal("City_GetSpecialistYield specialistID=%s", specialistID)
+	end
 	local yield		= 0
 	local yieldInfo = GameInfo.Yields[yieldID]
 	local player	= Players[city:GetOwner()]
@@ -691,23 +695,21 @@ function City_GetSpecialistYield(city, yieldID, specialistID)
 	local specType	= GameInfo.Specialists[specialistID].Type
 	local query		= nil
 	
-	--[[
+--[[
 	query = string.format("YieldType = '%s' AND SpecialistType = '%s'", yieldInfo.Type, specType)
 	for row in GameInfo.Policy_SpecialistYieldChanges(query) do
 		if player:HasPolicy(GameInfo.Policies[row.PolicyType].ID) then
 			yield = yield + row.Yield
 		end
 	end
-	--]]
 	
-	--[[
 	query = string.format("YieldType = '%s'", yieldInfo.Type)
 	for row in GameInfo.Belief_YieldChangeAnySpecialist(query) do
 		if player:HasBelief(BeliefType) then
 			yield = yield + row.Yield
 		end
 	end
-	--]]
+]]--
 
 	if yieldID == YieldTypes.YIELD_HAPPINESS_CITY then
 		-- todo
