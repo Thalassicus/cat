@@ -2400,7 +2400,7 @@ CivilopediaCategory[CategoryTech].SelectArticle = function( techID, shouldAddToL
 		-- update the build actions unlocked
 		g_WorkerActionsManager:ResetInstances();
 		buttonAdded = 0;
-		for thisBuildInfo in GameInfo.Builds( prereqCondition ) do
+		for thisBuildInfo in GameInfo.Builds{PrereqTech = techType, ShowInPedia = 1} do
 			local thisWorkerActionInstance = g_WorkerActionsManager:GetInstance();
 			if thisWorkerActionInstance then
 				local textureOffset, textureSheet = IconLookup( thisBuildInfo.IconIndex, buttonSize, thisBuildInfo.IconAtlas );				

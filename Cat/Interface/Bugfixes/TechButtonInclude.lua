@@ -138,7 +138,7 @@ function AddSmallButtonsToTechButton( thisTechButtonInstance, tech, maxSmallButt
 	end
 
 	-- if this tech grants this player the ability to perform this action (usually only workers can do these)
-	for thisBuildInfo in GameInfo.Builds(string.format("PrereqTech = '%s'", techType)) do
+	for thisBuildInfo in GameInfo.Builds{PrereqTech = techType, ShowInTechTree  = 1} do
 		if thisBuildInfo.ImprovementType then
 			if validImprovementBuilds[thisBuildInfo.ImprovementType] == thisBuildInfo.ImprovementType then
 				local buttonName = "B"..tostring(buttonNum);
