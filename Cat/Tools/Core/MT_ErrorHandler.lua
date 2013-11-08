@@ -35,6 +35,7 @@ local function Traceback(str)
 end
 
 function SafeCall(f, ...)
+	local arg = {...}
 	--f can have any number of args and return values
 	local g = function() return f(unpack(arg)) end --need wrapper since xpcall won't take function args
 	local result = {xpcall(g, Traceback)}
