@@ -104,7 +104,7 @@ INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALU
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_FREE_TECHS', '[ICON_TEAM_5] Free Technologies: {3_value}', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_FREE_POLICIES', '[ICON_TEAM_6] Free Social Policies: {3_value}', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_BORDER_OBSTACLE', '[ICON_MOVES] Slows Enemies in Friendly Territory', '', '');
-INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_AIR_MODIFIER', '[ICON_RANGE_STRENGTH] Damage: {2_sign}{3_value}% from Air Units', '', '');
+INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_AIR_MODIFIER', '[ICON_AIR] Allows {2_sign}{3_value} more Air Units to be staioned', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_NUKE_MODIFIER', '[ICON_RANGE_STRENGTH] Damage: {2_sign}{3_value}% from Nukes', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_FREE_BUILDING', '[ICON_TEAM_9] Free Building: {3_value}', '', '');
 INSERT INTO Cep_Language_EN_US (DateModified, Tag, Text, Gender, Plurality) VALUES (date('2013-01-24'), 'TXT_KEY_BUILDING_EFFECT_FREE_BUILDING_THIS_CITY', '[ICON_TEAM_9] Free Building: {3_value}', '', '');
