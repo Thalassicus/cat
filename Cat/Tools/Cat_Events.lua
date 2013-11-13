@@ -349,8 +349,7 @@ function BuildingCreated(player, city, buildingID)
 	
 	query = string.format("BuildingType = '%s'", buildingInfo.Type)
 	for info in GameInfo.Building_PlotYieldChanges(query) do
-		local nearbyPlots = Plot_GetPlotsInCircle(plot, 0, 3)
-		for _,adjPlot in pairs(nearbyPlots) do
+		    for adjPlot in Plot_GetPlotsInCircle(plot, 0, 3) do
 			local adjPlotID = Plot_GetID(adjPlot)
 			if adjPlot:GetPlotType() == PlotTypes.PLOT_HILLS and (adjPlot:GetOwner() == playerID or adjPlot:GetOwner() == -1) then
 				if adjPlot:GetOwner() == -1 then
