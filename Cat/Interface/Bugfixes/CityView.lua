@@ -1275,7 +1275,7 @@ function OnCityViewUpdate()
 				-- Yield
 				for pYieldInfo in GameInfo.Yields() do
 					local iYieldID = pYieldInfo.ID;
-					local iYieldAmount = City_GetSpecialistYield(pCity, iYieldID, iSpecialistID);
+					local iYieldAmount = City_GetSpecialistYield(pCity, iYieldID, pSpecialistInfo.ID);
 					
 					--Specialist Yield included in pCity:GetSpecialistYield();
 					--iYieldAmount = iYieldAmount + pPlayer:GetSpecialistExtraYield(iSpecialistID, iYieldID);
