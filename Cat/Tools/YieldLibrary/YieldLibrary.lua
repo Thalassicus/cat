@@ -1640,7 +1640,7 @@ function PlayerClass.ChangeYieldStored(player, yieldID, yield, itemID)
 		if targetTech ~= -1 then
 			targetTech = GameInfo.Technologies[targetTech]
 			sciString = string.format("%-40s %s +%-3d  @ %s (%s needed)", sciString, Game.Round(teamTechs:GetResearchProgress(targetTech.ID)), Game.Round(yield), targetTech.Type, teamTechs:GetResearchCost(targetTech.ID))
-			teamTechs:ChangeResearchProgress(targetTech.ID, yield)
+			teamTechs:ChangeResearchProgress(targetTech.ID, yield, player:GetID())
 		else
 			local researchableTechs = {}
 			for techInfo in GameInfo.Technologies() do
@@ -1652,7 +1652,7 @@ function PlayerClass.ChangeYieldStored(player, yieldID, yield, itemID)
 				targetTech = researchableTechs[1 + Map.Rand(#researchableTechs, "player:ChangeYieldStored: Random Tech")]
 				targetTech = GameInfo.Technologies[targetTech]
 				sciString = string.format("%-40s +%-3d  @ %s (random)", sciString, Game.Round(yield), targetTech.Type)
-				teamTechs:ChangeResearchProgress(targetTech.ID, yield)
+				teamTechs:ChangeResearchProgress(targetTech.ID, yield, player:GetID())
 			end
 		end
 		if player:IsHuman() then
